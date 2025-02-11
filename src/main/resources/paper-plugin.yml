@@ -1,0 +1,7 @@
+name: SneakyPrototypeKit
+version: '1.0.0'
+main: net.sneakyprototypekit.SneakyPrototypeKit
+api-version: '1.21'
+description: A Paper plugin for creating custom items with configurable abilities and charges
+author: Team Sneakymouse
+website: https://rawb.tv

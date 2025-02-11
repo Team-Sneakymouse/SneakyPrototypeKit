@@ -1,0 +1,60 @@
+package net.sneakyprototypekit
+
+import net.sneakyprototypekit.commands.CommandPrototypeKit
+import net.sneakyprototypekit.ability.AbilityListener
+import net.sneakyprototypekit.creation.ui.TypeSelectionListener
+import net.sneakyprototypekit.creation.ui.AbilitySelectionListener
+import net.sneakyprototypekit.creation.ui.IconSelectionListener
+import net.sneakyprototypekit.creation.ui.CreationSessionListener
+import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.NamespacedKey
+import org.bukkit.permissions.Permission
+
+class SneakyPrototypeKit : JavaPlugin() {
+    companion object {
+        const val IDENTIFIER = "sneakyprototypekit"
+        const val AUTHORS = "Team Sneakymouse"
+        const val VERSION = "1.0.0"
+        private lateinit var instance: SneakyPrototypeKit
+
+        fun getInstance(): SneakyPrototypeKit = instance
+
+        fun log(msg: String) {
+            instance.logger.info(msg)
+        }
+    }
+
+    override fun onEnable() {
+        instance = this
+        logger.info("SneakyPrototypeKit has been enabled!")
+        
+        // Register listeners
+        server.pluginManager.registerEvents(AbilityListener(), this)
+        server.pluginManager.registerEvents(TypeSelectionListener(), this)
+        server.pluginManager.registerEvents(AbilitySelectionListener(), this)
+        server.pluginManager.registerEvents(IconSelectionListener(), this)
+        server.pluginManager.registerEvents(CreationSessionListener(), this)
+
+        // Register commands
+        server.commandMap.register(IDENTIFIER, CommandPrototypeKit())
+
+        // Register permissions
+        server.pluginManager.addPermission(Permission("$IDENTIFIER.*"))
+        server.pluginManager.addPermission(Permission("$IDENTIFIER.admin"))
+        server.pluginManager.addPermission(Permission("$IDENTIFIER.command.*"))
+
+        // Load configuration
+        saveDefaultConfig()
+    }
+
+    override fun onDisable() {
+        logger.info("SneakyPrototypeKit has been disabled!")
+    }
+
+    // Keys for persistent data
+    val ITEM_TYPE_KEY = NamespacedKey(this, "item_type")
+    val LEFT_CLICK_ABILITY_KEY = NamespacedKey(this, "left_click_ability")
+    val CHARGES_KEY = NamespacedKey(this, "charges")
+    val NAVIGATION_KEY = NamespacedKey(this, "navigation")
+    val ICON_DATA_KEY = NamespacedKey(this, "icon_data")
+}
