@@ -123,6 +123,7 @@ class IconSelectionUI(
                     PersistentDataType.STRING,
                     "${icon.material.name},${icon.modelData}"
                 )
+                meta.setHideTooltip(true)
             }
         }
     }

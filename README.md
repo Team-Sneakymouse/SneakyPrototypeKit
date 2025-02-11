@@ -17,7 +17,7 @@ A Paper plugin that allows server administrators to create custom items and cons
 
 ## Usage
 
-1. `/prototype create` - Start the item creation process
+1. `/prototypekit` - Start the item creation process
 2. `/prototypekitreload` - Reload the plugin configuration
 3. Follow the interactive UI to:
    - Choose between item, food, or drink
