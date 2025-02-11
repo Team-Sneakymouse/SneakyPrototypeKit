@@ -1,6 +1,7 @@
 package net.sneakyprototypekit
 
 import net.sneakyprototypekit.commands.CommandPrototypeKit
+import net.sneakyprototypekit.commands.CommandReload
 import net.sneakyprototypekit.ability.AbilityListener
 import net.sneakyprototypekit.creation.ui.TypeSelectionListener
 import net.sneakyprototypekit.creation.ui.AbilitySelectionListener
@@ -37,6 +38,7 @@ class SneakyPrototypeKit : JavaPlugin() {
 
         // Register commands
         server.commandMap.register(IDENTIFIER, CommandPrototypeKit())
+        server.commandMap.register(IDENTIFIER, CommandReload())
 
         // Register permissions
         server.pluginManager.addPermission(Permission("$IDENTIFIER.*"))
