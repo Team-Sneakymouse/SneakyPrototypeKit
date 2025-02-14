@@ -10,13 +10,21 @@ import org.bukkit.persistence.PersistentDataType
 
 /**
  * Manages the execution of abilities and handles charge management.
+ * Provides functionality for cooldowns, charge tracking, and ability execution.
  */
 object AbilityManager {
-    private val cooldowns = mutableMapOf<String, MutableMap<String, Long>>() // Player UUID -> (Ability -> Last use time)
-    const val DEFAULT_COOLDOWN_MS = 500L // Default 500ms cooldown
+    /** Maps player UUIDs to their ability cooldowns (ability name -> last use time) */
+    private val cooldowns = mutableMapOf<String, MutableMap<String, Long>>()
+    
+    /** Default cooldown between ability uses in milliseconds */
+    const val DEFAULT_COOLDOWN_MS = 500L
     
     /**
      * Gets the cooldown map for a player.
+     * Creates a new map if one doesn't exist.
+     * 
+     * @param player The player to get cooldowns for
+     * @return The player's cooldown map
      */
     fun getCooldowns(player: Player): MutableMap<String, Long> {
         return cooldowns.getOrPut(player.uniqueId.toString()) { mutableMapOf() }
@@ -24,6 +32,10 @@ object AbilityManager {
 
     /**
      * Checks if an ability is on cooldown for a player.
+     * 
+     * @param player The player to check
+     * @param ability The ability name to check
+     * @param cooldownMs The cooldown duration in milliseconds
      * @return true if the ability is on cooldown
      */
     fun isOnCooldown(player: Player, ability: String, cooldownMs: Long): Boolean {
@@ -33,6 +45,10 @@ object AbilityManager {
 
     /**
      * Executes an ability from an item.
+     * Handles charge consumption and cooldown management.
+     * 
+     * @param item The item containing the ability
+     * @param player The player using the ability
      * @return true if the ability was executed successfully
      */
     fun executeAbility(item: ItemStack, player: Player): Boolean {

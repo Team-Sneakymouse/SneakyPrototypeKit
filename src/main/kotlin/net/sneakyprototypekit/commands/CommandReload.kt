@@ -10,8 +10,7 @@ import org.bukkit.command.CommandSender
 class CommandReload : CommandBase("prototypekitreload") {
     init {
         description = "Reload the plugin configuration"
-        usage = "/prototypekitreload"
-        permission = "${SneakyPrototypeKit.IDENTIFIER}.command.reload"
+        usageMessage = "/prototypekitreload"
     }
 
     override fun execute(sender: CommandSender, commandLabel: String, args: Array<out String>): Boolean {

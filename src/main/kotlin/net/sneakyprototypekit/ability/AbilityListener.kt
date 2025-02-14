@@ -28,6 +28,9 @@ class AbilityListener : Listener {
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return
         if (type != "ITEM") return
 
+        // Only cancel if there's a left click ability
+        if (!container.has(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING)) return
+
         // Execute ability
         if (AbilityManager.executeAbility(item, event.player)) {
             event.isCancelled = true
@@ -46,6 +49,9 @@ class AbilityListener : Listener {
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return
         if (type != "ITEM") return
 
+        // Only cancel if there's a left click ability
+        if (!container.has(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING)) return
+
         // Execute ability and cancel damage
         if (AbilityManager.executeAbility(item, damager)) {
             event.isCancelled = true
@@ -62,6 +68,9 @@ class AbilityListener : Listener {
         // Check if this is a prototype consumable
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return
         if (type != "FOOD" && type != "DRINK") return
+
+        // Only cancel if there's a consume ability
+        if (!container.has(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING)) return
 
         // Get ability and config
         val ability = container.get(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING) ?: return

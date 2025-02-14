@@ -7,7 +7,6 @@ import net.sneakyprototypekit.creation.ui.IconSelectionUI
 import net.sneakyprototypekit.creation.ui.ChatInputListener
 import net.sneakyprototypekit.creation.ui.NameInputListener
 import net.sneakyprototypekit.creation.ui.LoreInputListener
-import net.sneakyprototypekit.creation.ui.CreationSessionListener
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -51,10 +50,9 @@ object ItemCreationManager {
         val session = creationSessions[player.uniqueId] ?: return
         session.state = CreationState.TYPE_SELECTION
         
-        TypeSelectionUI.open(player) { type ->
-            session.type = type
-            showAbilitySelection(player)
-        }
+        // Create a prototype kit for the session
+        val prototypeKit = ItemStack(Material.NETHER_STAR)
+        TypeSelectionUI.open(player, prototypeKit)
     }
 
     /**
@@ -64,7 +62,9 @@ object ItemCreationManager {
         val session = creationSessions[player.uniqueId] ?: return
         session.state = CreationState.ABILITY_SELECTION
         
-        AbilitySelectionUI.open(player, session.type!!, 0) { ability ->
+        // Create a prototype kit for the session
+        val prototypeKit = ItemStack(Material.NETHER_STAR)
+        AbilitySelectionUI.open(player, session.type!!, 0, prototypeKit) { ability ->
             session.ability = ability
             showIconSelection(player)
         }
@@ -83,9 +83,9 @@ object ItemCreationManager {
             activeChatListeners.remove(player.uniqueId)
         }
         
-        CreationSessionListener.addPendingUiSwitch(player.uniqueId)
         Bukkit.getScheduler().runTaskLater(SneakyPrototypeKit.getInstance(), Runnable {
-            IconSelectionUI.open(player, session.type!!, 0) { material, modelData ->
+            val prototypeKit = ItemStack(Material.NETHER_STAR)
+            IconSelectionUI.open(player, session.type!!, 0, prototypeKit) { material, modelData ->
                 session.material = material
                 session.modelData = modelData
                 startNameAndLoreInput(player)
@@ -189,9 +189,9 @@ object ItemCreationManager {
     }
 
     /**
-     * Creates the final item based on the session data.
+     * Creates a new item with the specified session data.
      */
-    private fun createItem(session: CreationSession): ItemStack {
+    fun createItem(session: CreationSession): ItemStack {
         val item = ItemStack(session.material ?: Material.STONE)
         val meta = item.itemMeta
         val plugin = SneakyPrototypeKit.getInstance()

@@ -2,15 +2,10 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
-import net.sneakyprototypekit.creation.ItemCreationManager
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
@@ -23,7 +18,8 @@ import net.kyori.adventure.text.Component
 class AbilitySelectionUI(
     val itemType: ItemType,
     val page: Int = 0,
-    val callback: (String) -> Unit
+    val callback: (String) -> Unit,
+    val prototypeKit: ItemStack
 ) : InventoryHolder {
     private val inventory: Inventory = Bukkit.createInventory(this, 54, TextUtility.convertToComponent("&6Select Ability"))
     private val abilities = mutableListOf<AbilityData>()
@@ -136,8 +132,8 @@ class AbilitySelectionUI(
     override fun getInventory(): Inventory = inventory
 
     companion object {
-        fun open(player: Player, itemType: ItemType, page: Int = 0, callback: (String) -> Unit) {
-            val ui = AbilitySelectionUI(itemType, page, callback)
+        fun open(player: Player, itemType: ItemType, page: Int = 0, prototypeKit: ItemStack, callback: (String) -> Unit) {
+            val ui = AbilitySelectionUI(itemType, page, callback, prototypeKit)
             player.openInventory(ui.inventory)
         }
     }
@@ -151,87 +147,4 @@ class AbilitySelectionUI(
         val modelData: Int,
         val stackSize: Int
     )
-}
-
-/**
- * Listener for the ability selection UI interactions.
- */
-class AbilitySelectionListener : Listener {
-
-    @EventHandler
-    fun onInventoryClick(event: InventoryClickEvent) {
-        val holder = event.inventory.holder as? AbilitySelectionUI ?: return
-        event.isCancelled = true
-
-        val clickedItem = event.currentItem ?: return
-        val player = event.whoClicked as? Player ?: return
-        val plugin = SneakyPrototypeKit.getInstance()
-
-        // Check for navigation buttons
-        clickedItem.itemMeta?.persistentDataContainer?.get(
-            plugin.NAVIGATION_KEY,
-            PersistentDataType.STRING
-        )?.let { action ->
-            when (action) {
-                "prev_page" -> {
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        AbilitySelectionUI.open(player, holder.itemType, holder.page - 1, holder.callback)
-                    }, 1L)
-                }
-                "next_page" -> {
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        AbilitySelectionUI.open(player, holder.itemType, holder.page + 1, holder.callback)
-                    }, 1L)
-                }
-                "back" -> {
-                    val session = ItemCreationManager.getSession(player)
-                    if (session != null) {
-                        session.state = ItemCreationManager.CreationState.TYPE_SELECTION
-                        session.ability = null
-                    }
-
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        TypeSelectionUI.open(player) { type ->
-                            AbilitySelectionUI.open(player, type, 0, holder.callback)
-                        }
-                    }, 1L)
-                }
-            }
-            return
-        }
-
-        // Handle ability selection
-        clickedItem.itemMeta?.persistentDataContainer?.get(
-            plugin.LEFT_CLICK_ABILITY_KEY,
-            PersistentDataType.STRING
-        )?.let { abilityKey ->
-            // First invoke the callback to store the ability
-            holder.callback.invoke(abilityKey)
-
-            // Mark as pending UI switch BEFORE closing inventory
-            CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-            
-            // Then open icon selection with a proper callback
-            Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                IconSelectionUI.open(player, holder.itemType, 0) { material, modelData ->
-                    // Get the current session and update it
-                    val session = ItemCreationManager.getSession(player)
-                    if (session != null) {
-                        session.material = material
-                        session.modelData = modelData
-                        ItemCreationManager.startNameAndLoreInput(player)
-                    }
-                }
-            }, 1L)
-        }
-    }
-
-    @EventHandler
-    fun onInventoryClose(event: InventoryCloseEvent) {
-        if (event.inventory.holder !is AbilitySelectionUI) return
-        // Additional cleanup if needed
-    }
 } 

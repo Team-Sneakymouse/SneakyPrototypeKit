@@ -2,15 +2,10 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
-import net.sneakyprototypekit.creation.ItemCreationManager
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
@@ -23,7 +18,8 @@ import org.bukkit.persistence.PersistentDataType
 class IconSelectionUI(
     val itemType: ItemType,
     val page: Int = 0,
-    val callback: ((Material, Int) -> Unit)
+    val callback: ((Material, Int) -> Unit),
+    val prototypeKit: ItemStack
 ) : InventoryHolder {
     private val inventory: Inventory = Bukkit.createInventory(this, 54, TextUtility.convertToComponent("&6Select Icon"))
     private val icons = mutableListOf<IconData>()
@@ -133,94 +129,13 @@ class IconSelectionUI(
             player: Player,
             itemType: ItemType,
             page: Int = 0,
+            prototypeKit: ItemStack,
             callback: (Material, Int) -> Unit
         ) {
-            val ui = IconSelectionUI(itemType, page, callback)
+            val ui = IconSelectionUI(itemType, page, callback, prototypeKit)
             player.openInventory(ui.inventory)
         }
     }
 
     data class IconData(val material: Material, val modelData: Int)
-}
-
-/**
- * Listener for the icon selection UI interactions.
- */
-class IconSelectionListener : Listener {
-
-    @EventHandler
-    fun onInventoryClick(event: InventoryClickEvent) {
-        val holder = event.inventory.holder as? IconSelectionUI ?: return
-        event.isCancelled = true
-
-        val clickedItem = event.currentItem ?: return
-        val player = event.whoClicked as? Player ?: return
-        val plugin = SneakyPrototypeKit.getInstance()
-
-        // Check for navigation buttons
-        clickedItem.itemMeta?.persistentDataContainer?.get(
-            plugin.NAVIGATION_KEY,
-            PersistentDataType.STRING
-        )?.let { action ->
-            when (action) {
-                "prev_page" -> {
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        IconSelectionUI.open(player, holder.itemType, holder.page - 1, holder.callback)
-                    }, 1L)
-                }
-                "next_page" -> {
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        IconSelectionUI.open(player, holder.itemType, holder.page + 1, holder.callback)
-                    }, 1L)
-                }
-                "back" -> {
-                    val session = ItemCreationManager.getSession(player)
-                    if (session != null) {
-                        session.state = ItemCreationManager.CreationState.ABILITY_SELECTION
-                        session.material = null
-                        session.modelData = null
-                    }
-
-                    CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-                    // Return to ability selection after 1 tick
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        AbilitySelectionUI.open(player, holder.itemType, 0) { ability ->
-                            // Get the current session and update it
-                            if (session != null) {
-                                session.ability = ability
-                                IconSelectionUI.open(player, holder.itemType, 0) { material, modelData ->
-                                    session.material = material
-                                    session.modelData = modelData
-                                    ItemCreationManager.startNameAndLoreInput(player)
-                                }
-                            }
-                        }
-                    }, 1L)
-                }
-            }
-            return
-        }
-
-        // Handle icon selection
-        clickedItem.itemMeta?.persistentDataContainer?.get(
-            plugin.ICON_DATA_KEY,
-            PersistentDataType.STRING
-        )?.let { data ->
-            val (materialName, modelData) = data.split(",")
-            val material = Material.valueOf(materialName)
-            // Call the callback with the selected material and model data
-            CreationSessionListener.addPendingUiSwitch(player.uniqueId)
-            holder.callback.invoke(material, modelData.toInt())
-            player.closeInventory()
-            // The callback will handle starting name input
-        }
-    }
-
-    @EventHandler
-    fun onInventoryClose(event: InventoryCloseEvent) {
-        if (event.inventory.holder !is IconSelectionUI) return
-        // Additional cleanup if needed
-    }
 } 

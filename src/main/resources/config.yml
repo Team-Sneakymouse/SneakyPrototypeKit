@@ -2,6 +2,17 @@
 prefix-left-click: "&e[Left Click] &7"  # Used for items
 prefix-right-click: "&e[Right Click] &7"  # Used for food and drinks
 
+## Default prototype kit configuration
+prototype-kit:
+    material: "NETHER_STAR"
+    model-data: 1
+    name: "&ePrototype Kit"
+    lore:
+        - "&7Use this kit to create a custom item"
+        - "&7Click to open the creation menu"
+        - ""
+        - "&eShift + Right Click &7to finalise"
+
 ## Available abilities that can be applied to items and food
 ## command-console is run on the console and replaces:
 ## [playerName] with the name of the user

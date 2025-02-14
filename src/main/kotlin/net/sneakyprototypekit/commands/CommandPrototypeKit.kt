@@ -3,18 +3,19 @@ package net.sneakyprototypekit.commands
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.creation.ItemCreationManager
+import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 /**
- * Command to start the item creation process.
- * Guides users through creating custom items or food with abilities.
+ * Command to give a prototype kit to a player.
+ * The prototype kit is used to create custom items or food with abilities.
  */
 class CommandPrototypeKit : CommandBase("prototypekit") {
     init {
-        description = "Create a new prototype item"
+        description = "Get a prototype kit to create custom items"
         usage = "/prototypekit [player]"
         permission = "${SneakyPrototypeKit.IDENTIFIER}.command.prototypekit"
     }
@@ -39,12 +40,13 @@ class CommandPrototypeKit : CommandBase("prototypekit") {
             return true
         }
 
-        // Start the item creation process
-        ItemCreationManager.startCreation(player)
+        // Give the prototype kit
+        val kit = PrototypeKit.createKit()
+        player.inventory.addItem(kit)
         
         // If run by another player/console, inform them
         if (sender != player) {
-            sender.sendMessage(TextUtility.convertToComponent("&aStarted item creation process for &e${player.name}"))
+            sender.sendMessage(TextUtility.convertToComponent("&aGave a Prototype Kit to &e${player.name}"))
         }
         
         return true

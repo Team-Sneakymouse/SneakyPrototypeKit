@@ -14,9 +14,14 @@ import org.bukkit.event.player.PlayerQuitEvent
 /**
  * Base class for chat input listeners.
  * Handles common functionality like unregistering and format code checking.
+ * Provides a framework for handling chat-based input during item creation.
  */
 abstract class ChatInputListener(protected val player: Player) : Listener {
     
+    /**
+     * Handles player quit events to clean up listeners.
+     * Automatically unregisters the listener when the player leaves.
+     */
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         if (event.player == player) {
@@ -24,13 +29,24 @@ abstract class ChatInputListener(protected val player: Player) : Listener {
         }
     }
 
+    /**
+     * Unregisters this listener from all events.
+     */
     protected fun unregister() {
         HandlerList.unregisterAll(this)
     }
 
     companion object {
+        /** Map of active chat input listeners per player */
         private val activeListeners = mutableMapOf<Player, Listener>()
 
+        /**
+         * Registers a new chat input listener for a player.
+         * Automatically unregisters any existing listener for the player.
+         * 
+         * @param player The player to register the listener for
+         * @param listener The listener to register
+         */
         fun register(player: Player, listener: Listener) {
             // Unregister any existing listener for this player
             unregister(player)
@@ -40,6 +56,11 @@ abstract class ChatInputListener(protected val player: Player) : Listener {
             Bukkit.getPluginManager().registerEvents(listener, SneakyPrototypeKit.getInstance())
         }
 
+        /**
+         * Unregisters any active chat input listener for a player.
+         * 
+         * @param player The player to unregister listeners for
+         */
         fun unregister(player: Player) {
             activeListeners[player]?.let {
                 HandlerList.unregisterAll(it)
@@ -51,12 +72,20 @@ abstract class ChatInputListener(protected val player: Player) : Listener {
 
 /**
  * Listener for item name input.
+ * Handles validation and processing of item names entered in chat.
+ * 
+ * @property player The player entering the name
+ * @property onNameEntered Callback function called when a valid name is entered
  */
 class NameInputListener(
     player: Player,
     private val onNameEntered: (String) -> Unit
 ) : ChatInputListener(player) {
 
+    /**
+     * Handles chat messages for name input.
+     * Validates the name length and format codes before accepting.
+     */
     @EventHandler
     fun onPlayerChat(event: AsyncChatEvent) {
         if (event.player != player) return
@@ -84,12 +113,20 @@ class NameInputListener(
 
 /**
  * Listener for item lore input.
+ * Handles validation and processing of item lore entered in chat.
+ * 
+ * @property player The player entering the lore
+ * @property onLoreEntered Callback function called when valid lore is entered
  */
 class LoreInputListener(
     player: Player,
     private val onLoreEntered: (String) -> Unit
 ) : ChatInputListener(player) {
 
+    /**
+     * Handles chat messages for lore input.
+     * Validates the lore length and format codes before accepting.
+     */
     @EventHandler
     fun onPlayerChat(event: AsyncChatEvent) {
         if (event.player != player) return

@@ -6,7 +6,8 @@ import net.sneakyprototypekit.ability.AbilityListener
 import net.sneakyprototypekit.creation.ui.TypeSelectionListener
 import net.sneakyprototypekit.creation.ui.AbilitySelectionListener
 import net.sneakyprototypekit.creation.ui.IconSelectionListener
-import net.sneakyprototypekit.creation.ui.CreationSessionListener
+import net.sneakyprototypekit.creation.ui.MainCreationListener
+import net.sneakyprototypekit.listeners.PrototypeKitListener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.NamespacedKey
 import org.bukkit.permissions.Permission
@@ -34,9 +35,10 @@ class SneakyPrototypeKit : JavaPlugin() {
         server.pluginManager.registerEvents(TypeSelectionListener(), this)
         server.pluginManager.registerEvents(AbilitySelectionListener(), this)
         server.pluginManager.registerEvents(IconSelectionListener(), this)
-        server.pluginManager.registerEvents(CreationSessionListener(), this)
+        server.pluginManager.registerEvents(PrototypeKitListener(), this)
+        server.pluginManager.registerEvents(MainCreationListener(), this)
 
-        // Register commands
+        // Register commands using Paper's command system
         server.commandMap.register(IDENTIFIER, CommandPrototypeKit())
         server.commandMap.register(IDENTIFIER, CommandReload())
 
@@ -60,4 +62,7 @@ class SneakyPrototypeKit : JavaPlugin() {
     val LEFT_CLICK_CHARGES_KEY = NamespacedKey(this, "left_click_charges")
     val NAVIGATION_KEY = NamespacedKey(this, "navigation")
     val ICON_DATA_KEY = NamespacedKey(this, "icon_data")
+    val PROTOTYPE_KIT_KEY = NamespacedKey(this, "prototype_kit")
+    val NAME_KEY = NamespacedKey(this, "name")
+    val LORE_KEY = NamespacedKey(this, "lore")
 }
