@@ -4,14 +4,13 @@ prefix-right-click: "&e[Right Click] &7"  # Used for food and drinks
 
 ## Default prototype kit configuration
 prototype-kit:
-    material: "NETHER_STAR"
-    model-data: 1
-    name: "&ePrototype Kit"
+    material: "rabbit_foot"
+    model-data: 129
+    name: "&cPrototype Kit"
     lore:
+        - "&7Value: &c2500 Dragon Coins"
         - "&7Use this kit to create a custom item"
-        - "&7Click to open the creation menu"
-        - ""
-        - "&eShift + Right Click &7to finalise"
+        - "&eL-Click: &7Begin crafting an item"
 
 ## Available abilities that can be applied to items and food
 ## command-console is run on the console and replaces:
