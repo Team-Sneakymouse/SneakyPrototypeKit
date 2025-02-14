@@ -230,7 +230,16 @@ object ItemCreationManager {
             if (loreList.isNotEmpty()) {
                 loreList.add(TextUtility.convertToComponent(""))
             }
-            loreList.addAll(TextUtility.wrapLore("&7$desc"))
+            
+            // Get the appropriate prefix based on item type
+            val prefix = when (session.type) {
+                ItemType.ITEM -> plugin.config.getString("prefix-left-click", "&e[Left Click] &7")
+                ItemType.FOOD, ItemType.DRINK -> plugin.config.getString("prefix-right-click", "&e[Right Click] &7")
+                else -> "&7"
+            }
+            
+            // Add description with prefix
+            loreList.addAll(TextUtility.wrapLore("$prefix$desc"))
         }
         
         // Add charges line and handle stack sizes based on type

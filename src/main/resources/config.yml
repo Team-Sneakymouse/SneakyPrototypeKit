@@ -1,3 +1,7 @@
+## Ability trigger prefixes
+prefix-left-click: "&e[Left Click] &7"  # Used for items
+prefix-right-click: "&e[Right Click] &7"  # Used for food and drinks
+
 ## Available abilities that can be applied to items and food
 ## command-console is run on the console and replaces:
 ## [playerName] with the name of the user
