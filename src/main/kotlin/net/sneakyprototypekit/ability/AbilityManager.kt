@@ -12,20 +12,30 @@ import org.bukkit.persistence.PersistentDataType
  * Manages the execution of abilities and handles charge management.
  */
 object AbilityManager {
-    private val cooldowns = mutableMapOf<String, Long>() // Player UUID -> Last use time
-    private const val COOLDOWN_MS = 500L // 500ms cooldown
+    private val cooldowns = mutableMapOf<String, MutableMap<String, Long>>() // Player UUID -> (Ability -> Last use time)
+    const val DEFAULT_COOLDOWN_MS = 500L // Default 500ms cooldown
     
+    /**
+     * Gets the cooldown map for a player.
+     */
+    fun getCooldowns(player: Player): MutableMap<String, Long> {
+        return cooldowns.getOrPut(player.uniqueId.toString()) { mutableMapOf() }
+    }
+
+    /**
+     * Checks if an ability is on cooldown for a player.
+     * @return true if the ability is on cooldown
+     */
+    fun isOnCooldown(player: Player, ability: String, cooldownMs: Long): Boolean {
+        val lastUse = getCooldowns(player)[ability] ?: return false
+        return System.currentTimeMillis() - lastUse < cooldownMs
+    }
+
     /**
      * Executes an ability from an item.
      * @return true if the ability was executed successfully
      */
     fun executeAbility(item: ItemStack, player: Player): Boolean {
-        // Check cooldown for items
-        val lastUse = cooldowns[player.uniqueId.toString()]
-        if (lastUse != null && System.currentTimeMillis() - lastUse < COOLDOWN_MS) {
-            return false // Still on cooldown
-        }
-
         val meta = item.itemMeta ?: return false
         val container = meta.persistentDataContainer
         val plugin = SneakyPrototypeKit.getInstance()
@@ -37,6 +47,15 @@ object AbilityManager {
         // Get ability configuration
         val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return false
         val command = abilityConfig.getString("command-console") ?: return false
+
+        // Check cooldown for items
+        val playerCooldowns = getCooldowns(player)
+        val lastUse = playerCooldowns[ability]
+        val cooldownMs = abilityConfig.getLong("cooldown", DEFAULT_COOLDOWN_MS)
+        
+        if (lastUse != null && System.currentTimeMillis() - lastUse < cooldownMs) {
+            return false // Still on cooldown
+        }
 
         // For items, check stacking and charges
         if (type == "ITEM") {
@@ -77,10 +96,10 @@ object AbilityManager {
                 meta.lore(lore)
                 item.itemMeta = meta
             }
-
-            // Set cooldown
-            cooldowns[player.uniqueId.toString()] = System.currentTimeMillis()
         }
+
+        // Set cooldown for this ability
+        playerCooldowns[ability] = System.currentTimeMillis()
 
         // Execute the command
         val finalCommand = command.replace("[playerName]", player.name)

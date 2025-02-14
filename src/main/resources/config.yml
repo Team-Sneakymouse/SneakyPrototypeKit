@@ -14,6 +14,7 @@ abilities:
         command-console: "effect give [playerName] instant_health 1 1"
         charges: 10
         stack-size: 5
+        cooldown: 5000  # 5 second cooldown
         allowed-types: ["FOOD", "DRINK"]  # Both food and drinks can heal
     lightning:
         name: "Lightning Strike"
@@ -23,6 +24,7 @@ abilities:
         command-console: "cmi lightning [playerName]"
         charges: 5
         stack-size: 3
+        cooldown: 2000  # 2 second cooldown
         allowed-types: ["ITEM"]  # Only items can strike lightning
     speed_boost:
         name: "Speed Boost"
@@ -32,6 +34,7 @@ abilities:
         command-console: "effect give [playerName] speed 30 2"
         charges: 25
         stack-size: 2
+        cooldown: 500  # Default 500ms cooldown
         allowed-types: ["ITEM", "FOOD", "DRINK"]  # All types can give speed
 
 ## Available icons for items

@@ -63,6 +63,17 @@ class AbilityListener : Listener {
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return
         if (type != "FOOD" && type != "DRINK") return
 
+        // Get ability and config
+        val ability = container.get(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING) ?: return
+        val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return
+        val cooldownMs = abilityConfig.getLong("cooldown", AbilityManager.DEFAULT_COOLDOWN_MS)
+
+        // Check cooldown
+        if (AbilityManager.isOnCooldown(event.player, ability, cooldownMs)) {
+            event.isCancelled = true
+            return
+        }
+
         // Execute ability
         AbilityManager.executeAbility(item, event.player)
     }
