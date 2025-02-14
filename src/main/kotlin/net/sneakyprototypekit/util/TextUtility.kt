@@ -91,8 +91,8 @@ object TextUtility {
     }
 
     /**
-     * Splits text into lines of a maximum length while trying to maintain even line lengths.
-     * Attempts to split at word boundaries when possible.
+     * Splits text into lines, aiming to distribute words as evenly as possible
+     * while using the minimum number of lines needed.
      * 
      * @param text The text to split
      * @param maxLineLength The maximum length for each line
@@ -103,36 +103,49 @@ object TextUtility {
         if (words.isEmpty()) return listOf(text)
         
         // Calculate total length and minimum lines needed
-        val totalLength = words.sumOf { it.length } + (words.size - 1) // Add spaces between words
-        val minLinesNeeded = (totalLength + maxLineLength - 1) / maxLineLength
+        val totalLength = words.sumOf { it.length }
+        val spacesNeeded = words.size - 1 // Spaces between words
+        val totalLengthWithSpaces = totalLength + spacesNeeded
         
-        // Target length per line (slightly less than max to allow flexibility)
-        val targetLength = totalLength / minLinesNeeded
+        // Calculate minimum lines needed based on total length
+        val minLines = (totalLengthWithSpaces + maxLineLength - 1) / maxLineLength
+        
+        // Target length for each line (including spaces)
+        val targetLength = totalLengthWithSpaces / minLines
         
         val lines = mutableListOf<String>()
         var currentLine = StringBuilder()
+        var currentLineWordCount = 0
         var currentLineLength = 0
         
         for (word in words) {
             val wordLength = word.length
-            val spaceNeeded = if (currentLineLength > 0) 1 else 0
+            val spaceNeeded = if (currentLineWordCount > 0) 1 else 0
+            val wouldExceedTarget = currentLineLength + spaceNeeded + wordLength > targetLength
             
-            if (currentLineLength + spaceNeeded + wordLength <= targetLength ||  // Within target length
-                (lines.size == minLinesNeeded - 1 && currentLine.isNotEmpty())) { // Last line, keep adding
-                if (currentLine.isNotEmpty()) {
-                    currentLine.append(" ")
-                    currentLineLength++
-                }
-                currentLine.append(word)
-                currentLineLength += wordLength
-            } else {
-                // Start new line
+            // Start a new line if:
+            // 1. Adding this word would exceed target length AND we have at least one word already
+            // 2. OR if adding this word would exceed max length
+            // 3. UNLESS this is the last possible line (then we keep going until max length)
+            if ((wouldExceedTarget && currentLineWordCount > 0 && lines.size < minLines - 1) ||
+                (currentLineLength + spaceNeeded + wordLength > maxLineLength)) {
+                
                 if (currentLine.isNotEmpty()) {
                     lines.add(currentLine.toString())
+                    currentLine = StringBuilder()
+                    currentLineWordCount = 0
+                    currentLineLength = 0
                 }
-                currentLine = StringBuilder(word)
-                currentLineLength = wordLength
             }
+            
+            if (currentLineWordCount > 0) {
+                currentLine.append(" ")
+                currentLineLength++
+            }
+            
+            currentLine.append(word)
+            currentLineLength += wordLength
+            currentLineWordCount++
         }
         
         // Add the last line if not empty
