@@ -71,6 +71,12 @@ class NameInputListener(
             return
         }
 
+        // Check length limit
+        if (name.length > 30) {
+            player.sendMessage(TextUtility.convertToComponent("&cName cannot be longer than 30 characters! Please try again."))
+            return
+        }
+
         onNameEntered(name)
         unregister()
     }
@@ -98,9 +104,13 @@ class LoreInputListener(
             return
         }
 
-        onLoreEntered(lore)
-        if (lore.equals("done", ignoreCase = true)) {
-            unregister()
+        // Check length limit
+        if (lore.length > 100) {
+            player.sendMessage(TextUtility.convertToComponent("&cLore cannot be longer than 100 characters! Please try again."))
+            return
         }
+
+        onLoreEntered(lore)
+        unregister()
     }
 } 

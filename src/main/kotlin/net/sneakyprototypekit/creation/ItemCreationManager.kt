@@ -107,20 +107,16 @@ object ItemCreationManager {
             
             // After name is entered, start lore input
             val loreListener = LoreInputListener(player) { lore ->
-                if (lore.equals("done", ignoreCase = true)) {
-                    completeItemCreation(player)
-                } else {
-                    session.lore = session.lore + listOf(lore)
-                    player.sendMessage(TextUtility.convertToComponent("&aLore line added! Enter another line or type 'done' to finish."))
-                }
+                session.lore = listOf(lore)
+                completeItemCreation(player)
             }
             
             ChatInputListener.register(player, loreListener)
-            player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (or type 'done' to finish):"))
+            player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (max 100 characters):"))
         }
 
         ChatInputListener.register(player, nameListener)
-        player.sendMessage(TextUtility.convertToComponent("&eEnter a name for your item:"))
+        player.sendMessage(TextUtility.convertToComponent("&eEnter a name for your item (max 30 characters):"))
     }
 
     /**
@@ -156,15 +152,11 @@ object ItemCreationManager {
                 CreationState.LORE_INPUT -> {
                     // Resume lore input with a new listener
                     val loreListener = LoreInputListener(player) { lore ->
-                        if (lore.equals("done", ignoreCase = true)) {
-                            completeItemCreation(player)
-                        } else {
-                            session.lore = session.lore + listOf(lore)
-                            player.sendMessage(TextUtility.convertToComponent("&aLore line added! Enter another line or type 'done' to finish."))
-                        }
+                        session.lore = listOf(lore)
+                        completeItemCreation(player)
                     }
                     ChatInputListener.register(player, loreListener)
-                    player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (or type 'done' to finish):"))
+                    player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (max 100 characters):"))
                 }
                 CreationState.COMPLETE -> {} // Should not happen, but handle gracefully
             }
