@@ -41,8 +41,12 @@ object AbilityManager {
         val plugin = SneakyPrototypeKit.getInstance()
 
         // Get ability and type
-        val ability = container.get(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING) ?: return false
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return false
+        val ability = when (type) {
+            "ITEM" -> container.get(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING)
+            "FOOD", "DRINK" -> container.get(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING)
+            else -> container.get(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING)
+        } ?: return false
 
         // Get ability configuration
         val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return false
@@ -65,7 +69,7 @@ object AbilityManager {
                 return false
             }
 
-            val charges = container.get(plugin.CHARGES_KEY, PersistentDataType.INTEGER) ?: return false
+            val charges = container.get(plugin.LEFT_CLICK_CHARGES_KEY, PersistentDataType.INTEGER) ?: return false
             if (charges <= 0) {
                 player.sendMessage(TextUtility.convertToComponent("&4This item has no charges remaining!"))
                 return false
@@ -79,7 +83,7 @@ object AbilityManager {
                 item.amount = 0
             } else {
                 // Update charges in PDC and lore
-                container.set(plugin.CHARGES_KEY, PersistentDataType.INTEGER, remainingCharges)
+                container.set(plugin.LEFT_CLICK_CHARGES_KEY, PersistentDataType.INTEGER, remainingCharges)
                 
                 // Update lore
                 val lore = meta.lore() ?: mutableListOf()

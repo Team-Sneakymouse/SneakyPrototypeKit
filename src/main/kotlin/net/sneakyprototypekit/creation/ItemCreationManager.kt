@@ -253,11 +253,11 @@ object ItemCreationManager {
                 // Set stack size and store charges
                 meta.setMaxStackSize(stackSize)
                 item.amount = stackSize
-                container.set(plugin.CHARGES_KEY, PersistentDataType.INTEGER, charges)
+                container.set(plugin.LEFT_CLICK_CHARGES_KEY, PersistentDataType.INTEGER, charges)
             }
             ItemType.FOOD, ItemType.DRINK -> {
                 // For consumables, multiply stack size by charges
-                val totalAmount = stackSize * charges
+                val totalAmount = (stackSize * charges).coerceAtMost(99)
                 meta.setMaxStackSize(totalAmount)
                 item.amount = totalAmount
             }
@@ -268,7 +268,13 @@ object ItemCreationManager {
 
         // Store data
         container.set(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING, session.type?.name ?: "ITEM")
-        session.ability?.let { container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it) }
+        session.ability?.let { 
+            when (session.type) {
+                ItemType.ITEM -> container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it)
+                ItemType.FOOD, ItemType.DRINK -> container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, it)
+                else -> container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it)
+            }
+        }
 
         item.itemMeta = meta
         return item

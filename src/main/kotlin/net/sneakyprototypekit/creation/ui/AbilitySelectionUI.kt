@@ -113,7 +113,7 @@ class AbilitySelectionUI(
                         lore.add(TextUtility.convertToComponent("&eStack size: &f${ability.stackSize}"))
                     }
                     ItemType.FOOD, ItemType.DRINK -> {
-                        val totalAmount = ability.stackSize * ability.charges
+                        val totalAmount = (ability.stackSize * ability.charges).coerceAtMost(99)
                         lore.add(TextUtility.convertToComponent("&eTotal amount: &f$totalAmount"))
                     }
                 }

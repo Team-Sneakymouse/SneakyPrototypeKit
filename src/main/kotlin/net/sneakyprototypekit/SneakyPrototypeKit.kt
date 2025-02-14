@@ -56,7 +56,8 @@ class SneakyPrototypeKit : JavaPlugin() {
     // Keys for persistent data
     val ITEM_TYPE_KEY = NamespacedKey(this, "item_type")
     val LEFT_CLICK_ABILITY_KEY = NamespacedKey(this, "left_click_ability")
-    val CHARGES_KEY = NamespacedKey(this, "charges")
+    val CONSUME_ABILITY_KEY = NamespacedKey(this, "consume_ability")
+    val LEFT_CLICK_CHARGES_KEY = NamespacedKey(this, "left_click_charges")
     val NAVIGATION_KEY = NamespacedKey(this, "navigation")
     val ICON_DATA_KEY = NamespacedKey(this, "icon_data")
 }

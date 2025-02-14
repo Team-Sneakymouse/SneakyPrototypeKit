@@ -29,11 +29,9 @@ class CreationSessionListener : Listener {
         private var instance: CreationSessionListener? = null
         
         fun addPendingUiSwitch(playerId: UUID) {
-            Bukkit.getServer().logger.info("§7[Debug] Adding pending UI switch for player $playerId")
             instance?.pendingUiSwitches?.add(playerId.toString())
             Bukkit.getScheduler().runTaskLater(SneakyPrototypeKit.getInstance(), Runnable {
                 instance?.pendingUiSwitches?.remove(playerId.toString())
-                Bukkit.getServer().logger.info("§7[Debug] Removed pending UI switch for player $playerId")
             }, 5L)
         }
     }
@@ -83,17 +81,14 @@ class CreationSessionListener : Listener {
             }
 
             pendingUiSwitches.forEach {
-                Bukkit.getServer().logger.info("§7[Debug] Pending UI switch: $it")
             }
 
             // Check navigation flag or pending UI switch
             if (pendingUiSwitches.any { it.equals(player.uniqueId.toString()) }) {
-                Bukkit.getServer().logger.info("§7[Debug] Navigation in progress for player ${player.uniqueId} - not reopening")
                 return
             }
             
             // Reopen after 1 tick
-            Bukkit.getServer().logger.info("§7[Debug] No navigation flag for player ${player.uniqueId} - reopening")
             Bukkit.getScheduler().runTaskLater(SneakyPrototypeKit.getInstance(), Runnable {
                 ItemCreationManager.restoreSession(player)
             }, 1L)
