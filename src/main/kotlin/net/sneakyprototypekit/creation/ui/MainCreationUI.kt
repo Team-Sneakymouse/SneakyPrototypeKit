@@ -9,6 +9,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.NamespacedKey
 import net.kyori.adventure.text.Component
 
 /**
@@ -25,6 +26,11 @@ object MainCreationUI {
      * @param prototypeKit The prototype kit being used
      */
     fun open(player: Player, prototypeKit: ItemStack) {
+        // Remove MagicItem PDC
+        prototypeKit.itemMeta = prototypeKit.itemMeta?.apply {
+            persistentDataContainer.remove(NamespacedKey("magicspells", "magicitem"))
+        }
+
         val inventory = Bukkit.createInventory(
             CustomInventoryHolder().apply { 
                 setData("prototype_kit", prototypeKit)

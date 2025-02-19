@@ -26,20 +26,7 @@ class PrototypeKitListener : Listener {
         event.isCancelled = true
         
         when (event.action) {
-            Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> {
-                if (event.player.isSneaking) {
-                    // Finalize the kit
-                    val finalItem = PrototypeKit.finaliseKit(item)
-                    if (finalItem != null) {
-                        item.amount = item.amount - 1
-                        event.player.inventory.addItem(finalItem)
-                    }
-                } else {
-                    // Open main creation menu
-                    MainCreationUI.open(event.player, item)
-                }
-            }
-            Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK -> {
+            Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK, Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK -> {
                 // Open main creation menu
                 MainCreationUI.open(event.player, item)
             }
