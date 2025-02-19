@@ -19,10 +19,23 @@ class TypeSelectionListener : Listener {
         val title = event.view.title()
         if (title != TextUtility.convertToComponent(TypeSelectionUI.TITLE)) return
         
+        // Only handle clicks in our UI
+        if (event.clickedInventory != event.view.topInventory) {
+            event.isCancelled = true
+            return
+        }
+        
         event.isCancelled = true
         
         val clickedItem = event.currentItem ?: return
         val meta = clickedItem.itemMeta ?: return
+        
+        // Verify this is one of our type buttons
+        if (!meta.persistentDataContainer.has(
+            SneakyPrototypeKit.getInstance().ITEM_TYPE_KEY,
+            PersistentDataType.STRING
+        )) return
+        
         val player = event.whoClicked as? Player ?: return
         
         // Get prototype kit

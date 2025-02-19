@@ -19,14 +19,33 @@ class IconSelectionListener : Listener {
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
         val holder = event.inventory.holder as? IconSelectionUI ?: return
+        
+        // Only handle clicks in our UI
+        if (event.clickedInventory != event.view.topInventory) {
+            event.isCancelled = true
+            return
+        }
+        
         event.isCancelled = true
 
         val clickedItem = event.currentItem ?: return
+        val meta = clickedItem.itemMeta ?: return
         val player = event.whoClicked as? Player ?: return
         val plugin = SneakyPrototypeKit.getInstance()
+        
+        // Ignore clicks on the GUI icon (jigsaw block)
+        if (clickedItem.type == Material.JIGSAW && meta.hasCustomModelData() && meta.customModelData == 3000) {
+            return
+        }
+        
+        // Only handle clicks on our navigation buttons or icon buttons
+        if (!meta.persistentDataContainer.has(plugin.NAVIGATION_KEY, PersistentDataType.STRING) &&
+            !meta.persistentDataContainer.has(plugin.ICON_DATA_KEY, PersistentDataType.STRING)) {
+            return
+        }
 
         // Check for navigation buttons
-        clickedItem.itemMeta?.persistentDataContainer?.get(
+        meta.persistentDataContainer.get(
             plugin.NAVIGATION_KEY,
             PersistentDataType.STRING
         )?.let { action ->
@@ -41,12 +60,17 @@ class IconSelectionListener : Listener {
                         IconSelectionUI.open(player, holder.itemType, holder.page + 1, holder.prototypeKit, holder.callback)
                     }, 1L)
                 }
+                "back" -> {
+                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+                        MainCreationUI.open(player, holder.prototypeKit)
+                    }, 1L)
+                }
             }
             return
         }
 
         // Handle icon selection
-        clickedItem.itemMeta?.persistentDataContainer?.get(
+        meta.persistentDataContainer.get(
             plugin.ICON_DATA_KEY,
             PersistentDataType.STRING
         )?.let { data ->
