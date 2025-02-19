@@ -38,6 +38,14 @@ object TypeSelectionUI {
         inventory.setItem(11, createTypeButton(Material.DIAMOND_SWORD, "Item", ItemType.ITEM))
         inventory.setItem(13, createTypeButton(Material.COOKED_BEEF, "Food", ItemType.FOOD))
         inventory.setItem(15, createTypeButton(Material.POTION, "Drink", ItemType.DRINK))
+
+        // Add GUI elements
+        inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
+            itemMeta = itemMeta?.also { meta ->
+                meta.setHideTooltip(true)
+                meta.setCustomModelData(3000)
+            }
+        })
         
         // Store prototype kit reference
         holder.setData("prototype_kit", prototypeKit)

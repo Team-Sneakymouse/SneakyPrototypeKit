@@ -27,9 +27,9 @@ object MainCreationUI {
      */
     fun open(player: Player, prototypeKit: ItemStack) {
         // Remove MagicItem PDC
-        prototypeKit.itemMeta = prototypeKit.itemMeta?.apply {
-            persistentDataContainer.remove(NamespacedKey("magicspells", "magicitem"))
-        }
+        prototypeKit.apply { itemMeta = itemMeta?.also { meta ->
+            meta.persistentDataContainer.remove(NamespacedKey("magicspells", "magicitem"))
+        } }
 
         val inventory = Bukkit.createInventory(
             CustomInventoryHolder().apply { 
@@ -42,19 +42,27 @@ object MainCreationUI {
         // Add preview item
         val previewItem = createPreviewItem(prototypeKit)
         if (previewItem != null) {
-            inventory.setItem(13, previewItem)
+            inventory.setItem(17, previewItem)
         } else {
             // Show empty preview with instructions
-            inventory.setItem(13, createEmptyPreview())
+            inventory.setItem(17, createEmptyPreview())
         }
         
         // Add buttons
         inventory.setItem(11, createButton(Material.COMPASS, "Type", "Select the item's type", "type"))
         inventory.setItem(12, createButton(Material.BLAZE_POWDER, "Ability", "Select the item's ability", "ability"))
-        inventory.setItem(14, createButton(Material.PAINTING, "Icon", "Select the item's appearance", "icon"))
-        inventory.setItem(15, createButton(Material.NAME_TAG, "Name", "Set the item's name", "name"))
-        inventory.setItem(16, createButton(Material.BOOK, "Lore", "Set the item's description", "lore"))
+        inventory.setItem(13, createButton(Material.PAINTING, "Icon", "Select the item's appearance", "icon"))
+        inventory.setItem(14, createButton(Material.NAME_TAG, "Name", "Set the item's name", "name"))
+        inventory.setItem(15, createButton(Material.BOOK, "Lore", "Set the item's description", "lore"))
         
+        // Add GUI elements
+        inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
+            itemMeta = itemMeta?.also { meta ->
+                meta.setHideTooltip(true)
+                meta.setCustomModelData(3000)
+            }
+        })
+
         player.openInventory(inventory)
     }
     

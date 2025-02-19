@@ -92,6 +92,14 @@ class IconSelectionUI(
         if (hasNextPage) {
             inventory.setItem(53, createNavigationButton("next_page", "&eNext Page"))
         }
+
+        // GUI elements
+        inventory.setItem(52, ItemStack(Material.JIGSAW).apply {
+            itemMeta = itemMeta?.also { meta ->
+                meta.setHideTooltip(true)
+                meta.setCustomModelData(3000)
+            }
+        })
     }
 
     private fun createNavigationButton(id: String, name: String): ItemStack {
