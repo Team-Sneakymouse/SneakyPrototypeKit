@@ -39,11 +39,6 @@ class AbilitySelectionListener : Listener {
                         AbilitySelectionUI.open(player, holder.itemType, holder.page + 1, holder.prototypeKit, holder.callback)
                     }, 1L)
                 }
-                "back" -> {
-                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
-                        MainCreationUI.open(player, holder.prototypeKit)
-                    }, 1L)
-                }
             }
             return
         }

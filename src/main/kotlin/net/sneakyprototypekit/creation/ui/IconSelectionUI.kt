@@ -92,9 +92,6 @@ class IconSelectionUI(
         if (hasNextPage) {
             inventory.setItem(53, createNavigationButton("next_page", "&eNext Page"))
         }
-
-        // Back button (middle)
-        inventory.setItem(49, createNavigationButton("back", "&cBack"))
     }
 
     private fun createNavigationButton(id: String, name: String): ItemStack {
