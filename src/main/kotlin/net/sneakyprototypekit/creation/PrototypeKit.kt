@@ -126,10 +126,6 @@ object PrototypeKit {
                 
                 // Add ability description
                 abilityConfig.getString("description")?.let { desc ->
-                    if (loreList.isNotEmpty()) {
-                        loreList.add(TextUtility.convertToComponent(""))
-                    }
-                    
                     // Get the appropriate prefix based on type
                     val prefix = when (type) {
                         ItemType.ITEM -> plugin.config.getString("prefix-left-click", "&e[Left Click] &7")
@@ -143,9 +139,6 @@ object PrototypeKit {
                 // Add charges line and handle stack sizes based on type
                 when (type) {
                     ItemType.ITEM -> {
-                        if (loreList.isNotEmpty()) {
-                            loreList.add(TextUtility.convertToComponent(""))
-                        }
                         loreList.add(TextUtility.convertToComponent("&eCharges: &f$charges"))
                         
                         // Set stack size and store charges
@@ -189,9 +182,7 @@ object PrototypeKit {
         
         // Add additional lore line if provided
         if (additionalLoreLine != null) {
-            if (loreList.isNotEmpty()) {
-                loreList.add(TextUtility.convertToComponent(""))
-            }
+            loreList.add(TextUtility.convertToComponent(""))
             loreList.add(TextUtility.convertToComponent(additionalLoreLine))
         }
         
@@ -230,11 +221,7 @@ object PrototypeKit {
         session.ability?.let { ability ->
             val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return@let
             
-            abilityConfig.getString("description")?.let { desc ->
-                if (loreList.isNotEmpty()) {
-                    loreList.add(TextUtility.convertToComponent(""))
-                }
-                
+            abilityConfig.getString("description")?.let { desc ->                
                 // Get the appropriate prefix based on type
                 val prefix = when (session.type) {
                     ItemType.ITEM -> plugin.config.getString("prefix-left-click", "&e[Left Click] &7")

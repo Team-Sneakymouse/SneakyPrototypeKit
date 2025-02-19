@@ -105,6 +105,7 @@ class AbilitySelectionUI(
                 
                 // Add description with text wrapping
                 TextUtility.wrapLore("&7${ability.description}").forEach { lore.add(it) }
+
                 lore.add(TextUtility.convertToComponent(""))
 
                 // Show stack size info based on item type
