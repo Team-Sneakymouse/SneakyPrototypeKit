@@ -34,7 +34,7 @@ class IconSelectionListener : Listener {
         val plugin = SneakyPrototypeKit.getInstance()
         
         // Ignore clicks on the GUI icon (jigsaw block)
-        if (clickedItem.type == Material.JIGSAW && meta.hasCustomModelData() && meta.customModelData == 3000) {
+        if (clickedItem.type == Material.JIGSAW && meta.hasCustomModelData() && meta.customModelData == 3050) {
             return
         }
         

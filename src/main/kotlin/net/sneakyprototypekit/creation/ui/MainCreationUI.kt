@@ -59,7 +59,7 @@ object MainCreationUI {
         inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
                 meta.setHideTooltip(true)
-                meta.setCustomModelData(3000)
+                meta.setCustomModelData(3047)
             }
         })
 
