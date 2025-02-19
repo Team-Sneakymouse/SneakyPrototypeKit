@@ -19,15 +19,99 @@ class MainCreationListener : Listener {
         val title = event.view.title()
         if (title != TextUtility.convertToComponent(MainCreationUI.TITLE)) return
         
+        // Get prototype kit
+        val prototypeKit = holder.getData("prototype_kit") as? ItemStack ?: return
+        val kitMeta = prototypeKit.itemMeta ?: return
+        
+        // Handle item drag into the UI
+        if (event.action.name.contains("PLACE")) {
+            val draggedItem = event.cursor ?: return
+            val draggedMeta = draggedItem.itemMeta ?: return
+            val plugin = SneakyPrototypeKit.getInstance()
+            
+            // Check if this is an item created by our plugin (has type and ability)
+            val typeStr = draggedMeta.persistentDataContainer.get(
+                plugin.ITEM_TYPE_KEY,
+                PersistentDataType.STRING
+            ) ?: return
+            
+            val hasAbility = draggedMeta.persistentDataContainer.has(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING) ||
+                            draggedMeta.persistentDataContainer.has(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING)
+            
+            if (!hasAbility) return
+            
+            // Cancel the drag
+            event.isCancelled = true
+            
+            if (event.clickedInventory == event.view.topInventory) {
+                // Copy settings from dragged item to prototype kit
+                val container = kitMeta.persistentDataContainer
+                
+                // Clear existing data
+                container.remove(plugin.LEFT_CLICK_ABILITY_KEY)
+                container.remove(plugin.CONSUME_ABILITY_KEY)
+                container.remove(plugin.ICON_DATA_KEY)
+                container.remove(plugin.NAME_KEY)
+                container.remove(plugin.LORE_KEY)
+                
+                // Copy type
+                container.set(
+                    plugin.ITEM_TYPE_KEY,
+                    PersistentDataType.STRING,
+                    typeStr
+                )
+                
+                // Copy abilities
+                draggedMeta.persistentDataContainer.get(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING)?.let {
+                    container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it)
+                }
+                draggedMeta.persistentDataContainer.get(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING)?.let {
+                    container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, it)
+                }
+                
+                // Copy name
+                draggedMeta.persistentDataContainer.get(plugin.NAME_KEY, PersistentDataType.STRING)?.let {
+                    container.set(plugin.NAME_KEY, PersistentDataType.STRING, it)
+                }
+                
+                // Copy lore
+                draggedMeta.persistentDataContainer.get(plugin.LORE_KEY, PersistentDataType.STRING)?.let {
+                    container.set(plugin.LORE_KEY, PersistentDataType.STRING, it)
+                }
+                
+                // Copy icon data
+                draggedMeta.persistentDataContainer.get(plugin.ICON_DATA_KEY, PersistentDataType.STRING)?.let {
+                    container.set(plugin.ICON_DATA_KEY, PersistentDataType.STRING, it)
+                }
+                
+                // Update prototype kit
+                prototypeKit.itemMeta = kitMeta
+            }
+                
+            // Reopen UI after 1 tick to update preview
+            Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+                MainCreationUI.open(event.whoClicked as Player, prototypeKit)
+            }, 1L)
+
+            return
+        }
+
+        // Allow picking up items that have a type
+        if (event.clickedInventory != event.view.topInventory && event.currentItem != null) {
+            val clickedMeta = event.currentItem?.itemMeta ?: return
+            val plugin = SneakyPrototypeKit.getInstance()
+            
+            // If the item has a type, allow the interaction
+            if (clickedMeta.persistentDataContainer.has(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING)) {
+                return
+            }
+        }
+        
         event.isCancelled = true
         
         val clickedItem = event.currentItem ?: return
         val meta = clickedItem.itemMeta ?: return
         val player = event.whoClicked as? Player ?: return
-        
-        // Get prototype kit
-        val prototypeKit = holder.getData("prototype_kit") as? ItemStack ?: return
-        val kitMeta = prototypeKit.itemMeta ?: return
         
         // Get action
         val action = meta.persistentDataContainer.get(

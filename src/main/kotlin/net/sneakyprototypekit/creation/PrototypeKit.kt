@@ -74,8 +74,12 @@ object PrototypeKit {
         // Create item
         val item = ItemStack(Material.STONE)
         val itemMeta = item.itemMeta ?: return null
+        val container = itemMeta.persistentDataContainer
         
-        // Set icon
+        // Copy type
+        container.set(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING, typeStr)
+        
+        // Set and store icon data
         val iconData = meta.persistentDataContainer.get(
             plugin.ICON_DATA_KEY,
             PersistentDataType.STRING
@@ -84,18 +88,20 @@ object PrototypeKit {
             val (material, modelData) = iconData.split(",")
             item.type = Material.valueOf(material)
             itemMeta.setCustomModelData(modelData.toInt())
+            container.set(plugin.ICON_DATA_KEY, PersistentDataType.STRING, iconData)
         }
         
-        // Set name
+        // Set and store name
         val name = meta.persistentDataContainer.get(
             plugin.NAME_KEY,
             PersistentDataType.STRING
         )
         if (name != null) {
             itemMeta.displayName(TextUtility.convertToComponent("&c$name"))
+            container.set(plugin.NAME_KEY, PersistentDataType.STRING, name)
         }
         
-        // Set lore
+        // Set and store lore
         val lore = meta.persistentDataContainer.get(
             plugin.LORE_KEY,
             PersistentDataType.STRING
@@ -104,6 +110,7 @@ object PrototypeKit {
         
         if (lore != null) {
             loreList.addAll(TextUtility.wrapLore(lore))
+            container.set(plugin.LORE_KEY, PersistentDataType.STRING, lore)
         }
         
         // Get ability configuration
@@ -144,45 +151,26 @@ object PrototypeKit {
                         // Set stack size and store charges
                         itemMeta.setMaxStackSize(stackSize)
                         item.amount = stackSize
-                        itemMeta.persistentDataContainer.set(
-                            plugin.LEFT_CLICK_CHARGES_KEY,
-                            PersistentDataType.INTEGER,
-                            charges
-                        )
+                        container.set(plugin.LEFT_CLICK_CHARGES_KEY, PersistentDataType.INTEGER, charges)
+                        container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, abilityKey)
                     }
                     ItemType.FOOD, ItemType.DRINK -> {
                         // For consumables, multiply stack size by charges
                         val totalAmount = (stackSize * charges).coerceAtMost(99)
                         itemMeta.setMaxStackSize(totalAmount)
                         item.amount = totalAmount
+                        container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, abilityKey)
                     }
                     else -> item.amount = 1
-                }
-                
-                // Store type and ability
-                itemMeta.persistentDataContainer.set(
-                    plugin.ITEM_TYPE_KEY,
-                    PersistentDataType.STRING,
-                    type.name
-                )
-                when (type) {
-                    ItemType.ITEM -> itemMeta.persistentDataContainer.set(
-                        plugin.LEFT_CLICK_ABILITY_KEY,
-                        PersistentDataType.STRING,
-                        abilityKey
-                    )
-                    else -> itemMeta.persistentDataContainer.set(
-                        plugin.CONSUME_ABILITY_KEY,
-                        PersistentDataType.STRING,
-                        abilityKey
-                    )
                 }
             }
         }
         
         // Add additional lore line if provided
         if (additionalLoreLine != null) {
-            loreList.add(TextUtility.convertToComponent(""))
+            if (loreList.isNotEmpty()) {
+                loreList.add(TextUtility.convertToComponent(""))
+            }
             loreList.add(TextUtility.convertToComponent(additionalLoreLine))
         }
         
