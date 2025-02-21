@@ -61,7 +61,7 @@ abstract class ChatInputListener(protected val player: Player) : Listener {
          * 
          * @param player The player to unregister listeners for
          */
-        fun unregister(player: Player) {
+        private fun unregister(player: Player) {
             activeListeners[player]?.let {
                 HandlerList.unregisterAll(it)
                 activeListeners.remove(player)

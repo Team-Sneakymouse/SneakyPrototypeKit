@@ -1,11 +1,9 @@
 package net.sneakyprototypekit.creation
 
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
@@ -161,7 +159,6 @@ object PrototypeKit {
                         item.amount = totalAmount
                         container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, abilityKey)
                     }
-                    else -> item.amount = 1
                 }
             }
         }
@@ -177,75 +174,6 @@ object PrototypeKit {
         itemMeta.lore(loreList)
         item.itemMeta = itemMeta
         return item
-    }
-    
-    /**
-     * Updates a prototype kit item with the current session data.
-     */
-    fun updateKit(item: ItemStack, session: ItemCreationManager.CreationSession) {
-        val meta = item.itemMeta ?: return
-        val plugin = SneakyPrototypeKit.getInstance()
-        val container = meta.persistentDataContainer
-        
-        // Set custom model data from session or clear it
-        session.modelData?.let { meta.setCustomModelData(it) } ?: meta.setCustomModelData(null)
-        
-        // Update material if set
-        session.material?.let { 
-            @Suppress("DEPRECATION")
-            item.type = it
-        }
-        
-        // Process lore
-        val loreList = mutableListOf<Component>()
-        
-        // Add custom lore if set
-        session.lore.forEach { loreLine ->
-            val coloredLine = if (!loreLine.startsWith("&")) "&7$loreLine" else loreLine
-            loreList.addAll(TextUtility.wrapLore(coloredLine))
-        }
-        
-        // Add ability description if set
-        session.ability?.let { ability ->
-            val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return@let
-            
-            abilityConfig.getString("description")?.let { desc ->                
-                // Get the appropriate prefix based on type
-                val prefix = when (session.type) {
-                    ItemType.ITEM -> plugin.config.getString("prefix-left-click", "&e[Left Click] &7")
-                    ItemType.FOOD, ItemType.DRINK -> plugin.config.getString("prefix-right-click", "&e[Right Click] &7")
-                    else -> "&7"
-                }
-                
-                loreList.addAll(TextUtility.wrapLore("$prefix$desc"))
-            }
-        }
-        
-        // Add finalise instruction
-        if (loreList.isNotEmpty()) {
-            loreList.add(TextUtility.convertToComponent(""))
-        }
-        loreList.add(TextUtility.convertToComponent("&eShift + Right Click &7to finalise"))
-        
-        // Update name if set
-        session.name?.let {
-            meta.displayName(TextUtility.convertToComponent("&c$it"))
-        }
-        
-        // Update lore
-        meta.lore(loreList)
-        
-        // Store session data
-        session.type?.let { container.set(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING, it.name) }
-        session.ability?.let { 
-            when (session.type) {
-                ItemType.ITEM -> container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it)
-                ItemType.FOOD, ItemType.DRINK -> container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, it)
-                else -> container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, it)
-            }
-        }
-        
-        item.itemMeta = meta
     }
     
     /**

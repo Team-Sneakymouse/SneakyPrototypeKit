@@ -8,8 +8,4 @@ enum class ItemType {
     ITEM,
     FOOD,
     DRINK;
-
-    companion object {
-        fun fromString(value: String): ItemType? = values().find { it.name.equals(value, ignoreCase = true) }
-    }
 } 

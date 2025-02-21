@@ -15,8 +15,6 @@ import org.bukkit.permissions.Permission
 class SneakyPrototypeKit : JavaPlugin() {
     companion object {
         const val IDENTIFIER = "sneakyprototypekit"
-        const val AUTHORS = "Team Sneakymouse"
-        const val VERSION = "1.0.0"
         private lateinit var instance: SneakyPrototypeKit
 
         fun getInstance(): SneakyPrototypeKit = instance

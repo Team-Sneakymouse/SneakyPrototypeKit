@@ -1,16 +1,14 @@
 package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
-import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.NamespacedKey
-import net.kyori.adventure.text.Component
 
 /**
  * Main UI for item creation.
@@ -58,7 +56,7 @@ object MainCreationUI {
         // Add GUI elements
         inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
-                meta.setHideTooltip(true)
+                meta.isHideTooltip = true
                 meta.setCustomModelData(3047)
             }
         })
@@ -96,7 +94,7 @@ object MainCreationUI {
         val meta = prototypeKit.itemMeta ?: return null
         
         // Get type
-        val typeStr = meta.persistentDataContainer.get(
+        meta.persistentDataContainer.get(
             SneakyPrototypeKit.getInstance().ITEM_TYPE_KEY,
             PersistentDataType.STRING
         ) ?: return null

@@ -96,7 +96,7 @@ class IconSelectionUI(
         // GUI elements
         inventory.setItem(52, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
-                meta.setHideTooltip(true)
+                meta.isHideTooltip = true
                 meta.setCustomModelData(3050)
             }
         })
@@ -124,7 +124,7 @@ class IconSelectionUI(
                     PersistentDataType.STRING,
                     "${icon.material.name},${icon.modelData}"
                 )
-                meta.setHideTooltip(true)
+                meta.isHideTooltip = true
             }
         }
     }

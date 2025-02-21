@@ -77,7 +77,7 @@ class AbilitySelectionUI(
         // GUI elements
         inventory.setItem(52, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
-                meta.setHideTooltip(true)
+                meta.isHideTooltip = true
                 meta.setCustomModelData(3049)
             }
         })

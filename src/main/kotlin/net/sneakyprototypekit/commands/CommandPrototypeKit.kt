@@ -1,8 +1,6 @@
 package net.sneakyprototypekit.commands
 
 import net.sneakyprototypekit.SneakyPrototypeKit
-import net.sneakyprototypekit.creation.ItemType
-import net.sneakyprototypekit.creation.ItemCreationManager
 import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit

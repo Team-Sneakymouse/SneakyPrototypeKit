@@ -3,7 +3,6 @@ package net.sneakyprototypekit.ability
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -26,7 +25,7 @@ object AbilityManager {
      * @param player The player to get cooldowns for
      * @return The player's cooldown map
      */
-    fun getCooldowns(player: Player): MutableMap<String, Long> {
+    private fun getCooldowns(player: Player): MutableMap<String, Long> {
         return cooldowns.getOrPut(player.uniqueId.toString()) { mutableMapOf() }
     }
 

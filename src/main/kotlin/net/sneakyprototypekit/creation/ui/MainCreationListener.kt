@@ -25,7 +25,7 @@ class MainCreationListener : Listener {
         
         // Handle item drag into the UI
         if (event.action.name.contains("PLACE")) {
-            val draggedItem = event.cursor ?: return
+            val draggedItem = event.cursor
             val draggedMeta = draggedItem.itemMeta ?: return
             val plugin = SneakyPrototypeKit.getInstance()
             
@@ -145,7 +145,7 @@ class MainCreationListener : Listener {
                     val finalItem = PrototypeKit.finaliseKit(prototypeKit)
                     if (finalItem != null) {
                         // Remove one prototype kit
-                        prototypeKit.amount = prototypeKit.amount - 1
+                        prototypeKit.amount -= 1
                         
                         // Give the final item
                         player.inventory.addItem(finalItem)

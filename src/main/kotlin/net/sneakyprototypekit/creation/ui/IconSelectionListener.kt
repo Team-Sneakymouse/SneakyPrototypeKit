@@ -1,7 +1,6 @@
 package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
-import net.sneakyprototypekit.creation.ItemCreationManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player

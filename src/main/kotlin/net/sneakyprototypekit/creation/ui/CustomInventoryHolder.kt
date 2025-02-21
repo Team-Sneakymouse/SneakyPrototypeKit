@@ -44,20 +44,5 @@ class CustomInventoryHolder : InventoryHolder {
     fun getData(key: String): Any? {
         return data[key]
     }
-    
-    /**
-     * Checks if a key exists in the holder's data map.
-     * @param key The key to check for
-     * @return true if the key exists
-     */
-    fun hasData(key: String): Boolean {
-        return data.containsKey(key)
-    }
-    
-    /**
-     * Clears all stored data from the holder.
-     */
-    fun clearData() {
-        data.clear()
-    }
-} 
+
+}

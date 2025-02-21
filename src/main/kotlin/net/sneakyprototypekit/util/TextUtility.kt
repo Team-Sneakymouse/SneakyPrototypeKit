@@ -32,7 +32,7 @@ object TextUtility {
      * @param message The message containing legacy color codes
      * @return The message with MiniMessage formatting
      */
-    fun replaceFormatCodes(message: String): String {
+    private fun replaceFormatCodes(message: String): String {
         return message.replace("\u00BA", "&")
                 .replace("\u00A7", "&")
                 .replace("&1", "<dark_blue>")
@@ -98,7 +98,7 @@ object TextUtility {
      * @param maxLineLength The maximum length for each line
      * @return List of lines containing the split text
      */
-    fun splitIntoLines(text: String, maxLineLength: Int = 18): List<String> {
+    private fun splitIntoLines(text: String, maxLineLength: Int = 30): List<String> {
         val words = text.split("\\s+".toRegex())
         if (words.isEmpty()) return listOf(text)
         

@@ -2,7 +2,6 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
-import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -32,7 +31,7 @@ object TypeSelectionUI {
     fun open(player: Player, prototypeKit: ItemStack) {
         val holder = CustomInventoryHolder()
         val inventory = Bukkit.createInventory(holder, SIZE, TextUtility.convertToComponent(TITLE))
-        holder.setInventory(inventory)
+        holder.inventory = inventory
         
         // Add type options
         inventory.setItem(11, createTypeButton(Material.DIAMOND_SWORD, "Item", ItemType.ITEM))
@@ -42,7 +41,7 @@ object TypeSelectionUI {
         // Add GUI elements
         inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
-                meta.setHideTooltip(true)
+                meta.isHideTooltip = true
                 meta.setCustomModelData(3048)
             }
         })
