@@ -5,3 +5,9 @@ api-version: '1.21'
 description: A Paper plugin for creating custom items with configurable abilities and charges
 author: Team Sneakymouse
 website: https://rawb.tv
+
+dependencies:
+  server:
+    SneakyPocketbase:
+      load: BEFORE
+      required: true

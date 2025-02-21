@@ -1,6 +1,7 @@
 plugins {
     java
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.1.0"
+    kotlin("plugin.serialization") version "2.1.0"
     id("xyz.jpenilla.run-paper") version "2.2.2"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -11,11 +12,13 @@ version = "1.0.0"
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
+    compileOnly(kotlin("stdlib"))
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
+    compileOnly(files("libs/SneakyPocketbase-1.0.jar"))
 }
 
 tasks {
@@ -50,7 +53,6 @@ tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "21"
-            javaParameters = true
         }
     }
 }
@@ -66,4 +68,8 @@ sourceSets {
         java.srcDir("src/main/kotlin")
         resources.srcDir("src/main/resources")
     }
+}
+
+kotlin {
+    jvmToolchain(21)
 } 

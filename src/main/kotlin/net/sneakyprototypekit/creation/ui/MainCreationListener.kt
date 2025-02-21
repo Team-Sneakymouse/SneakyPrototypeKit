@@ -4,6 +4,7 @@ import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
+import net.sneakyprototypekit.util.PocketBaseUtil
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -151,6 +152,9 @@ class MainCreationListener : Listener {
                         player.inventory.addItem(finalItem)
                         player.closeInventory()
                         player.sendMessage(TextUtility.convertToComponent("&aYour item has been created!"))
+
+                        // Log to PocketBase
+                        PocketBaseUtil.logFinalizedKit(finalItem)
                     } else {
                         player.sendMessage(TextUtility.convertToComponent("&cFailed to create item. Please try again."))
                         MainCreationUI.open(player, prototypeKit)
