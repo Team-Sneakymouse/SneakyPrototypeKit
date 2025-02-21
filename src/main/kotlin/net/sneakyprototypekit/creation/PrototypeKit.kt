@@ -144,7 +144,7 @@ object PrototypeKit {
                     }
                     
                     // Add description with prefix
-                    loreList.addAll(TextUtility.wrapLore("$prefix$desc"))
+                    loreList.add(TextUtility.convertToComponent("$prefix$desc"))
                 }
                 
                 // Add charges line and handle stack sizes based on type
