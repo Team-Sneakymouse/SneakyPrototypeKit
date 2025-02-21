@@ -14,6 +14,14 @@ A Paper plugin that allows server administrators to create custom items and cons
   - Custom models and textures
   - Custom names and lore
   - Stackable charges (e.g. food that can be eaten multiple times)
+- Integration with PocketBase for logging created items
+
+## Dependencies
+
+- **Required**:
+  - Java 21
+  - Paper 1.20.4 or newer
+  - SneakyPocketbase (for item logging)
 
 ## Usage
 
@@ -71,10 +79,14 @@ drink-icons:
 - `sneakyprototypekit.command.reload` - Access to reload the plugin configuration
 - `sneakyprototypekit.admin` - Access to use color codes in names/lore
 
-## Requirements
+## Installation
 
-- Java 21
-- Paper 1.21.4 or newer
+1. Install Java 21 on your server
+2. Install Paper 1.20.4 or newer
+3. Install SneakyPocketbase plugin
+4. Place SneakyPrototypeKit.jar in your plugins folder
+5. Start the server
+6. Configure the plugin in `plugins/SneakyPrototypeKit/config.yml`
 
 ## Development
 
