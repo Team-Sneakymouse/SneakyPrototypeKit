@@ -142,7 +142,7 @@ class MainCreationListener : Listener {
                     }
                     
                     // Create the final item
-                    val finalItem = PrototypeKit.finaliseKit(prototypeKit)
+                    val finalItem = PrototypeKit.finaliseKit(prototypeKit, creator = player.name)
                     if (finalItem != null) {
                         // Remove one prototype kit
                         prototypeKit.amount -= 1

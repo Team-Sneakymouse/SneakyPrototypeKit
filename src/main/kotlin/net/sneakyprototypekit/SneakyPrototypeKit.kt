@@ -63,4 +63,5 @@ class SneakyPrototypeKit : JavaPlugin() {
     val PROTOTYPE_KIT_KEY = NamespacedKey(this, "prototype_kit")
     val NAME_KEY = NamespacedKey(this, "name")
     val LORE_KEY = NamespacedKey(this, "lore")
+    val CREATOR_KEY = NamespacedKey(this, "creator")
 }

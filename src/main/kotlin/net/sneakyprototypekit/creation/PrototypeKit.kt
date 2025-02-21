@@ -56,9 +56,10 @@ object PrototypeKit {
      * 
      * @param meta The meta containing PDC data to create the item from
      * @param additionalLoreLine Optional line to add at the end of the lore
+     * @param creator Optional name of the player creating the item
      * @return The created item, or null if required data is missing
      */
-    fun createItemFromPDC(meta: ItemMeta, additionalLoreLine: String? = null): ItemStack? {
+    fun createItemFromPDC(meta: ItemMeta, additionalLoreLine: String? = null, creator: String? = null): ItemStack? {
         val plugin = SneakyPrototypeKit.getInstance()
         
         // Get type
@@ -76,6 +77,11 @@ object PrototypeKit {
         
         // Copy type
         container.set(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING, typeStr)
+        
+        // Store creator if provided
+        if (creator != null) {
+            container.set(plugin.CREATOR_KEY, PersistentDataType.STRING, creator)
+        }
         
         // Set and store icon data
         val iconData = meta.persistentDataContainer.get(
@@ -189,10 +195,14 @@ object PrototypeKit {
     
     /**
      * Creates a final item from a prototype kit.
+     * 
+     * @param item The prototype kit item
+     * @param creator The name of the player creating the item
+     * @return The created item, or null if required data is missing
      */
-    fun finaliseKit(item: ItemStack): ItemStack? {
+    fun finaliseKit(item: ItemStack, creator: String? = null): ItemStack? {
         if (!isPrototypeKit(item)) return null
         val meta = item.itemMeta ?: return null
-        return createItemFromPDC(meta)
+        return createItemFromPDC(meta, creator = creator)
     }
 } 
