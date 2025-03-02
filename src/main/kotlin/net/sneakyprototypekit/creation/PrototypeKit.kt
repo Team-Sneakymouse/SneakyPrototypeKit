@@ -147,13 +147,14 @@ object PrototypeKit {
                     loreList.add(TextUtility.convertToComponent("$prefix$desc"))
                 }
                 
+                itemMeta.setMaxStackSize(99)
+
                 // Add charges line and handle stack sizes based on type
                 when (type) {
                     ItemType.ITEM -> {
                         loreList.add(TextUtility.convertToComponent("&eCharges: &f$charges"))
                         
                         // Set stack size and store charges
-                        itemMeta.setMaxStackSize(stackSize)
                         item.amount = stackSize
                         container.set(plugin.LEFT_CLICK_CHARGES_KEY, PersistentDataType.INTEGER, charges)
                         container.set(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING, abilityKey)
@@ -161,7 +162,6 @@ object PrototypeKit {
                     ItemType.FOOD, ItemType.DRINK -> {
                         // For consumables, multiply stack size by charges
                         val totalAmount = (stackSize * charges).coerceAtMost(99)
-                        itemMeta.setMaxStackSize(totalAmount)
                         item.amount = totalAmount
                         container.set(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING, abilityKey)
                     }
