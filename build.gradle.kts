@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly(files("libs/SneakyPocketbase-1.0.jar"))
 }
 
@@ -42,7 +42,7 @@ tasks {
     }
     
     runServer {
-        minecraftVersion("1.20.6")
+        minecraftVersion("1.21.4")
     }
 
     compileJava {
