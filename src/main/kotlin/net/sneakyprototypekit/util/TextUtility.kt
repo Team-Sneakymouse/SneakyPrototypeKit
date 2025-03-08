@@ -7,10 +7,37 @@ import net.sneakyprototypekit.SneakyPrototypeKit
 import org.bukkit.entity.Player
 
 /**
+ * Extension function to calculate the visual length of a string.
+ * Format codes count as length 0, unicode characters count as length 1.
+ */
+private fun String.visualLength(): Int {
+    // First remove all format codes
+    var stripped = this
+    for (pattern in TextUtility.formatCodePatterns) {
+        stripped = stripped.replace(pattern, "")
+    }
+    
+    // Replace unicode literals (like \uE000) with a single character
+    stripped = stripped.replace("\\\\u[A-Fa-f0-9]{4}".toRegex()) { matchResult ->
+        matchResult.value.substring(2).toInt(16).toChar().toString()
+    }
+    
+    // Now count remaining characters, treating each as length 1
+    return stripped.length
+}
+
+/**
  * Utility class for text formatting and manipulation.
  * Handles color code conversion and text wrapping for the plugin.
  */
 object TextUtility {
+    /** Patterns for matching different types of format codes */
+    val formatCodePatterns = listOf(
+        "&[0-9a-fk-or]".toRegex(),           // & color codes
+        "§[0-9a-fk-or]".toRegex(),           // § color codes
+        "&#[A-Fa-f0-9]{6}".toRegex(),        // Hex color codes
+        "<[^>]+>".toRegex()                  // MiniMessage tags
+    )
 
     /**
      * Converts a string with legacy color codes to a Component.
@@ -74,14 +101,7 @@ object TextUtility {
             return Pair(false, null)
         }
 
-        val formatCodePatterns = listOf(
-            "&[0-9a-fk-or]".toRegex(),           // & color codes
-            "§[0-9a-fk-or]".toRegex(),           // § color codes
-            "&#[A-Fa-f0-9]{6}".toRegex(),        // Hex color codes
-            "<[^>]+>".toRegex()                  // MiniMessage tags
-        )
-
-        for (pattern in formatCodePatterns) {
+        for (pattern in TextUtility.formatCodePatterns) {
             if (pattern.containsMatchIn(text)) {
                 return Pair(true, "&cFormat codes are not allowed in this text! Please try again without using color codes or formatting.")
             }
@@ -98,14 +118,7 @@ object TextUtility {
      */
     private fun extractFormatCodes(text: String): List<String> {
         val codes = mutableListOf<String>()
-        val formatCodePatterns = listOf(
-            "&[0-9a-fk-or]".toRegex(),           // & color codes
-            "§[0-9a-fk-or]".toRegex(),           // § color codes
-            "&#[A-Fa-f0-9]{6}".toRegex(),        // Hex color codes
-            "<[^>]+>".toRegex()                  // MiniMessage tags
-        )
-
-        for (pattern in formatCodePatterns) {
+        for (pattern in TextUtility.formatCodePatterns) {
             pattern.findAll(text).forEach { match ->
                 codes.add(match.value)
             }
@@ -126,7 +139,7 @@ object TextUtility {
         if (words.isEmpty()) return listOf(text)
         
         // Calculate total length and minimum lines needed
-        val totalLength = words.sumOf { it.length }
+        val totalLength = words.sumOf { it.visualLength() }
         val spacesNeeded = words.size - 1 // Spaces between words
         val totalLengthWithSpaces = totalLength + spacesNeeded
         
@@ -147,7 +160,7 @@ object TextUtility {
             val formatCodes = extractFormatCodes(word)
             accumulatedFormatCodes.addAll(formatCodes)
             
-            val wordLength = word.length
+            val wordLength = word.visualLength()
             val spaceNeeded = if (currentLineWordCount > 0) 1 else 0
             val wouldExceedTarget = currentLineLength + spaceNeeded + wordLength > targetLength
             
