@@ -29,6 +29,7 @@ class PrototypeKitListener : Listener {
             Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK, Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK -> {
                 // Open main creation menu
                 MainCreationUI.open(event.player, item)
+                event.player.playSound(event.player.location, "lom:computer.ding", 999f, 1f)
             }
             else -> return
         }
@@ -44,5 +45,6 @@ class PrototypeKitListener : Listener {
         
         event.isCancelled = true
         MainCreationUI.open(event.player, item)
+        event.player.playSound(event.player.location, "lom:computer.ding", 999f, 1f)
     }
 } 

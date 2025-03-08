@@ -155,12 +155,17 @@ class MainCreationListener : Listener {
 
                         // Log to PocketBase
                         PocketBaseUtil.logFinalizedKit(finalItem)
+
+                        player.playSound(player.location, "lom:computer.princessstart", 999f, 1f)
                     } else {
                         player.sendMessage(TextUtility.convertToComponent("&cFailed to create item. Please try again."))
                         MainCreationUI.open(player, prototypeKit)
                     }
                 }
-                "type" -> TypeSelectionUI.open(player, prototypeKit)
+                "type" -> {
+                    player.playSound(player.location, "lom:computer.ding", 999f, 1f)
+                    TypeSelectionUI.open(player, prototypeKit)
+                }
                 "ability" -> {
                     // Check if type is selected
                     val typeStr = kitMeta.persistentDataContainer.get(
@@ -168,6 +173,7 @@ class MainCreationListener : Listener {
                         PersistentDataType.STRING
                     )
                     if (typeStr != null) {
+                        player.playSound(player.location, "lom:computer.ding", 999f, 1f)
                         val type = ItemType.valueOf(typeStr)
                         AbilitySelectionUI.open(player, type, 0, prototypeKit) { ability ->
                             val updatedMeta = prototypeKit.itemMeta ?: return@open
@@ -198,6 +204,7 @@ class MainCreationListener : Listener {
                         PersistentDataType.STRING
                     )
                     if (typeStr != null) {
+                        player.playSound(player.location, "lom:computer.ding", 999f, 1f)
                         val type = ItemType.valueOf(typeStr)
                         IconSelectionUI.open(player, type, 0, prototypeKit) { material, modelData ->
                             val updatedMeta = prototypeKit.itemMeta ?: return@open
@@ -215,6 +222,7 @@ class MainCreationListener : Listener {
                     }
                 }
                 "name" -> {
+                    player.playSound(player.location, "lom:computer.ding", 999f, 1f)
                     player.closeInventory()
                     player.sendMessage(TextUtility.convertToComponent("&eEnter a name for your item (max 30 characters):"))
                     ChatInputListener.register(player, NameInputListener(player) { name ->
@@ -232,6 +240,7 @@ class MainCreationListener : Listener {
                     })
                 }
                 "lore" -> {
+                    player.playSound(player.location, "lom:computer.ding", 999f, 1f)
                     player.closeInventory()
                     player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (max 100 characters):"))
                     ChatInputListener.register(player, LoreInputListener(player) { lore ->
