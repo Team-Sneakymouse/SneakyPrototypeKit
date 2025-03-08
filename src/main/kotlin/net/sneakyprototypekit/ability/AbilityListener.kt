@@ -11,6 +11,7 @@ import org.bukkit.persistence.PersistentDataType
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.EventPriority
+import org.bukkit.event.entity.EntityDamageEvent
 
 /**
  * Listens for item and food interactions to trigger abilities.
@@ -63,6 +64,10 @@ class AbilityListener : Listener {
 
     @EventHandler
     fun onEntityDamage(event: EntityDamageByEntityEvent) {
+        // Only handle player left-click attacks
+        if (event.cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return
+        if (event.entity == event.damager) return
+        
         val damager = event.damager as? Player ?: return
         val item = damager.inventory.itemInMainHand
         val meta = item.itemMeta ?: return
