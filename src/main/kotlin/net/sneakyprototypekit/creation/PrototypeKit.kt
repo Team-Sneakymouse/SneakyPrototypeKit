@@ -144,7 +144,7 @@ object PrototypeKit {
                     }
                     
                     // Add description with prefix
-                    loreList.add(TextUtility.convertToComponent("$prefix$desc"))
+                    loreList.addAll(TextUtility.wrapLore("$prefix$desc"))
                 }
                 
                 itemMeta.setMaxStackSize(99)

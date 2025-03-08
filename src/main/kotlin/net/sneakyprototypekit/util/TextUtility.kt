@@ -91,12 +91,35 @@ object TextUtility {
     }
 
     /**
+     * Extracts all format codes from a string.
+     * 
+     * @param text The text to extract format codes from
+     * @return List of format codes found
+     */
+    private fun extractFormatCodes(text: String): List<String> {
+        val codes = mutableListOf<String>()
+        val formatCodePatterns = listOf(
+            "&[0-9a-fk-or]".toRegex(),           // & color codes
+            "§[0-9a-fk-or]".toRegex(),           // § color codes
+            "&#[A-Fa-f0-9]{6}".toRegex(),        // Hex color codes
+            "<[^>]+>".toRegex()                  // MiniMessage tags
+        )
+
+        for (pattern in formatCodePatterns) {
+            pattern.findAll(text).forEach { match ->
+                codes.add(match.value)
+            }
+        }
+        return codes
+    }
+
+    /**
      * Splits text into lines, aiming to distribute words as evenly as possible
      * while using the minimum number of lines needed.
      * 
      * @param text The text to split
      * @param maxLineLength The maximum length for each line
-     * @return List of lines containing the split text
+     * @return List of lines containing the split text, with format codes preserved
      */
     private fun splitIntoLines(text: String, maxLineLength: Int = 30): List<String> {
         val words = text.split("\\s+".toRegex())
@@ -117,8 +140,13 @@ object TextUtility {
         var currentLine = StringBuilder()
         var currentLineWordCount = 0
         var currentLineLength = 0
+        var accumulatedFormatCodes = mutableListOf<String>()
         
         for (word in words) {
+            // Extract format codes from this word and add them to accumulated list
+            val formatCodes = extractFormatCodes(word)
+            accumulatedFormatCodes.addAll(formatCodes)
+            
             val wordLength = word.length
             val spaceNeeded = if (currentLineWordCount > 0) 1 else 0
             val wouldExceedTarget = currentLineLength + spaceNeeded + wordLength > targetLength
@@ -133,6 +161,8 @@ object TextUtility {
                 if (currentLine.isNotEmpty()) {
                     lines.add(currentLine.toString())
                     currentLine = StringBuilder()
+                    // Add accumulated format codes to start of new line
+                    currentLine.append(accumulatedFormatCodes.joinToString(""))
                     currentLineWordCount = 0
                     currentLineLength = 0
                 }
