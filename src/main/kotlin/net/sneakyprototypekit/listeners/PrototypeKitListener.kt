@@ -18,7 +18,7 @@ class PrototypeKitListener : Listener {
      * - Left click or normal right click opens the creation menu
      * - Shift + right click finalizes the item
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onPrototypeKitInteract(event: PlayerInteractEvent) {
         val item = event.item ?: return
         if (!PrototypeKit.isPrototypeKit(item)) return
@@ -38,7 +38,7 @@ class PrototypeKitListener : Listener {
     /**
      * Prevents consuming prototype kit items and opens the creation menu instead.
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onPrototypeKitConsume(event: PlayerItemConsumeEvent) {
         val item = event.item
         if (!PrototypeKit.isPrototypeKit(item)) return
