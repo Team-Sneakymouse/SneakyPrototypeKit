@@ -2,9 +2,7 @@
 
 package net.sneakyprototypekit.util
 
-import com.danidipp.sneakypocketbase.SneakyPocketbase
-import com.danidipp.sneakypocketbase.PBRunnable
-import io.github.agrevster.pocketbaseKotlin.models.utils.BaseModel
+import com.danidipp.sneakypocketbase.PocketbaseProvider
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
@@ -22,7 +20,7 @@ data class PrototypeKitRecord(
     val material: String,
     val model_data: Int? = null,
     val lore: String? = null
-) : BaseModel()
+)
 
 /**
  * Utility class for interacting with PocketBase.
@@ -73,8 +71,8 @@ object PocketBaseUtil {
             // Create record in PocketBase asynchronously
             Bukkit.getScheduler().runTaskAsynchronously(
                 SneakyPrototypeKit.getInstance(),
-                PBRunnable {
-                    SneakyPocketbase.getInstance().pb().records.create<PrototypeKitRecord>(COLLECTION_NAME, data)
+                Runnable {
+                    PocketbaseProvider.getApi().create(COLLECTION_NAME, data).join()
                 }
             )
             return true

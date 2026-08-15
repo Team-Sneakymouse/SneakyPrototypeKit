@@ -1,9 +1,9 @@
 plugins {
     java
-    kotlin("jvm") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.serialization") version "2.2.21"
     id("xyz.jpenilla.run-paper") version "2.2.2"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
 group = "net.sneakyprototypekit"
@@ -16,9 +16,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib"))
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly(files("libs/SneakyPocketbase-1.0.jar"))
+    compileOnly(files("../SneakyPocketbase/build/libs/SneakyPocketbase-1.0-api.jar"))
 }
 
 tasks {
@@ -50,11 +51,6 @@ tasks {
         options.release.set(21)
     }
 
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "21"
-        }
-    }
 }
 
 java {
@@ -72,4 +68,34 @@ sourceSets {
 
 kotlin {
     jvmToolchain(21)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
 } 
+
+val verifyPocketbaseIsolation by tasks.registering {
+    dependsOn(tasks.shadowJar)
+    doLast {
+        val jarFile = tasks.shadowJar.get().archiveFile.get().asFile
+        val entries = zipTree(jarFile)
+        listOf(
+            "kotlin/jvm/functions/Function1.class",
+            "kotlinx/serialization/json/JsonKt.class"
+        ).forEach { path ->
+            check(!entries.matching { include(path) }.isEmpty) {
+                "$path must be bundled in ${jarFile.name}"
+            }
+        }
+        val staleClasses = entries.matching { include("**/*.class") }.files.filter { classFile ->
+            classFile.readBytes().toString(Charsets.ISO_8859_1)
+                .contains("com/danidipp/sneakypocketbase/PBRunnable")
+        }
+        check(staleClasses.isEmpty()) {
+            "Obsolete PBRunnable reference remains in: ${staleClasses.joinToString()}"
+        }
+    }
+}
+
+tasks.check {
+    dependsOn(verifyPocketbaseIsolation)
+}
