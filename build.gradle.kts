@@ -1,8 +1,8 @@
 plugins {
     java
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.serialization") version "2.2.21"
-    id("xyz.jpenilla.run-paper") version "2.2.2"
+    kotlin("jvm") version "2.4.10"
+    kotlin("plugin.serialization") version "2.4.10"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
     id("com.gradleup.shadow") version "9.2.2"
 }
 
@@ -18,7 +18,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
     compileOnly(files("../SneakyPocketbase/build/libs/SneakyPocketbase-1.0-api.jar"))
 }
 
@@ -43,19 +43,19 @@ tasks {
     }
     
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("26.2")
     }
 
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(21)
+        options.release.set(25)
     }
 
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -67,9 +67,9 @@ sourceSets {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25)
     }
 } 
 
