@@ -39,7 +39,7 @@ object TypeSelectionUI {
         inventory.setItem(15, createTypeButton(Material.POTION, "Drink", ItemType.DRINK))
 
         // Add GUI elements
-        inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
+        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
                 meta.isHideTooltip = true
                 meta.setCustomModelData(3048)
@@ -81,4 +81,4 @@ object TypeSelectionUI {
             }
         }
     }
-} 
+}

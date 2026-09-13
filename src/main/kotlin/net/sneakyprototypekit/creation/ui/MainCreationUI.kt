@@ -54,7 +54,7 @@ object MainCreationUI {
         inventory.setItem(15, createButton(Material.BOOK, "Lore", "Set the item's description", "lore"))
         
         // Add GUI elements
-        inventory.setItem(26, ItemStack(Material.JIGSAW).apply {
+        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
                 meta.isHideTooltip = true
                 meta.setCustomModelData(3047)
@@ -138,4 +138,4 @@ object MainCreationUI {
         item.itemMeta = meta
         return item
     }
-} 
+}

@@ -55,9 +55,9 @@ class AbilitySelectionUI(
         inventory.clear()
 
         // Add abilities
-        val startIndex = page * 45 // Leave bottom row for navigation
+        val startIndex = page * 45
         abilities.drop(startIndex).take(45).forEachIndexed { index, ability ->
-            inventory.setItem(index, createAbilityButton(ability))
+            inventory.setItem(index + 9, createAbilityButton(ability))
         }
 
         // Add navigation buttons
@@ -66,16 +66,16 @@ class AbilitySelectionUI(
 
         // Previous page button
         if (hasPrevPage) {
-            inventory.setItem(45, createNavigationButton("prev_page", "&ePrevious Page"))
+            inventory.setItem(1, createNavigationButton("prev_page", "&ePrevious Page"))
         }
 
         // Next page button
         if (hasNextPage) {
-            inventory.setItem(53, createNavigationButton("next_page", "&eNext Page"))
+            inventory.setItem(7, createNavigationButton("next_page", "&eNext Page"))
         }
 
         // GUI elements
-        inventory.setItem(52, ItemStack(Material.JIGSAW).apply {
+        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
             itemMeta = itemMeta?.also { meta ->
                 meta.isHideTooltip = true
                 meta.setCustomModelData(3049)
@@ -153,4 +153,4 @@ class AbilitySelectionUI(
         val modelData: Int,
         val stackSize: Int
     )
-} 
+}
