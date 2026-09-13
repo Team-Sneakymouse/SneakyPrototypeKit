@@ -19,8 +19,8 @@ A Paper plugin that allows server administrators to create custom items and cons
 ## Dependencies
 
 - **Required**:
-  - Java 21
-  - Paper 1.20.4 or newer
+  - Java 25
+  - Paper 26.2
   - SneakyPocketbase (for item logging)
 
 ## Usage
@@ -81,8 +81,8 @@ drink-icons:
 
 ## Installation
 
-1. Install Java 21 on your server
-2. Install Paper 1.20.4 or newer
+1. Install Java 25 on your server
+2. Install Paper 26.2
 3. Install SneakyPocketbase plugin
 4. Place SneakyPrototypeKit.jar in your plugins folder
 5. Start the server
@@ -104,4 +104,4 @@ To run a test server:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
