@@ -19,8 +19,8 @@ A Paper plugin that allows server administrators to create custom items and cons
 ## Dependencies
 
 - **Required**:
-  - Java 21
-  - Paper 1.20.4 or newer
+  - Java 25
+  - Paper 26.2
   - SneakyPocketbase (for item logging)
 
 ## Usage
