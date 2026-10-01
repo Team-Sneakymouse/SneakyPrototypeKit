@@ -142,6 +142,16 @@ class MainCreationListener : Listener {
                         return@Runnable
                     }
                     
+                    val lore = kitMeta.persistentDataContainer.get(
+                        SneakyPrototypeKit.getInstance().LORE_KEY, PersistentDataType.STRING
+                    )
+                    val loreError = lore?.let(TextUtility::playerLoreError)
+                    if (loreError != null) {
+                        player.sendMessage(TextUtility.convertToComponent("&c$loreError"))
+                        ItemTextDialog.openLore(player, prototypeKit)
+                        return@Runnable
+                    }
+
                     // Create the final item
                     val finalItem = PrototypeKit.finaliseKit(prototypeKit, creator = player.name)
                     if (finalItem != null) {

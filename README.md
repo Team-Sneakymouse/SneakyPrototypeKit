@@ -38,6 +38,8 @@ Name and lore are edited in prefilled dialogs with Save and Cancel. Names allow 
 and lore allows 100 total characters, including formatting codes and line breaks.
 Press Enter in the lore field to add a line break. Player lore preserves these breaks and blank
 lines, and wraps long lines at 30 visible characters, splitting long words if needed.
+Player lore is limited to eight rendered lines, including blank lines and automatic wrapping.
+Ability descriptions and the charges line are separate from this limit.
 The field is approximately 30 characters wide in the default
 font; wider glyphs and resource-pack fonts can change how much text fits.
 

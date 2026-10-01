@@ -9,32 +9,23 @@ import net.sneakyprototypekit.SneakyPrototypeKit
 import org.bukkit.entity.Player
 
 /**
- * Extension function to calculate the visual length of a string.
- * Format codes count as length 0, unicode characters count as length 1.
- */
-private fun String.visualLength(): Int {
-    // First remove all format codes
-    var stripped = this
-    for (pattern in TextUtility.formatCodePatterns) {
-        stripped = stripped.replace(pattern, "")
-    }
-    
-    // Replace unicode literals (like \uE000) with a single character
-    stripped = stripped.replace("\\\\u[A-Fa-f0-9]{4}".toRegex()) { matchResult ->
-        matchResult.value.substring(2).toInt(16).toChar().toString()
-    }
-    
-    // Now count remaining characters, treating each as length 1
-    return stripped.length
-}
-
-/**
  * Utility class for text formatting and manipulation.
  * Handles color code conversion and text wrapping for the plugin.
  */
 object TextUtility {
+    const val MAX_PLAYER_LORE_LINES = 8
+    private const val LORE_LINE_LENGTH = 30
+
     /** Preserves explicit breaks and formatting, wrapping each line at 30 visible characters. */
-    fun renderPlayerLore(text: String, color: String = "&7"): List<Component> {
+    fun renderPlayerLore(text: String, color: String = "&7"): List<Component> = wrapLore(text, color)
+
+    fun playerLoreError(text: String): String? =
+        if (renderPlayerLore(text).size > MAX_PLAYER_LORE_LINES)
+            "Lore cannot exceed $MAX_PLAYER_LORE_LINES lines after wrapping, including blank lines."
+        else null
+
+    /** Shared wrapping for player lore and ability descriptions. */
+    fun wrapLore(text: String, color: String = "&7"): List<Component> {
         val lines = mutableListOf(mutableListOf<Component>())
         fun append(component: Component, inheritedStyle: Style) {
             val style = component.style().merge(inheritedStyle, Style.Merge.Strategy.IF_ABSENT_ON_TARGET)
@@ -59,13 +50,13 @@ object TextUtility {
                 .fold(Component.empty()) { result, glyph -> result.append(glyph) }
 
             var start = 0
-            while (glyphs.size - start > 30) {
+            while (glyphs.size - start > LORE_LINE_LENGTH) {
                 // Prefer a word boundary, but split long words to keep tooltips narrow.
-                val separator = (start + 1..start + 30).lastOrNull { index ->
+                val separator = (start + 1..start + LORE_LINE_LENGTH).lastOrNull { index ->
                     (glyphs[index] as? TextComponent)?.content()?.codePoints()
                         ?.allMatch(Character::isWhitespace) == true
                 }
-                val end = separator ?: (start + 30)
+                val end = separator ?: (start + LORE_LINE_LENGTH)
                 wrapped.add(line(start, end))
                 start = end + if (separator != null) 1 else 0
             }
@@ -75,9 +66,8 @@ object TextUtility {
     }
 
     /** Patterns for matching different types of format codes */
-    val formatCodePatterns = listOf(
+    private val formatCodePatterns = listOf(
         "&[0-9a-fk-or]".toRegex(),           // & color codes
-        "§[0-9a-fk-or]".toRegex(),           // § color codes
         "&#[A-Fa-f0-9]{6}".toRegex(),        // Hex color codes
         "<[^>]+>".toRegex()                  // MiniMessage tags
     )
@@ -103,8 +93,7 @@ object TextUtility {
      * @return The message with MiniMessage formatting
      */
     private fun replaceFormatCodes(message: String): String {
-        return message.replace("\u00BA", "&")
-                .replace("\u00A7", "&")
+        return normalizeLegacyMarkers(message)
                 .replace("&1", "<dark_blue>")
                 .replace("&2", "<dark_green>")
                 .replace("&3", "<dark_aqua>")
@@ -139,120 +128,24 @@ object TextUtility {
      * @return A pair of (containsFormatCodes, errorMessage)
      */
     fun containsFormatCodes(text: String, player: Player): Pair<Boolean, String?> {
-        // If player has admin permission, allow format codes
-        if (player.hasPermission("${SneakyPrototypeKit.IDENTIFIER}.admin")) {
+        return containsFormatCodes(text, player.hasPermission("${SneakyPrototypeKit.IDENTIFIER}.admin"))
+    }
+
+    internal fun containsFormatCodes(text: String, allowFormatting: Boolean): Pair<Boolean, String?> {
+        if (allowFormatting) {
             return Pair(false, null)
         }
 
-        for (pattern in TextUtility.formatCodePatterns) {
-            if (pattern.containsMatchIn(text)) {
-                return Pair(true, "&cFormat codes are not allowed in this text! Please try again without using color codes or formatting.")
+        val normalized = normalizeLegacyMarkers(text)
+        for (pattern in formatCodePatterns) {
+            if (pattern.containsMatchIn(normalized)) {
+                return Pair(true, "Format codes are not allowed in this text! Please try again without using color codes or formatting.")
             }
         }
 
         return Pair(false, null)
     }
 
-    /**
-     * Extracts all format codes from a string.
-     * 
-     * @param text The text to extract format codes from
-     * @return List of format codes found
-     */
-    private fun extractFormatCodes(text: String): List<String> {
-        val codes = mutableListOf<String>()
-        for (pattern in TextUtility.formatCodePatterns) {
-            pattern.findAll(text).forEach { match ->
-                codes.add(match.value)
-            }
-        }
-        return codes
-    }
-
-    /**
-     * Splits text into lines, aiming to distribute words as evenly as possible
-     * while using the minimum number of lines needed.
-     * 
-     * @param text The text to split
-     * @param maxLineLength The maximum length for each line
-     * @return List of lines containing the split text, with format codes preserved
-     */
-    private fun splitIntoLines(text: String, maxLineLength: Int = 30): List<String> {
-        val words = text.split("\\s+".toRegex())
-        if (words.isEmpty()) return listOf(text)
-        
-        // Calculate total length and minimum lines needed
-        val totalLength = words.sumOf { it.visualLength() }
-        val spacesNeeded = words.size - 1 // Spaces between words
-        val totalLengthWithSpaces = totalLength + spacesNeeded
-        
-        // Calculate minimum lines needed based on total length
-        val minLines = (totalLengthWithSpaces + maxLineLength - 1) / maxLineLength
-        
-        // Target length for each line (including spaces)
-        val targetLength = totalLengthWithSpaces / minLines
-        
-        val lines = mutableListOf<String>()
-        var currentLine = StringBuilder()
-        var currentLineWordCount = 0
-        var currentLineLength = 0
-        var accumulatedFormatCodes = mutableListOf<String>()
-        
-        for (word in words) {
-            // Extract format codes from this word and add them to accumulated list
-            val formatCodes = extractFormatCodes(word)
-            accumulatedFormatCodes.addAll(formatCodes)
-            
-            val wordLength = word.visualLength()
-            val spaceNeeded = if (currentLineWordCount > 0) 1 else 0
-            val wouldExceedTarget = currentLineLength + spaceNeeded + wordLength > targetLength
-            
-            // Start a new line if:
-            // 1. Adding this word would exceed target length AND we have at least one word already
-            // 2. OR if adding this word would exceed max length
-            // 3. UNLESS this is the last possible line (then we keep going until max length)
-            if ((wouldExceedTarget && currentLineWordCount > 0 && lines.size < minLines - 1) ||
-                (currentLineLength + spaceNeeded + wordLength > maxLineLength)) {
-                
-                if (currentLine.isNotEmpty()) {
-                    lines.add(currentLine.toString())
-                    currentLine = StringBuilder()
-                    // Add accumulated format codes to start of new line
-                    currentLine.append(accumulatedFormatCodes.joinToString(""))
-                    currentLineWordCount = 0
-                    currentLineLength = 0
-                }
-            }
-            
-            if (currentLineWordCount > 0) {
-                currentLine.append(" ")
-                currentLineLength++
-            }
-            
-            currentLine.append(word)
-            currentLineLength += wordLength
-            currentLineWordCount++
-        }
-        
-        // Add the last line if not empty
-        if (currentLine.isNotEmpty()) {
-            lines.add(currentLine.toString())
-        }
-        
-        return lines
-    }
-
-    /**
-     * Wraps item lore text to fit nicely in the item tooltip.
-     * Applies color codes and formatting to each line.
-     * 
-     * @param text The lore text to wrap
-     * @param color The color code to apply to each line (defaults to gray)
-     * @return List of Components for the item lore
-     */
-    fun wrapLore(text: String, color: String = "&7"): List<Component> {
-        return splitIntoLines(text, 30).map { line ->
-            convertToComponent("$color$line")
-        }
-    }
+    private fun normalizeLegacyMarkers(text: String): String =
+        text.replace('\u00BA', '&').replace('\u00A7', '&')
 }

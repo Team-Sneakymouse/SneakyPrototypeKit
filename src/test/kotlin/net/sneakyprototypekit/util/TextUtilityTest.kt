@@ -6,6 +6,9 @@ import net.kyori.adventure.text.format.NamedTextColor
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertNotNull
 
 class TextUtilityTest {
     private fun plainText(component: Component): String =
@@ -70,5 +73,45 @@ class TextUtilityTest {
     @Test
     fun `ability descriptions still wrap automatically`() {
         assertTrue(TextUtility.wrapLore("This ability description has enough words to require more than one tooltip line.").size > 1)
+    }
+
+    @Test
+    fun `empty and formatting-only ability descriptions render without crashing`() {
+        for (text in listOf("", "&7", "<red></red>", "<bold>")) {
+            assertEquals(listOf(""), TextUtility.wrapLore(text).map(::plainText))
+        }
+    }
+
+    @Test
+    fun `ability formatting continues across wraps and respects closing tags`() {
+        val lines = TextUtility.wrapLore("<red>${"x".repeat(31)}</red>tail")
+        assertEquals(listOf("x".repeat(30), "xtail"), lines.map(::plainText))
+        val glyphs = lines[1].children().filterIsInstance<TextComponent>()
+        assertEquals(NamedTextColor.RED, glyphs.first().color())
+        assertTrue(glyphs.drop(1).all { it.color() == NamedTextColor.GRAY })
+    }
+
+    @Test
+    fun `all accepted legacy markers require formatting permission`() {
+        for (marker in listOf("&", "§", "º")) {
+            for (suffix in listOf("cRed", "#ff0000Red")) {
+                val text = "$marker$suffix"
+                val denied = TextUtility.containsFormatCodes(text, allowFormatting = false)
+                assertTrue(denied.first, text)
+                assertNotNull(denied.second)
+                assertEquals(false to null, TextUtility.containsFormatCodes(text, allowFormatting = true))
+            }
+        }
+        assertFalse(TextUtility.containsFormatCodes("Ordinary text", allowFormatting = false).first)
+    }
+
+    @Test
+    fun `lore height validation includes blank lines and automatic wrapping`() {
+        assertNull(TextUtility.playerLoreError("Line\n".repeat(7) + "Line"))
+        assertNotNull(TextUtility.playerLoreError("\n".repeat(8)))
+        val longLine = "x".repeat(31)
+        assertNull(TextUtility.playerLoreError(longLine + "\n".repeat(6)))
+        assertNotNull(TextUtility.playerLoreError(longLine + "\n".repeat(7)))
+        assertNotNull(TextUtility.playerLoreError("<newline>".repeat(8)))
     }
 }

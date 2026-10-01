@@ -76,7 +76,7 @@ object ItemTextDialog {
         }
 
         val body = mutableListOf(DialogBody.plainMessage(Component.text(
-            if (multiline) "Max $maxLength characters. Press Enter to add line breaks. Long lines wrap automatically."
+            if (multiline) "Max $maxLength characters and ${TextUtility.MAX_PLAYER_LORE_LINES} tooltip lines. Press Enter to add line breaks. Long lines wrap automatically."
             else "Max $maxLength characters."
         )))
         if (error != null) {
@@ -90,6 +90,7 @@ object ItemTextDialog {
                 text.length > maxLength -> "$label cannot be longer than $maxLength characters."
                 !multiline && '\n' in text -> "Names must be on one line."
                 else -> TextUtility.containsFormatCodes(text, player).second
+                    ?: if (multiline) TextUtility.playerLoreError(text) else null
             }
             if (validationError != null) {
                 open(player, prototypeKit, key, label, maxLength, multiline, text ?: draft, validationError)
