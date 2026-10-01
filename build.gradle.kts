@@ -20,9 +20,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
     compileOnly(files("../SneakyPocketbase/build/libs/SneakyPocketbase-1.0-api.jar"))
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         from(sourceSets.main.get().resources.srcDirs) {

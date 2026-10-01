@@ -113,7 +113,7 @@ object PrototypeKit {
         val loreList = mutableListOf<Component>()
         
         if (lore != null) {
-            loreList.addAll(TextUtility.wrapLore(lore))
+            loreList.addAll(TextUtility.renderPlayerLore(lore))
             container.set(plugin.LORE_KEY, PersistentDataType.STRING, lore)
         }
         
@@ -205,4 +205,4 @@ object PrototypeKit {
         val meta = item.itemMeta ?: return null
         return createItemFromPDC(meta, creator = creator)
     }
-} 
+}

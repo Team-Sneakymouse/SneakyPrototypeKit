@@ -223,41 +223,13 @@ class MainCreationListener : Listener {
                 }
                 "name" -> {
                     player.playSound(player.location, "lom:computer.ding", 999f, 1f)
-                    player.closeInventory()
-                    player.sendMessage(TextUtility.convertToComponent("&eEnter a name for your item (max 30 characters):"))
-                    ChatInputListener.register(player, NameInputListener(player) { name ->
-                        val updatedMeta = prototypeKit.itemMeta ?: return@NameInputListener
-                        updatedMeta.persistentDataContainer.set(
-                            SneakyPrototypeKit.getInstance().NAME_KEY,
-                            PersistentDataType.STRING,
-                            name
-                        )
-                        prototypeKit.itemMeta = updatedMeta
-                        // Schedule inventory opening on main thread
-                        Bukkit.getScheduler().runTask(SneakyPrototypeKit.getInstance(), Runnable {
-                            MainCreationUI.open(player, prototypeKit)
-                        })
-                    })
+                    ItemTextDialog.openName(player, prototypeKit)
                 }
                 "lore" -> {
                     player.playSound(player.location, "lom:computer.ding", 999f, 1f)
-                    player.closeInventory()
-                    player.sendMessage(TextUtility.convertToComponent("&eEnter lore for your item (max 100 characters):"))
-                    ChatInputListener.register(player, LoreInputListener(player) { lore ->
-                        val updatedMeta = prototypeKit.itemMeta ?: return@LoreInputListener
-                        updatedMeta.persistentDataContainer.set(
-                            SneakyPrototypeKit.getInstance().LORE_KEY,
-                            PersistentDataType.STRING,
-                            lore
-                        )
-                        prototypeKit.itemMeta = updatedMeta
-                        // Schedule inventory opening on main thread
-                        Bukkit.getScheduler().runTask(SneakyPrototypeKit.getInstance(), Runnable {
-                            MainCreationUI.open(player, prototypeKit)
-                        })
-                    })
+                    ItemTextDialog.openLore(player, prototypeKit)
                 }
             }
         }, 1L)
     }
-} 
+}
