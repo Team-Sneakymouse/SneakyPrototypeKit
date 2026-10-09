@@ -1,5 +1,5 @@
 name: SneakyPrototypeKit
-version: '1.0.0'
+version: "${version}"
 main: net.sneakyprototypekit.SneakyPrototypeKit
 api-version: '26.2'
 description: A Paper plugin for creating custom items with configurable abilities and charges

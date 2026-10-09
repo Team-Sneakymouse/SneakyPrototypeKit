@@ -1,13 +1,27 @@
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
 plugins {
     java
     kotlin("jvm") version "2.4.10"
     kotlin("plugin.serialization") version "2.4.10"
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("com.gradleup.shadow") version "9.2.2"
+    `maven-publish`
 }
 
-group = "net.sneakyprototypekit"
-version = "1.0.0"
+group = "io.github.team-sneakymouse"
+
+version = providers.exec {
+    workingDir(rootDir)
+    commandLine("git", "show", "-s", "--format=%ct:%h", "--abbrev=12", "HEAD")
+}.standardOutput.asText.map { commit ->
+    val (timestamp, hash) = commit.trim().split(":", limit = 2)
+    val date = DateTimeFormatter.ofPattern("yyyy.MM.dd").withZone(ZoneOffset.UTC)
+        .format(Instant.ofEpochSecond(timestamp.toLong()))
+    "$date-$hash"
+}.get()
 
 repositories {
     mavenCentral()
@@ -29,25 +43,28 @@ tasks {
     test {
         useJUnitPlatform()
     }
+
     processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        from(sourceSets.main.get().resources.srcDirs) {
-            expand(
-                "version" to project.version
-            )
+        inputs.property("version", project.version.toString())
+        filesMatching("paper-plugin.yml") {
+            expand("version" to project.version.toString())
         }
     }
-    
+
     shadowJar {
-        archiveBaseName.set(project.name)
+        archiveBaseName.set("SneakyPrototypeKit")
         archiveClassifier.set("")
         mergeServiceFiles()
     }
-    
+
+    jar {
+        enabled = false
+    }
+
     build {
         dependsOn(shadowJar)
     }
-    
+
     runServer {
         minecraftVersion("26.2")
     }
@@ -56,7 +73,6 @@ tasks {
         options.encoding = "UTF-8"
         options.release.set(25)
     }
-
 }
 
 java {
@@ -68,7 +84,6 @@ java {
 sourceSets {
     main {
         java.srcDir("src/main/kotlin")
-        resources.srcDir("src/main/resources")
     }
 }
 
@@ -77,7 +92,7 @@ kotlin {
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25)
     }
-} 
+}
 
 val verifyPocketbaseIsolation by tasks.registering {
     dependsOn(tasks.shadowJar)
@@ -104,4 +119,38 @@ val verifyPocketbaseIsolation by tasks.registering {
 
 tasks.check {
     dependsOn(verifyPocketbaseIsolation)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = "SneakyPrototypeKit"
+            artifact(tasks.shadowJar) {
+                classifier = null
+            }
+            pom {
+                name.set("SneakyPrototypeKit")
+                description.set("Paper plugin for creating custom items with configurable abilities and charges.")
+                url.set("https://github.com/Team-Sneakymouse/SneakyPrototypeKit")
+                scm {
+                    url.set("https://github.com/Team-Sneakymouse/SneakyPrototypeKit")
+                    connection.set("scm:git:https://github.com/Team-Sneakymouse/SneakyPrototypeKit.git")
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "sneakyrp"
+            url = uri("https://maven.sneakyrp.com/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<org.gradle.authentication.http.BasicAuthentication>("basic")
+            }
+        }
+    }
+}
+
+tasks.withType<PublishToMavenRepository>().configureEach {
+    dependsOn(tasks.check)
 }
