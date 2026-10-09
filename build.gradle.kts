@@ -27,13 +27,14 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
+    maven("https://maven.sneakyrp.com/releases")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
-    compileOnly(files("../SneakyPocketbase/build/libs/SneakyPocketbase-1.0-api.jar"))
+    compileOnly("io.github.team-sneakymouse:sneakypocketbase-api:2026.10.09-0233c4a041d5")
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
