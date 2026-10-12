@@ -133,6 +133,7 @@ publishing {
                 name.set("SneakyPrototypeKit")
                 description.set("Paper plugin for creating custom items with configurable abilities and charges.")
                 url.set("https://github.com/Team-Sneakymouse/SneakyPrototypeKit")
+                properties.put("sneakyrp.deployment.type", "paper-plugin")
                 scm {
                     url.set("https://github.com/Team-Sneakymouse/SneakyPrototypeKit")
                     connection.set("scm:git:https://github.com/Team-Sneakymouse/SneakyPrototypeKit.git")
