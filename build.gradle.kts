@@ -35,10 +35,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
     compileOnly("io.github.team-sneakymouse:sneakypocketbase-api:2026.10.09-0233c4a041d5")
-    compileOnly("io.github.team-sneakymouse:sneakyutils:2026.10.18-4b5831b0b997")
+    compileOnly("io.github.team-sneakymouse:sneakyutils:2026.10.18-657d452bd6f4")
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
-    testImplementation("io.github.team-sneakymouse:sneakyutils:2026.10.18-4b5831b0b997")
+    testImplementation("io.github.team-sneakymouse:sneakyutils:2026.10.18-657d452bd6f4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
