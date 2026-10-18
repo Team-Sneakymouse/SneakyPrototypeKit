@@ -11,3 +11,7 @@ dependencies:
     SneakyPocketbase:
       load: BEFORE
       required: true
+    SneakyUtils:
+      load: BEFORE
+      required: true
+      join-classpath: true
