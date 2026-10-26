@@ -8,9 +8,10 @@ website: https://rawb.tv
 
 dependencies:
   server:
-    SneakyPocketbase:
+    SneakyDB:
       load: BEFORE
       required: true
+      join-classpath: true
     SneakyUtils:
       load: BEFORE
       required: true

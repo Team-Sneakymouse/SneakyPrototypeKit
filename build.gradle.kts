@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter
 plugins {
     java
     kotlin("jvm") version "2.4.10"
-    kotlin("plugin.serialization") version "2.4.10"
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("com.gradleup.shadow") version "9.2.2"
     `maven-publish`
@@ -27,14 +26,17 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
-    maven("https://maven.sneakyrp.com/releases")
+    exclusiveContent {
+        forRepository { maven("https://maven.sneakyrp.com/releases") }
+        filter { includeGroup("io.github.team-sneakymouse") }
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
-    compileOnly("io.github.team-sneakymouse:sneakypocketbase-api:2026.10.09-0233c4a041d5")
+    compileOnly("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
+    testImplementation("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
     compileOnly("io.github.team-sneakymouse:sneakyutils:2026.10.18-657d452bd6f4")
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
@@ -97,31 +99,31 @@ kotlin {
     }
 }
 
-val verifyPocketbaseIsolation by tasks.registering {
+val verifyDatabaseIsolation by tasks.registering {
     dependsOn(tasks.shadowJar)
     doLast {
         val jarFile = tasks.shadowJar.get().archiveFile.get().asFile
         val entries = zipTree(jarFile)
         listOf(
-            "kotlin/jvm/functions/Function1.class",
-            "kotlinx/serialization/json/JsonKt.class"
+            "kotlin/jvm/functions/Function1.class"
         ).forEach { path ->
             check(!entries.matching { include(path) }.isEmpty) {
                 "$path must be bundled in ${jarFile.name}"
             }
         }
+        val bundledDatabaseClasses = entries.matching {
+            include("com/sneakydb/**", "com/danidipp/sneakypocketbase/**", "org/postgresql/**", "com/zaxxer/hikari/**")
+        }
+        check(bundledDatabaseClasses.isEmpty) { "Database manager API/driver classes must not be bundled" }
         val staleClasses = entries.matching { include("**/*.class") }.files.filter { classFile ->
-            classFile.readBytes().toString(Charsets.ISO_8859_1)
-                .contains("com/danidipp/sneakypocketbase/PBRunnable")
+            classFile.readBytes().toString(Charsets.ISO_8859_1).contains("sneakypocketbase", ignoreCase = true)
         }
-        check(staleClasses.isEmpty()) {
-            "Obsolete PBRunnable reference remains in: ${staleClasses.joinToString()}"
-        }
+        check(staleClasses.isEmpty()) { "PocketBase reference remains in: ${staleClasses.joinToString()}" }
     }
 }
 
 tasks.check {
-    dependsOn(verifyPocketbaseIsolation)
+    dependsOn(verifyDatabaseIsolation)
 }
 
 publishing {

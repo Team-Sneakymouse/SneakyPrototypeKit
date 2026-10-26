@@ -14,14 +14,15 @@ A Paper plugin that allows server administrators to create custom items and cons
   - Custom models and textures
   - Custom names and lore
   - Stackable charges (e.g. food that can be eaten multiple times)
-- Integration with PocketBase for logging created items
+- Integration with PostgreSQL through SneakyDB for logging created items
 
 ## Dependencies
 
 - **Required**:
   - Java 25
   - Paper 26.2
-  - SneakyPocketbase (for item logging)
+  - SneakyDB `2026.10.26-fd4e29e90ad0` or compatible newer (for item logging)
+  - SneakyUtils
 
 ## Usage
 
@@ -92,10 +93,15 @@ drink-icons:
 
 1. Install Java 25 on your server
 2. Install Paper 26.2
-3. Install SneakyPocketbase plugin
+3. Install and configure SneakyDB and install SneakyUtils; have the external migration owner provision `lom.lom2_prototype_kit_items` first (see [database contract and cutover checklist](docs/database.md))
 4. Place SneakyPrototypeKit.jar in your plugins folder
 5. Start the server
 6. Configure the plugin in `plugins/SneakyPrototypeKit/config.yml`
+
+The plugin does not create database schemas or migrate historical records. Legacy migration
+is managed externally in [migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL).
+Item creation remains available if best-effort database logging fails; failures are logged
+to the server console, with no automatic retries or PocketBase fallback.
 
 ## Development
 
