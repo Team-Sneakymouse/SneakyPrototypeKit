@@ -139,6 +139,35 @@ class PrototypeKitLogTest {
     }
 
     @Test
+    fun `failures expose safe distinct categories without driver details`() {
+        fun category(future: CompletableFuture<Int>): String {
+            val failure = assertFails { future.join() }
+            assertFalse(generateSequence(failure) { it.cause }.any { it.message.orEmpty().contains("password=secret") })
+            return PrototypeKitLog.failureCategory(failure).name
+        }
+        val pending = Database()
+        val waiting = PrototypeKitLog(pending)
+        val initial = waiting.log(record)
+        pending.ready.completeExceptionally(IllegalStateException("password=secret"))
+        assertEquals("READINESS", category(initial))
+        waiting.close()
+        assertEquals("DISABLED", category(waiting.log(record)))
+
+        val full = PrototypeKitLog(Database())
+        repeat(64) { full.log(record) }
+        assertEquals("CAPACITY", category(full.log(record)))
+        full.close()
+
+        val rejected = Database().apply {
+            ready.complete(null)
+            result = CompletableFuture.failedFuture(IllegalStateException("password=secret"))
+        }
+        assertEquals("INSERT", category(PrototypeKitLog(rejected).log(record)))
+        rejected.result = CompletableFuture.completedFuture(0)
+        assertEquals("ROW_COUNT", category(PrototypeKitLog(rejected).log(record)))
+    }
+
+    @Test
     fun `insert must confirm exactly one affected row`() {
         for (count in listOf(0, 2)) {
             val database = Database().apply { ready.complete(null); result = CompletableFuture.completedFuture(count) }

@@ -43,8 +43,8 @@ object DatabaseUtil {
         result.whenComplete { _, failure ->
             if (failure != null) {
                 plugin.logger.warning(
-                    "Failed to log finalized kit through SneakyDB; check database readiness, " +
-                        "INSERT privileges and connectivity. Write may be uncertain; not retried."
+                    "Finalized kit log failed: category=${PrototypeKitLog.failureCategory(failure)}. " +
+                        "No retry; submitted writes may still commit."
                 )
             }
         }

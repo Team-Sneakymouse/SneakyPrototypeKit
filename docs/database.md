@@ -39,7 +39,8 @@ No network waits run on the Minecraft thread. A log waits asynchronously for
 SneakyDB readiness; at most 64 pending/in-flight logs are admitted. Cancelling a
 caller's completion future does not cancel a log or free its capacity slot. A failed insert/readiness
 or queue rejection is reported to the server log without echoing SQL parameters,
-raw driver exceptions or credentials. A successful submission is not a confirmed
+raw driver exceptions or credentials. Safe categories distinguish `CAPACITY`, `READINESS`,
+`INSERT`, `ROW_COUNT` and `DISABLED`; a category does not prove rollback. A successful submission is not a confirmed
 insert; the completion must report exactly one affected row.
 
 Disabling this plugin rejects waiting/new logs and fences future submissions from
