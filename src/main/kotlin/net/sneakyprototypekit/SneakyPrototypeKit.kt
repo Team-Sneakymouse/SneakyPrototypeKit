@@ -11,6 +11,8 @@ import net.sneakyprototypekit.listeners.PrototypeKitListener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.NamespacedKey
 import org.bukkit.permissions.Permission
+import com.sneakydb.SneakyDBProvider
+import net.sneakyprototypekit.util.PrototypeKitLog
 
 class SneakyPrototypeKit : JavaPlugin() {
     companion object {
@@ -24,8 +26,12 @@ class SneakyPrototypeKit : JavaPlugin() {
         }
     }
 
+    lateinit var itemLog: PrototypeKitLog
+        private set
+
     override fun onEnable() {
         instance = this
+        itemLog = PrototypeKitLog(SneakyDBProvider.getApi())
         logger.info("SneakyPrototypeKit has been enabled!")
         
         // Register listeners
@@ -50,6 +56,7 @@ class SneakyPrototypeKit : JavaPlugin() {
     }
 
     override fun onDisable() {
+        if (::itemLog.isInitialized) itemLog.close()
         logger.info("SneakyPrototypeKit has been disabled!")
     }
 

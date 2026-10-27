@@ -4,7 +4,7 @@ import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
-import net.sneakyprototypekit.util.PocketBaseUtil
+import net.sneakyprototypekit.util.DatabaseUtil
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -163,8 +163,8 @@ class MainCreationListener : Listener {
                         player.closeInventory()
                         player.sendMessage(TextUtility.convertToComponent("&aYour item has been created!"))
 
-                        // Log to PocketBase
-                        PocketBaseUtil.logFinalizedKit(finalItem)
+                        // Log new items asynchronously through SneakyDB
+                        DatabaseUtil.logFinalizedKit(finalItem)
 
                         player.playSound(player.location, "lom:computer.princessstart", 999f, 1f)
                     } else {
