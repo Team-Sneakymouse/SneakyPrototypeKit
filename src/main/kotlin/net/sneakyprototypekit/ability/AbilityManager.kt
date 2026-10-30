@@ -120,6 +120,7 @@ object AbilityManager {
         // Set cooldown for this ability
         playerCooldowns[ability] = System.currentTimeMillis()
 
+        // Console dispatch: `command` must come from config only, never from player-typed text.
         // Execute the command
         val finalCommand = command.replace("[playerName]", player.name)
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand)
