@@ -3,9 +3,11 @@ package net.sneakyprototypekit.creation.ui
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.util.TextUtility
+import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -28,7 +30,12 @@ object TypeSelectionUI {
      * @param player The player to show the UI to
      * @param prototypeKit The prototype kit being configured
      */
-    fun open(player: Player, prototypeKit: ItemStack) {
+    fun open(player: Player, prototypeKit: ItemStack): Unit = MenuTiming.timed("menu.type-selection.open") {
+        val inventory = MenuTiming.timed("menu.type-selection.build") { build(prototypeKit) }
+        MenuTiming.timed("menu.type-selection.open-inventory") { player.openInventory(inventory) }
+    }
+
+    private fun build(prototypeKit: ItemStack): Inventory {
         val holder = CustomInventoryHolder()
         val inventory = Bukkit.createInventory(holder, SIZE, TextUtility.convertToComponent(TITLE))
         holder.inventory = inventory
@@ -49,7 +56,7 @@ object TypeSelectionUI {
         // Store prototype kit reference
         holder.setData("prototype_kit", prototypeKit)
         
-        player.openInventory(inventory)
+        return inventory
     }
 
     /**

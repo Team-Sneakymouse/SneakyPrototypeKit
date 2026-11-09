@@ -103,6 +103,12 @@ is managed externally in [migrateSQL](https://github.com/Team-Sneakymouse/migrat
 Item creation remains available if best-effort database logging fails; failures are logged
 to the server console, with no automatic retries or PocketBase fallback.
 
+## Diagnostics
+
+Measured by [SneakyDiagnostics](https://github.com/Team-Sneakymouse/SneakyDiagnostics) when it is installed (optional): `/diagnostics plugins start 60 SneakyPrototypeKit`.
+Setup and rules: [plugin-providers.md](https://github.com/Team-Sneakymouse/SneakyDiagnostics/blob/main/docs/plugin-providers.md).
+Sections, per menu (`main-creation`, `type-selection`, `ability-selection`, `icon-selection`): `menu.<menu>.open` (the whole open), with `menu.<menu>.build` (creating and filling the inventory) and `menu.<menu>.open-inventory` (`Player.openInventory`, which includes every plugin's inventory listeners, such as SneakyItems' inventory update). No counts or levels.
+
 ## Development
 
 This plugin is built using Gradle. To build the plugin:

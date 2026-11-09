@@ -3,10 +3,12 @@ package net.sneakyprototypekit.creation.ui
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.PrototypeKit
 import net.sneakyprototypekit.util.TextUtility
+import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -23,7 +25,12 @@ object MainCreationUI {
      * @param player The player to show the UI to
      * @param prototypeKit The prototype kit being used
      */
-    fun open(player: Player, prototypeKit: ItemStack) {
+    fun open(player: Player, prototypeKit: ItemStack): Unit = MenuTiming.timed("menu.main-creation.open") {
+        val inventory = MenuTiming.timed("menu.main-creation.build") { build(prototypeKit) }
+        MenuTiming.timed("menu.main-creation.open-inventory") { player.openInventory(inventory) }
+    }
+
+    private fun build(prototypeKit: ItemStack): Inventory {
         // Remove MagicItem PDC
         prototypeKit.apply { itemMeta = itemMeta?.also { meta ->
             meta.persistentDataContainer.remove(NamespacedKey("magicspells", "magicitem"))
@@ -61,7 +68,7 @@ object MainCreationUI {
             }
         })
 
-        player.openInventory(inventory)
+        return inventory
     }
     
     /**

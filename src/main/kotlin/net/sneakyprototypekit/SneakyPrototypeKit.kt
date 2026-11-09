@@ -13,8 +13,12 @@ import org.bukkit.NamespacedKey
 import org.bukkit.permissions.Permission
 import com.sneakydb.SneakyDBProvider
 import net.sneakyprototypekit.util.PrototypeKitLog
+import net.sneakyprototypekit.integration.Probe
+import net.sneakyprototypekit.util.MenuTiming
 
 class SneakyPrototypeKit : JavaPlugin() {
+    /** SneakyDiagnostics measurements (optional): menu build and openInventory timing, see the README. */
+    val probe = Probe(this, "sneakyprototypekit-ticks-1")
     companion object {
         const val IDENTIFIER = "sneakyprototypekit"
         private lateinit var instance: SneakyPrototypeKit
@@ -32,6 +36,8 @@ class SneakyPrototypeKit : JavaPlugin() {
     override fun onEnable() {
         instance = this
         itemLog = PrototypeKitLog(SneakyDBProvider.getApi())
+        MenuTiming.probe = probe
+        probe.hook()
         logger.info("SneakyPrototypeKit has been enabled!")
         
         // Register listeners
@@ -56,6 +62,8 @@ class SneakyPrototypeKit : JavaPlugin() {
     }
 
     override fun onDisable() {
+        probe.unhook()
+        MenuTiming.probe = null
         if (::itemLog.isInitialized) itemLog.close()
         logger.info("SneakyPrototypeKit has been disabled!")
     }

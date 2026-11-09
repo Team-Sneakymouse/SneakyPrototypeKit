@@ -3,6 +3,7 @@ package net.sneakyprototypekit.creation.ui
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.util.TextUtility
+import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -138,10 +139,11 @@ class AbilitySelectionUI(
     override fun getInventory(): Inventory = inventory
 
     companion object {
-        fun open(player: Player, itemType: ItemType, page: Int = 0, prototypeKit: ItemStack, callback: (String) -> Unit) {
-            val ui = AbilitySelectionUI(itemType, page, callback, prototypeKit)
-            player.openInventory(ui.inventory)
-        }
+        fun open(player: Player, itemType: ItemType, page: Int = 0, prototypeKit: ItemStack, callback: (String) -> Unit): Unit =
+            MenuTiming.timed("menu.ability-selection.open") {
+                val ui = MenuTiming.timed("menu.ability-selection.build") { AbilitySelectionUI(itemType, page, callback, prototypeKit) }
+                MenuTiming.timed("menu.ability-selection.open-inventory") { player.openInventory(ui.inventory) }
+            }
     }
 
     data class AbilityData(
