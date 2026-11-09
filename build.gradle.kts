@@ -37,12 +37,12 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
     compileOnly("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
     testImplementation("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
-    compileOnly("io.github.team-sneakymouse:sneakyutils:2026.10.18-657d452bd6f4")
+    compileOnly("io.github.team-sneakymouse:sneakyutils:2026.11.09-aa63618e063b")
     // optional at runtime: SneakyDiagnostics measures the plugin when installed (integration/Probe.java); never bundled
     compileOnly("io.github.team-sneakymouse:SneakyDiagnostics-API:2026.10.30-3b422b67e32e")
     testImplementation(kotlin("test-junit5"))
     testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
-    testImplementation("io.github.team-sneakymouse:sneakyutils:2026.10.18-657d452bd6f4")
+    testImplementation("io.github.team-sneakymouse:sneakyutils:2026.11.09-aa63618e063b")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

@@ -8,7 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
+import com.sneakyutils.util.DisplayOnlyInventoryHolder
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import net.kyori.adventure.text.Component
@@ -21,7 +21,7 @@ class AbilitySelectionUI(
     val page: Int = 0,
     val callback: (String) -> Unit,
     val prototypeKit: ItemStack
-) : InventoryHolder {
+) : DisplayOnlyInventoryHolder {
     private val inventory: Inventory = Bukkit.createInventory(this, 54, TextUtility.convertToComponent("&6Select Ability"))
     private val abilities = mutableListOf<AbilityData>()
 

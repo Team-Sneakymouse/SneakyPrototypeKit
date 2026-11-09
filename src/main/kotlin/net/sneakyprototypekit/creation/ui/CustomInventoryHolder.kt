@@ -1,13 +1,14 @@
 package net.sneakyprototypekit.creation.ui
 
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.InventoryHolder
+import com.sneakyutils.util.DisplayOnlyInventoryHolder
 
 /**
  * Custom inventory holder that can store additional data.
  * Used by UIs to maintain state and pass data between event handlers.
+ * Display-only: the GUI slots hold icons, so SneakyItems skips scanning them.
  */
-class CustomInventoryHolder : InventoryHolder {
+class CustomInventoryHolder : DisplayOnlyInventoryHolder {
     private val data = mutableMapOf<String, Any>()
     private var inventory: Inventory? = null
     

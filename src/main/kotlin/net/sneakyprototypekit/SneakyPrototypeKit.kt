@@ -7,6 +7,7 @@ import net.sneakyprototypekit.creation.ui.TypeSelectionListener
 import net.sneakyprototypekit.creation.ui.AbilitySelectionListener
 import net.sneakyprototypekit.creation.ui.IconSelectionListener
 import net.sneakyprototypekit.creation.ui.MainCreationListener
+import net.sneakyprototypekit.creation.ui.CreationGuiDragListener
 import net.sneakyprototypekit.listeners.PrototypeKitListener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.NamespacedKey
@@ -47,6 +48,7 @@ class SneakyPrototypeKit : JavaPlugin() {
         server.pluginManager.registerEvents(IconSelectionListener(), this)
         server.pluginManager.registerEvents(PrototypeKitListener(), this)
         server.pluginManager.registerEvents(MainCreationListener(), this)
+        server.pluginManager.registerEvents(CreationGuiDragListener(), this)
 
         // Register commands using Paper's command system
         server.commandMap.register(IDENTIFIER, CommandPrototypeKit())
