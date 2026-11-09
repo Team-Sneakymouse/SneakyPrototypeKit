@@ -3,6 +3,7 @@ package net.sneakyprototypekit.creation.ui
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.util.TextUtility
+import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -136,9 +137,9 @@ class IconSelectionUI(
             page: Int = 0,
             prototypeKit: ItemStack,
             callback: (Material, Int) -> Unit
-        ) {
-            val ui = IconSelectionUI(itemType, page, callback, prototypeKit)
-            player.openInventory(ui.inventory)
+        ): Unit = MenuTiming.timed("menu.icon-selection.open") {
+            val ui = MenuTiming.timed("menu.icon-selection.build") { IconSelectionUI(itemType, page, callback, prototypeKit) }
+            MenuTiming.timed("menu.icon-selection.open-inventory") { player.openInventory(ui.inventory) }
         }
     }
 
