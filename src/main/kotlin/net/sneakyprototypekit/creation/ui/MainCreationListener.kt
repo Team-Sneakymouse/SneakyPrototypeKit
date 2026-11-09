@@ -24,21 +24,25 @@ class MainCreationListener : Listener {
         val prototypeKit = holder.getData("prototype_kit") as? ItemStack ?: return
         val kitMeta = prototypeKit.itemMeta ?: return
         
+        // The GUI is display-only: a real item must never land in its slots.
+        val clickedTop = event.clickedInventory == event.view.topInventory
+        if (clickedTop) event.isCancelled = true
+
         // Handle item drag into the UI
         if (event.action.name.contains("PLACE")) {
             val draggedItem = event.cursor
             val draggedMeta = draggedItem.itemMeta ?: return
             val plugin = SneakyPrototypeKit.getInstance()
-            
+
             // Check if this is an item created by our plugin (has type and ability)
             val typeStr = draggedMeta.persistentDataContainer.get(
                 plugin.ITEM_TYPE_KEY,
                 PersistentDataType.STRING
             ) ?: return
-            
+
             val hasAbility = draggedMeta.persistentDataContainer.has(plugin.LEFT_CLICK_ABILITY_KEY, PersistentDataType.STRING) ||
                             draggedMeta.persistentDataContainer.has(plugin.CONSUME_ABILITY_KEY, PersistentDataType.STRING)
-            
+
             if (!hasAbility) return
             
             // Cancel the drag
@@ -97,8 +101,8 @@ class MainCreationListener : Listener {
             return
         }
 
-        // Allow picking up items that have a type
-        if (event.clickedInventory != event.view.topInventory && event.currentItem != null) {
+        // Allow picking up items that have a type, but never moving them into the GUI
+        if (!clickedTop && event.currentItem != null && !CreationGuiGuard.movesIntoOtherInventory(event.action)) {
             val clickedMeta = event.currentItem?.itemMeta ?: return
             val plugin = SneakyPrototypeKit.getInstance()
             
