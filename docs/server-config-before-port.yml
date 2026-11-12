@@ -1,0 +1,817 @@
+## Ability trigger prefixes
+prefix-left-click: "&f\uE000 &7"  # Used for items
+prefix-right-click: "&f\uE001 &7"  # Used for food and drinks
+
+## Default prototype kit configuration
+prototype-kit:
+    material: "rabbit_foot"
+    model-data: 129
+    name: "&cPrototype Kit"
+    lore:
+        - "&7Value: &c2500 Dragon Coins"
+        - "&7Use this kit to create a custom item"
+        - "&f\uE000&7 Begin crafting an item"
+
+## Available abilities that can be applied to items and food
+## command-console is run on the console and replaces:
+## [playerName] with the name of the user
+abilities:
+    #Effect Spells
+    prototype-effectSpell-splash:
+        name: "Splash Attack"
+        description: "Splashes water all around you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1572
+        command-console: "cast forcecast [playerName] prototype-effectSpell-splash"
+        charges: 100
+        stack-size: 25
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]  
+        
+    prototype-effectSpell-splash2:
+        name: "Splash Attack"
+        description: "Splashes water all around you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1572
+        command-console: "cast forcecast [playerName] prototype-effectSpell-splash"
+        charges: 1
+        stack-size: 99
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"] 
+        
+    prototype-effectSpell-selfDestruct:
+        name: "Self Destructs"
+        description: "Self destructs and causes you to fall down"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1568
+        command-console: "cast forcecast [playerName] prototype-effectSpell-selfDestruct"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK", "ITEM"]
+
+        
+    #Leap Spells
+    prototype-jumpback-leap:
+        name: "Jump Back"
+        description: "Leap backwards at high speeds"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1562
+        command-console: "cast forcecast [playerName] prototype-jumpback-leap"
+        charges: 100
+        stack-size: 15
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+    prototype-jumpback-leap2:
+        name: "Jump Back"
+        description: "Leap backwards at high speeds"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1562
+        command-console: "cast forcecast [playerName] prototype-jumpback-leap"
+        charges: 1
+        stack-size: 75
+        cooldown: 3000
+        allowed-types: ["FOOD", "DRINK"] 
+            
+    prototype-rocketjump-leap:
+        name: "Rocket Jump"
+        description: "Jump extremely high"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1567
+        command-console: "cast forcecast [playerName] prototype-rocketjump-leap"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000
+        allowed-types: ["ITEM"] 
+    prototype-rocketjump-leap2:
+        name: "Rocket Jump"
+        description: "Jump extremely high"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1567
+        command-console: "cast forcecast [playerName] prototype-rocketjump-leap"
+        charges: 1
+        stack-size: 60
+        cooldown: 5000
+        allowed-types: ["FOOD", "DRINK"] 
+        
+    prototype-bigleap-leap:
+        name: "Big Leap"
+        description: "Take a big leap forward"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1550
+        command-console: "cast forcecast [playerName] prototype-bigleap-leap"
+        charges: 100
+        stack-size: 15
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+    prototype-bigleap-leap2:
+        name: "Big Leap"
+        description: "Take a big leap forward"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1550
+        command-console: "cast forcecast [playerName] prototype-bigleap-leap"
+        charges: 1
+        stack-size: 75
+        cooldown: 3000
+        allowed-types: ["FOOD", "DRINK"]
+        
+    #Blink Spells
+    prototype-blinkstep-blink:
+        name: "Blink Step"
+        description: "Blinks you instantly to the space your looking"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1553 
+        command-console: "cast forcecast [playerName] prototype-blinkstep-blink"
+        charges: 100
+        stack-size: 15
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+
+    prototype-blinkstep-blink2:
+        name: "Blink Step"
+        description: "Blinks you instantly to the space your looking"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1553 
+        command-console: "cast forcecast [playerName] prototype-blinkstep-blink"
+        charges: 1
+        stack-size: 75
+        cooldown: 500
+        allowed-types: ["FOOD", "DRINK"]   
+       
+   #Age Spells
+    prototype-devolutionspray-multi:
+        name: "Devolution Spray"
+        description: "Release a spray of magical dust that transforms monsters and animals back into babies"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1559 
+        command-console: "cast forcecast [playerName] prototype-devolutionspray-multi"
+        charges: 25
+        stack-size: 10
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+    prototype-devolutionspray-multi2:
+        name: "Devolution Spray"
+        description: "Release a spray of magical dust that transforms monsters and animals back into babies"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1559 
+        command-console: "cast forcecast [playerName] prototype-devolutionspray-multi"
+        charges: 1
+        stack-size: 50
+        cooldown: 300
+        allowed-types: ["FOOD", "DRINK"]  
+
+    #Enderchest Spells
+    prototype-bagofholding-dummy:
+        name: "Bag of Holding"
+        description: "Opens a portal to access your enderchest"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1549
+        command-console: "cast forcecast [playerName] prototype-bagofholding-dummy"
+        charges: 999
+        stack-size: 10
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+
+    prototype-bagofholding-dummy2:
+        name: "Bag of Holding"
+        description: "Opens a portal to access your enderchest"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1549
+        command-console: "cast forcecast [playerName] prototype-bagofholding-dummy"
+        charges: 1
+        stack-size: 99
+        cooldown: 300
+        allowed-types: ["FOOD", "DRINK"] 
+        
+    #Conjure Spells
+    prototype-conjurepetals-multi:
+        name: "Conjure Petals"
+        description: "Conjure random elemental petals"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1555
+        command-console: "cast forcecast [playerName] prototype-conjurepetals-multi"
+        charges: 25
+        stack-size: 15
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+       
+    prototype-conjurepetals-multi2:
+        name: "Conjure Petals"
+        description: "Conjure random elemental petals"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1555
+        command-console: "cast forcecast [playerName] prototype-conjurepetals-multi"
+        charges: 1
+        stack-size: 99
+        cooldown: 300
+        allowed-types: ["FOOD", "DRINK"] 
+       
+    prototype-conjurebones-multi:
+        name: "Conjure Bones"
+        description: "Conjures forth skeletons to harvest their bones"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1554
+        command-console: "cast forcecast [playerName] prototype-conjurebones-multi"
+        charges: 10
+        stack-size: 10
+        cooldown: 3000
+        allowed-types: ["ITEM"] 
+       
+    prototype-conjurebones-multi2:
+        name: "Conjure Bones"
+        description: "Conjures forth skeletons to harvest their bones"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1554
+        command-console: "cast forcecast [playerName] prototype-conjurebones-multi"
+        charges: 1
+        stack-size: 99
+        cooldown: 300
+        allowed-types: ["FOOD", "DRINK"] 
+       
+    #Flight Spells  
+    prototype-flightpath-magicCloud:
+        name: "Magic Cloud"
+        description: "Ride a magic cloud that takes you to the center of royal"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1564
+        command-console: "cast forcecast [playerName] prototype-flightpath-magicCloud"
+        charges: 100
+        stack-size: 15
+        cooldown: 30000
+        allowed-types: ["ITEM"] 
+
+    prototype-flightpath-magicCloud2:
+        name: "Magic Cloud"
+        description: "Ride a magic cloud that takes you to the center of royal"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1564
+        command-console: "cast forcecast [playerName] prototype-flightpath-magicCloud"
+        charges: 1
+        stack-size: 99
+        cooldown: 30000
+        allowed-types: ["FOOD", "DRINK"] 
+
+    prototype-flightpath-courtSummons:
+        name: "Court Summons"
+        description: "A surprise court summons kidnaps you away to the Court House"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1556
+        command-console: "cast forcecast [playerName] prototype-flightpath-courtSummons"
+        charges: 1
+        stack-size: 99
+        cooldown: 30000
+        allowed-types: ["ITEM", "FOOD", "DRINK"] 
+        
+    #Forcepush Spells
+    prototype-forcepush-solarflare:
+        name: "Solar Flare"
+        description: "Knocks nearby Targets back in a blinding flash"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1571
+        command-console: "cast forcecast [playerName] prototype-forcepush-solarflare"
+        charges: 1
+        stack-size: 99
+        cooldown: 5000
+        allowed-types: ["ITEM", "FOOD", "DRINK"]  
+     
+    #Magnet Spells
+    prototype-magnet-vacuumlootMulti:
+        name: "Vacuum Loot"
+        description: "Sucks in all nearby items to you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1573
+        command-console: "cast forcecast [playerName] prototype-magnet-vacuumlootMulti"
+        charges: 250
+        stack-size: 10
+        cooldown: 5000
+        allowed-types: ["ITEM"] 
+        
+    prototype-magnet-vacuumlootMulti2:
+        name: "Vacuum Loot"
+        description: "Sucks in all nearby items to you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1573
+        command-console: "cast forcecast [playerName] prototype-magnet-vacuumlootMulti"
+        charges: 1
+        stack-size: 99
+        cooldown: 5000
+        allowed-types: ["FOOD","DRINK"] 
+        
+    #Beam Spells    
+    prototype-firebreath-beam:
+        name: "Fire Breath"
+        description: "Breath fire that causes burning"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1551
+        command-console: "cast forcecast [playerName] prototype-firebreath-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-icebeam-beam:
+        name: "Ice Beam"
+        description: "Release a beam of Ice that causes freezing"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1552
+        command-console: "cast forcecast [playerName] prototype-icebeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-darkbubbles-beam:
+        name: "Dark Bubbles"
+        description: "Release Dark bubbles forward that cause blinding"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1557
+        command-console: "cast forcecast [playerName] prototype-darkbubbles-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-dizzyblast-beam:
+        name: "Dizzy Blast"
+        description: "Shoot out a line of dizzy dust"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1560
+        command-console: "cast forcecast [playerName] prototype-dizzyblast-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-procbeam-beam:
+        name: "Proc Beam"
+        description: "Shoot out a beam that makes others faster"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1566
+        command-console: "cast forcecast [playerName] prototype-procbeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-sleepybeam-beam:
+        name: "Sleepy Beam"
+        description: "Release a wave of petals that puts others to sleep"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1570
+        command-console: "cast forcecast [playerName] prototype-sleepybeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-bubblebeam-beam:
+        name: "Bubble Beam"
+        description: "Shoot out bubbles that knock others back"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 3
+        command-console: "cast forcecast [playerName] prototype-bubblebeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-levitation-beam:
+        name: "Levitation Ray"
+        description: "Release a ray of light that causes levitation"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1563
+        command-console: "cast forcecast [playerName] prototype-levitation-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-healbeam-beam:
+        name: "Heal Beam"
+        description: "Release a wave of healing magic."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1561
+        command-console: "cast forcecast [playerName] prototype-healbeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-darknessbeam-beam:
+        name: "Darkness Beam"
+        description: "Shoot a beam of dark energy that causes wither"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1558
+        command-console: "cast forcecast [playerName] prototype-darknessbeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-poisonbreath-beam:
+        name: "Poison Breath"
+        description: "Breath out a volley of spores that poisons"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1565
+        command-console: "cast forcecast [playerName] prototype-poisonbreath-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-shieldingbeam-beam:
+        name: "Shielding Beam"
+        description: "Shields players making them immune to damage"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1569
+        command-console: "cast forcecast [playerName] prototype-shieldingbeam-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]
+
+    prototype-whippull-beam:
+        name: "Whip Pull"
+        description: "Release a whip of ash that pulls others to you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1574
+        command-console: "cast forcecast [playerName] prototype-whippull-beam"
+        charges: 50
+        stack-size: 10
+        cooldown: 5000  # Default 5s cooldown
+        allowed-types: ["ITEM"]  
+    ##
+    prototype-firebreath-beam2:
+        name: "Fire Breath"
+        description: "Breath fire that causes burning"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1551
+        command-console: "cast forcecast [playerName] prototype-firebreath-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-icebeam-beam2:
+        name: "Ice Beam"
+        description: "Release a beam of Ice that causes freezing"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1552
+        command-console: "cast forcecast [playerName] prototype-icebeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-darkbubbles-beam2:
+        name: "Dark Bubbles"
+        description: "Release Dark bubbles forward that cause blinding"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1557
+        command-console: "cast forcecast [playerName] prototype-darkbubbles-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-dizzyblast-beam2:
+        name: "Dizzy Blast"
+        description: "Shoot out a line of dizzy dust"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1560
+        command-console: "cast forcecast [playerName] prototype-dizzyblast-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-procbeam-beam2:
+        name: "Proc Beam"
+        description: "Shoot out a beam that makes others faster"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1566
+        command-console: "cast forcecast [playerName] prototype-procbeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-sleepybeam-beam2:
+        name: "Sleepy Beam"
+        description: "Release a wave of petals that puts others to sleep"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1570
+        command-console: "cast forcecast [playerName] prototype-sleepybeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-bubblebeam-beam2:
+        name: "Bubble Beam"
+        description: "Shoot out bubbles that knock others back"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 3
+        command-console: "cast forcecast [playerName] prototype-bubblebeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-levitation-beam2:
+        name: "Levitation Ray"
+        description: "Release a ray of light that causes levitation"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1563
+        command-console: "cast forcecast [playerName] prototype-levitation-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-healbeam-beam2:
+        name: "Heal Beam"
+        description: "Release a wave of healing magic."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1561
+        command-console: "cast forcecast [playerName] prototype-healbeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-darknessbeam-beam2:
+        name: "Darkness Beam"
+        description: "Shoot a beam of dark energy that causes wither"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1558
+        command-console: "cast forcecast [playerName] prototype-darknessbeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-poisonbreath-beam2:
+        name: "Poison Breath"
+        description: "Breath out a volley of spores that poisons"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1565
+        command-console: "cast forcecast [playerName] prototype-poisonbreath-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-shieldingbeam-beam2:
+        name: "Shielding Beam"
+        description: "Shields players making them immune to damage"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1569
+        command-console: "cast forcecast [playerName] prototype-shieldingbeam-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+
+    prototype-whippull-beam2:
+        name: "Whip Pull"
+        description: "Release a whip of ash that pulls others to you"
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1574
+        command-console: "cast forcecast [playerName] prototype-whippull-beam"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 5s cooldown
+        allowed-types: ["FOOD", "DRINK"]
+      
+    
+    #XP Buffs
+    prototype-expPotions-building:
+        name: "Building XP"
+        description: "Gives you +50% Building XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1575  # xpbuild
+        command-console: "cast forcecast [playerName] prototype-expPotions-building"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-digging:
+        name: "Digging XP"
+        description: "Gives you +50% Digging XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1579  # xpdigging
+        command-console: "cast forcecast [playerName] prototype-expPotions-digging"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-drinking:
+        name: "Drinking XP"
+        description: "Gives you +50% Drinking XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1580  # xpdrinking
+        command-console: "cast forcecast [playerName] prototype-expPotions-drinking"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-eating:
+        name: "Eating XP"
+        description: "Gives you +50% Eating XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1581  # xpeating
+        command-console: "cast forcecast [playerName] prototype-expPotions-eating"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-fishing:
+        name: "Fishing XP"
+        description: "Gives you +50% Fishing XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1583  # xpfish
+        command-console: "cast forcecast [playerName] prototype-expPotions-fishing"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-gathering:
+        name: "Gathering XP"
+        description: "Gives you +50% Gathering XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1584  # xpgathering
+        command-console: "cast forcecast [playerName] prototype-expPotions-gathering"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-jumping:
+        name: "Jumping XP"
+        description: "Gives you +50% Jumping XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1586  # xpjump
+        command-console: "cast forcecast [playerName] prototype-expPotions-jumping"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-mining:
+        name: "Mining XP"
+        description: "Gives you +50% Mining XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1588  # xpmine
+        command-console: "cast forcecast [playerName] prototype-expPotions-mining"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-magicing:
+        name: "Magicing XP"
+        description: "Gives you +50% Magicing XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1587  # xpmagicing
+        command-console: "cast forcecast [playerName] prototype-expPotions-magicing"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-sitting:
+        name: "Sitting XP"
+        description: "Gives you +50% Sitting XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1595  # No matching icon in the list
+        command-console: "cast forcecast [playerName] prototype-expPotions-sitting"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]    
+    prototype-expPotions-sprinting:
+        name: "Sprinting XP"
+        description: "Gives you +50% Sprinting XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1589  # xpsprint
+        command-console: "cast forcecast [playerName] prototype-expPotions-sprinting"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-swimming:
+        name: "Swimming XP"
+        description: "Gives you +50% Swimming XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1591  # xpswimming
+        command-console: "cast forcecast [playerName] prototype-expPotions-swimming"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-trading:
+        name: "Trading XP"
+        description: "Gives you +50% Trading XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1592  # xptrading
+        command-console: "cast forcecast [playerName] prototype-expPotions-trading"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-worshiping:
+        name: "Worshiping XP"
+        description: "Gives you +50% Worshiping XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1594  # xpworship
+        command-console: "cast forcecast [playerName] prototype-expPotions-worshiping"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-strength:
+        name: "Strength XP"
+        description: "Gives you +50% Strength XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1590  # xpstrength
+        command-console: "cast forcecast [playerName] prototype-expPotions-strength"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-dexterity:
+        name: "Dexterity XP"
+        description: "Gives you +50% Dexterity XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1578  # xpdexterity
+        command-console: "cast forcecast [playerName] prototype-expPotions-dexterity"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-constitution:
+        name: "Constitution XP"
+        description: "Gives you +50% Constitution XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1577  # xpconstitution
+        command-console: "cast forcecast [playerName] prototype-expPotions-constitution"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-wisdom:
+        name: "Wisdom XP"
+        description: "Gives you +50% Wisdom XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1593  # xpwisdom
+        command-console: "cast forcecast [playerName] prototype-expPotions-wisdom"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-intelligence:
+        name: "Intelligence XP"
+        description: "Gives you +50% Intelligence XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1585  # xpintelligence
+        command-console: "cast forcecast [playerName] prototype-expPotions-intelligence"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]  
+    prototype-expPotions-empathy:
+        name: "Empathy XP"
+        description: "Gives you +50% Empathy XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1582  # xpempathy
+        command-console: "cast forcecast [playerName] prototype-expPotions-empathy"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]
+    prototype-expPotions-charisma:
+        name: "Charisma XP"
+        description: "Gives you +50% Charisma XP for 30 minutes."
+        icon-material: "jigsaw"
+        icon-custom-model-data: 1576
+        command-console: "cast forcecast [playerName] prototype-expPotions-charisma"
+        charges: 1
+        stack-size: 50
+        cooldown: 500  # Default 500ms cooldown
+        allowed-types: ["FOOD", "DRINK"]
+        
+## Available icons for items
+item-icons:
+    echo_shard:
+        - "12-246"
+        - "1-11"
+        - "252-255"
+    iron_pickaxe:
+        - "2-3"
+
+## Available icons for food items
+food-icons:
+    potato:
+        - "1-80"
+
+## Available icons for drink items
+drink-icons:
+    melon_slice:
+        - "1-75"

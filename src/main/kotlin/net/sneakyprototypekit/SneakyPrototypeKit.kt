@@ -43,6 +43,7 @@ class SneakyPrototypeKit : JavaPlugin() {
         
         // Register listeners
         server.pluginManager.registerEvents(AbilityListener(), this)
+        server.pluginManager.registerEvents(net.sneakyprototypekit.ability.actions.AbilityState, this)
         server.pluginManager.registerEvents(TypeSelectionListener(), this)
         server.pluginManager.registerEvents(AbilitySelectionListener(), this)
         server.pluginManager.registerEvents(IconSelectionListener(), this)
@@ -66,6 +67,7 @@ class SneakyPrototypeKit : JavaPlugin() {
     override fun onDisable() {
         probe.unhook()
         MenuTiming.probe = null
+        net.sneakyprototypekit.ability.actions.WorldActions.restoreAll()
         if (::itemLog.isInitialized) itemLog.close()
         logger.info("SneakyPrototypeKit has been disabled!")
     }

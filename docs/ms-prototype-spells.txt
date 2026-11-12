@@ -1,0 +1,475 @@
+    caster:fontanimation:{"name": "lom:energyblast", "start-frame": 0, "interval": 1, "duration": 35, "fade-out": 0}
+    caster:sound:lom:earth.blast v1.0 p1.2 d0
+    target:sound:lom:sfx.anvilslam v1.1 p0.9 d4
+    target:particles:explosion n2 hs0.5 vs0.5 sp0.1 c d4 h
+    caster:sound:lom:sfx.evade v1.0 p0.8 d0
+    caster:particles:cloud n20 hs0.4 vs0.2 sp0.1 c d0 h
+    target:sound:lom:activateshield v1.2 p0.9 d0
+    target:particles:crit n35 hs0.8 vs0.8 sp0.25 c d0 h
+    caster:fontanimation:{"name": "lom:arcaneripple", "start-frame": 0, "interval": 1, "duration": 40, "fade-out": 0}
+    caster:sound:lom:arcane.mesmerize v1.0 p1.2 d0
+    target:particles:witch n30 hs0.5 vs1.0 sp0.1 c d0 h1.0
+    target:sound:lom:sfx.clothingunequip v0.8 p1.4 d0
+    target:sound:lom:sfx.clothingunequip v0.8 p1.6 d0
+    target:toast:{"frame": "TASK", "text": "&5Marionette threads wrest your weapon away!", "icon": "jigsaw{CustomModelData:1031}"}
+    target:particles:reverse_portal n35 hs0.6 vs0.8 sp0.15 c d0 h1.2
+    caster:sound:lom:ringtone.cursedforever v0.7 p1.4 d0
+    caster:fontanimation:{"name": "lom:energyblast", "start-frame": 0, "interval": 1, "duration": 40, "fade-out": 0}
+    caster:sound:lom:arcane.tinkle v1.0 p1.0 d0
+    caster:sound:minecraft:block.beacon.activate v0.9 p1.3 d0
+    caster:entity:{"offset": "0,0,0", "entity": {"entity": "block_display", "block": "amethyst_block", "billboard": "FIXED", "duration": 200, "transformation": {"left-rotation": "0,0,0,1", "right-rotation": "0,0,0,1", "translation": "-0.4,0.05,-0.4", "scale": "0.8,0.2,0.8"}}}
+    caster:entity:{"offset": "0,0,0", "delay": 2, "entity": {"entity": "block_display", "block": "sea_lantern", "billboard": "FIXED", "duration": 200, "transformation": {"left-rotation": "0,0,0,1", "right-rotation": "0,0,0,1", "translation": "-0.2,0.25,-0.2", "scale": "0.4,0.4,0.4"}}}
+    caster:sound:lom:earth.blast v1.0 p0.8 d0
+    caster:sound:minecraft:block.bell.resonate v1.1 p0.9 d0
+    caster:entity:{"offset": "0,0,0", "entity": {"entity": "block_display", "block": "polished_deepslate", "billboard": "FIXED", "duration": 240, "transformation": {"left-rotation": "0,0,0,1", "right-rotation": "0,0,0,1", "translation": "-0.35,0.0,-0.35", "scale": "0.7,1.8,0.7"}}}
+    caster:entity:{"offset": "0,0,0", "entity": {"entity": "block_display", "block": "ochre_froglight", "billboard": "FIXED", "duration": 240, "transformation": {"left-rotation": "0,0,0,1", "right-rotation": "0,0,0,1", "translation": "-0.25,1.8,-0.25", "scale": "0.5,0.4,0.5"}}}
+prototype-devolutionspray-multi {"spell-class": ".MultiSpell", "spells": ["prototype-devolutionspray-area", "DELAY 17", "prototype-devolutionspray-area", "DELAY 17", "prototype-devolutionspray-area", "DELAY 17", "prototype-devolutionspray-area", "DELAY 17", "prototype-devolutionspray-area", "prototype-devolutionspray-area"]}
+prototype-devolutionspray-area {"spell-class": ".targeted.AreaEffectSpell", "can-target": "nonplayers", "horizontal-radius": 10, "vertical-radius": 10, "point-blank": true, "fail-if-no-targets": false, "spells": ["prototype-devolutionspray-age(mode=FULL)"]}
+    caster:particles:warped_spore n100 hs3 vs2 sp0 c d0 h3
+    caster:particles:crimson_spore n100 hs3 vs2 sp0 c d5 h3
+    caster:particles:spore_blossom_air n100 hs3 vs2 sp0 c d10 h3
+    caster:sound:lom:poison.cast v0.1 p1.5 d0
+prototype-devolutionspray-age {"spell-class": ".targeted.AgeSpell", "modifiers": ["chance 30 required"], "age": -10, "set-maturity": true, "apply-age-lock": true}
+    target:particles:end_rod n50 hs0.5 vs0.5 sp0 c d0 h0.5
+prototype-firebreath-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-firebreath-combust", "y-offset": 1, "hit-radius": 0.5, "cooldown": 5}
+    special:particles:flame n20 hs0.1 vs0.1 sp0 c d0 h
+    special:particles:flame n20 hs0.2 vs0.2 sp0 c d2 h
+    special:particles:flame n20 hs0.3 vs0.3 sp0 c d4 h
+    caster:sound:item.firecharge.use v5 p0.5 d0
+prototype-firebreath-combust {"spell-class": ".targeted.CombustSpell", "fire-ticks": 100, "fire-tick-damage": 0, "prevent-immunity": true, "target-players": true, "check-plugins": true}
+    target:particles:large_smoke n20 hs0.25 vs0.25 sp0.1 c d0 h1
+    target:particles:FLAME n20 hs0.1 vs0.1 sp0.1 c d0 h1
+prototype-icebeam-beam {"spell-class": ".instant.BeamSpell", "can-target": "self,players", "max-distance": 15, "interval": 0.5, "spell": "prototype-icebeam-freeze(mode=full)", "y-offset": 1, "hit-radius": 0.5}
+    special:particles:snowflake n20 hs0.1 vs0.1 sp0 c d0 h
+    special:particles:snowflake n20 hs0.2 vs0.2 sp0 cF0B52D d2 h
+    special:particles:snowflake n20 hs0.3 vs0.3 sp0 c d4 h
+    caster:sound:lom:ice.blast v0.05 p1.0 d0
+prototype-icebeam-freeze {"spell-class": ".ExternalCommandSpell", "can-target": "self,players", "require-player-target": true, "execute-on-console-instead": true, "command-to-execute": ["effect %t freeze 10 -s"]}
+prototype-poisonbreath-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-poisonbreath-poison", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:spore_blossom_air n3 hs0.1 vs0.1 sp0 c d0 h
+    special:particles:spore_blossom_air n3 hs0.2 vs0.2 sp0 c d2 h
+    special:particles:spore_blossom_air n3 hs0.3 vs0.3 sp0 c d4 h
+    caster:sound:lom:poison.cast v0.1 p1 d0
+prototype-poisonbreath-poison {"spell-class": ".targeted.PotionEffectSpell", "type": "poison", "duration": 100, "strength": 0, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+prototype-darknessbeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-darknessbeam-wither", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:squid_ink n3 hs0.1 vs0.1 sp0 c d0 h
+    special:particles:squid_ink n3 hs0.2 vs0.2 sp0 c d2 h
+    special:particles:squid_ink n3 hs0.3 vs0.3 sp0 c d4 h
+    caster:sound:lom:dark.hit v0.1 p1 d0
+prototype-darknessbeam-wither {"spell-class": ".targeted.PotionEffectSpell", "type": "wither", "duration": 100, "strength": 0, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+prototype-healbeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-healbeam-heal", "hit-radius": 4, "y-offset": 1}
+    special:particles:end_rod n3 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:end_rod n3 hs0.2 vs0.2 sp0 cF0B52D d5 h
+    special:particles:end_rod n3 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:light.heal2 v0.1 p0.8 d0
+prototype-healbeam-heal {"spell-class": ".targeted.HealSpell", "can-target": "players,nonplayers", "heal-amount": 10, "cancel-if-full": false, "str-cast-self": "", "str-cast-target": "", "str-no-target": "", "str-max-health": ""}
+prototype-levitation-beam {"spell-class": ".instant.BeamSpell", "max-distance": 50, "interval": 0.5, "spell": "prototype-levitation-buff", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:end_rod n1 hs0.2 vs0.1 sp0 cF0EA2D d0 h
+    special:particles:end_rod n1 hs0.2 vs0.2 sp0 cF0B52D d5 h
+    special:particles:end_rod n1 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:light.shield v0.1 p1 d0
+prototype-levitation-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "levitation", "duration": 200, "strength": 0, "can-target": "players,nonplayers", "ambient": false, "hidden": false}
+prototype-bubblebeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 50, "interval": 0.5, "spell": "prototype-bubblebeam-buff", "hit-radius": 0.5, "gravity": 0.01, "y-offset": 1.5}
+    special:particles:bubble_pop n5 hs0.2 vs0.1 sp0 cF0EA2D d0 h
+    special:particles:bubble_pop n5 hs0.2 vs0.2 sp0 cF0B52D d3 h
+    special:particles:bubble_pop n5 hs0.2 vs0.3 sp0 c d6 h
+    special:particles:bubble_pop n5 hs0.2 vs0.1 sp9 cF0EA2D d0 h
+    special:particles:bubble_pop n5 hs0.2 vs0.2 sp0 cF0B52D d12 h
+    special:particles:bubble_pop n5 hs0.2 vs0.3 sp0 c d15 h
+    caster:sound:block.bubble_column.upwards_ambient v2 p1 d0
+prototype-bubblebeam-buff {"spell-class": ".targeted.ForcetossSpell", "damage": 0, "horizontal-force": 30, "vertical-force": 2, "can-target": "players,monsters", "check-plugins": true}
+prototype-sleepybeam-beam {"spell-class": ".instant.BeamSpell", "can-target": "self,players", "max-distance": 25, "interval": 0.5, "stop-on-hit-ground": true, "spell": "prototype-sleepybeam-sleep(mode=full)", "y-offset": 1, "hit-radius": 0.5}
+    special:particles:cherry_leaves n5 hs0.1 vs0.1 sp0 cF0EA2D d0 h
+    special:particles:cherry_leaves n10 hs0.2 vs0.2 sp0 cF0B52D d2 h
+    special:particles:cherry_leaves n10 hs0.3 vs0.3 sp0 c d4 h
+    caster:sound:lom:cute.appear v0.05 p0.9 d0
+prototype-sleepybeam-sleep {"spell-class": ".ExternalCommandSpell", "can-target": "self,players", "require-player-target": true, "execute-on-console-instead": true, "command-to-execute": ["sudo %t mee falls asleep..."], "command-delay": 30, "command-to-execute-later": ["sudo %t lay"]}
+prototype-procbeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 50, "interval": 0.5, "spell": "prototype-procbeam-buff", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:happy_villager n5 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:happy_villager n5 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:happy_villager n10 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:wpnproc v0.1 p1 d0
+prototype-procbeam-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "speed", "duration": 200, "strength": 1, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+    target:particles:composter n50 hs0.5 vs0.5 sp0 c d0 h
+    caster:soundpersonal:lom:wpnproc v0.1 p1 d0
+prototype-dizzyblast-beam {"spell-class": ".instant.BeamSpell", "max-distance": 50, "interval": 0.5, "spell": "prototype-dizzyblast-buff", "can-target": "self,players,nonplayers", "stop-on-hit-ground": true, "hit-radius": 0.5, "y-offset": 1}
+    special:particles:portal n5 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:portal n5 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:portal n10 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:arcane.mesmerize v0.1 p1 d0
+prototype-dizzyblast-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "nausea", "duration": 100, "strength": 1, "can-target": "self,players,nonplayers", "ambient": false, "hidden": true}
+    target:particles:portal n50 hs0.5 vs0.5 sp1 c d0 h
+prototype-darkbubbles-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-darkbubbles-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:sculk_charge_pop n1 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:sculk_charge_pop n1 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:sculk_charge_pop n1 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:arcane.blobexplosion v0.1 p1 d0
+prototype-darkbubbles-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "darkness", "duration": 200, "strength": 1, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+    target:particles:sculk_charge_pop n50 hs1.0 vs1.0 sp0 c d0 h
+prototype-glowbeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-glowbeam-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:wax_off n1 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:wax_off n1 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:wax_off n1 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:light.buff v0.1 p1 d0
+prototype-glowbeam-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "glowing", "duration": 200, "strength": 1, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+    target:particles:wax_off n35 hs0.8 vs0.8 sp1 c d0 h
+prototype-shieldingbeam-beam {"spell-class": ".instant.BeamSpell", "max-distance": 35, "interval": 0.5, "spell": "prototype-shieldingbeam-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:wax_on n1 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:wax_off n1 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:wax_on n1 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:light.shield v0.1 p0.9 d0
+prototype-shieldingbeam-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "resistance", "duration": 200, "strength": 5, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+    target:effectlibentity:{"effectlib": {"class": "CircleEffect", "particle": "wax_on", "particles": 5, "orient": true, "xRotation": 0, "yRotation": 0, "zRotation": 0, "radius": 1.4, "resetCircle": false, "xSubtract": 0, "ySubtract": 0, "zSubtract": 0, "enableRotation": true, "wholeCircle": true, "type": "REPEATING", "period": 1, "iterations": 131, "offset": "0,1,0"}}
+    target:effectlibentity:{"effectlib": {"class": "CircleEffect", "particle": "wax_off", "particles": 5, "orient": true, "xRotation": 0, "yRotation": 0, "zRotation": 0, "radius": 1.7, "resetCircle": false, "xSubtract": 0, "ySubtract": 0, "zSubtract": 0, "enableRotation": true, "wholeCircle": true, "type": "REPEATING", "period": 1, "iterations": 131, "offset": "0,1,0"}}
+prototype-breathoflife-beam {"spell-class": ".instant.BeamSpell", "max-distance": 35, "interval": 0.5, "spell": "prototype-breathoflife-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:dolphin n10 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:dolphin n10 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:dolphin n10 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:ice.cast v0.1 p1.1 d0
+prototype-breathoflife-buff {"spell-class": ".targeted.PotionEffectSpell", "type": "water_breathing", "duration": 100, "strength": 5, "can-target": "players,nonplayers", "ambient": false, "hidden": true}
+prototype-psychiccontrol-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-psychiccontrol-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:witch n10 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:witch n10 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:witch n10 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:arcane.mindcontrol v0.1 p1.1 d0
+prototype-psychiccontrol-buff {"spell-class": ".targeted.LevitateSpell", "tick-rate": 1, "toggle": true, "min-distance": 1, "max-distance": 9999, "distance-change": 0, "cancel-on-take-damage": true, "cancel-on-item-switch": false, "duration": 100, "range": 15}
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d0 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d10 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d20 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d30 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d40 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d50 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d60 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d70 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d80 h
+    target:particles:witch n10 hs0.2 vs0.1 sp0 c d90 h
+prototype-whippull-beam {"spell-class": ".instant.BeamSpell", "max-distance": 15, "interval": 0.5, "spell": "prototype-whippull-buff", "can-target": "self,players,nonplayers", "hit-radius": 0.5, "y-offset": 1}
+    special:particles:ash n25 hs0.2 vs0.1 sp0 c d0 h
+    special:particles:ash n25 hs0.2 vs0.2 sp0 c d5 h
+    special:particles:ash n25 hs0.2 vs0.3 sp0 c d10 h
+    caster:sound:lom:whip v0.1 p0.9 d0
+prototype-whippull-buff {"spell-class": ".targeted.LevitateSpell", "tick-rate": 1, "toggle": true, "min-distance": 1, "max-distance": 15, "distance-change": 100, "cancel-on-take-damage": true, "cancel-on-item-switch": false, "duration": 5, "range": 25}
+    target:particles:ash n25 hs0.2 vs0.1 sp0 c d0 h
+prototype-heavywell-beam {"spell-class": ".instant.BeamSpell", "max-distance": 20, "interval": 0.5, "spell": "prototype-heavywell-debuff", "hit-radius": 0.8, "y-offset": 1, "cooldown": 8}
+    special:particles:dripping_obsidian_tear n5 hs0.1 vs0.1 sp0 c d0 h
+    special:particles:reverse_portal n15 hs0.2 vs0.2 sp0.05 c d2 h
+    caster:sound:lom:dark.whoosh v1 p0.5 d0
+prototype-heavywell-debuff {"spell-class": ".targeted.PotionEffectSpell", "type": "slow", "duration": 100, "strength": 3, "can-target": "players,nonplayers", "ambient": false, "hidden": false}
+    target:particles:dripping_obsidian_tear n40 hs0.5 vs1.0 sp0.1 c d0 h
+    target:sound:lom:dark.whoosh v0.5 p0.1 d0
+prototype-soulsiphon-projectile {"spell-class": ".instant.ParticleProjectileSpell", "projectile-velocity": 3, "tick-interval": 1, "max-distance": 100, "spell": "prototype-soulsiphon-blind(mode=FULL)", "hit-players": true, "hit-radius": 1, "controllable": true, "sneak-inverts-direction": true}
+    special:particles:soul n5 hsNone vsNone sp0 c d0 h
+    special:particles:soul_fire_flame n10 hsNone vsNone sp0.1 c d0 h
+    caster:sound:lom:dark.vortext v0.3 p1 d0
+prototype-soulsiphon-blind {"spell-class": ".targeted.PotionEffectSpell", "type": "blindness", "duration": 100, "strength": 3, "can-target": "players,nonplayers", "ambient": false, "hidden": false}
+    target:particles:soul n40 hs0.5 vs1.0 sp0.1 c d0 h
+    target:sound:lom:dark.vortext v1 p0.1 d0
+prototype-thunderribbit-chain {"spell-class": ".targeted.ChainSpell", "range": 50, "bounces": 10, "bounce-range": 10, "spell": "prototype-thunderribbit-buff", "can-target": "players,nonplayers,self", "cooldown": 30}
+    line:particles:glow n3 hs0.1 vs0.1 sp0.2 c d0 h
+    special:sound:entity.creeper.primed v0.5 p2.0 d0
+prototype-thunderribbit-shock {"spell-class": ".targeted.PotionEffectSpell", "type": "jump", "duration": 200, "strength": 5, "can-target": "players,nonplayers, self"}
+prototype-thunderribbit-passive {"spell-class": ".PassiveSpell", "modifiers": ["buffactive prototype-thunderribbit-buff required"], "triggers": ["jump"], "spells": ["prototype-thunderribbit-leap"]}
+prototype-thunderribbit-buff {"spell-class": ".buff.ext.DisguiseSpell", "disguise": "frog", "duration": 10, "can-target": "players,nonplayers,self"}
+    target:particles:glow n20 hs0.5 vs1.0 sp0.1 c d0 h
+    target:sound:block.conduit.attack.target v0.8 p1.5 d0
+    target:fontanimation:{"name": "lom:chainlightning", "start-frame": 0, "interval": 1, "duration": 11, "fade-out": 0}
+prototype-thunderribbit-leap {"spell-class": ".instant.LeapSpell", "forward-velocity": 3, "upward-velocity": 1, "cancel-damage": true}
+    caster:sound:minecraft:entity.frog.hurt v0.8 p0.8 d0
+prototype-winddance-beam {"spell-class": ".instant.BeamSpell", "modifiers": ["always cast prototype-winddance-leap(delay=1)", "always cast prototype-winddance-leap2(delay=3)"], "max-distance": 15, "interval": 0.3, "spell": "prototype-winddance-multi", "can-target": "self,players,nonplayers", "hit-radius": 0.7, "y-offset": 1, "cooldown": 5}
+    special:particles:gust n1 hs0.1 vs0.1 sp0.05 c d0 h
+    special:particles:cloud n5 hs0.2 vs0.2 sp0.01 c d0 h
+    caster:sound:lom:air.hawkstrike v1 p1.5 d0
+prototype-winddance-leap {"spell-class": ".instant.LeapSpell", "forward-velocity": -100, "upward-velocity": 5, "cancel-damage": true}
+prototype-winddance-leap2 {"spell-class": ".instant.LeapSpell", "forward-velocity": -100, "upward-velocity": 5, "cancel-damage": true}
+prototype-winddance-pull {"spell-class": ".targeted.LevitateSpell", "tick-rate": 1, "toggle": true, "min-distance": 1, "max-distance": 100, "distance-change": 100, "cancel-on-take-damage": false, "cancel-on-item-switch": false, "duration": 20, "range": 100}
+    target:particles:gust_emitter_large n1 hsNone vsNone sp0 c d0 h
+    target:sound:entity.breeze.wind_burst v0.8 p1.2 d0
+prototype-winddance-multi {"spell-class": ".TargetedMultiSpell", "stop-on-fail": false, "require-entity-target": true, "spells": ["prototype-winddance-pull", "prototype-winddance-invisibility"]}
+prototype-winddance-invisibility {"spell-class": ".buff.InvulnerabilitySpell", "description": "Makes you invulnerable to everything.", "toggle": false, "duration": 3, "targeted": true}
+prototype-flechetterain-offset {"spell-class": ".targeted.OffsetLocationSpell", "cooldown": 30, "target-self": true, "relative-offset": "80,30,0", "forced-pitch": 0, "spell": "prototype-flechetterain-spawn"}
+prototype-flechetterain-spawn {"spell-class": ".targeted.SpawnEntitySpell", "helper-spell": true, "location": "target", "main-hand": "bow", "interval-spell": "prototype-flechetterain-volley", "spell-interval": 10, "can-target": "self", "target-range": 9999, "target-interval": 40, "duration": 200, "potion-effects": ["dolphins_grace 5000 0 ambient hidden", "invisibility 5000 0 ambient hidden", "levitation 5000 0 ambient hidden"], "entity": {"entity": "creeper"}}
+prototype-flechetterain-volley {"spell-class": ".targeted.VolleySpell", "helper-spell": true, "range": 999, "arrows": 15, "speed": 30, "spread": 300, "damage": 1, "shoot-interval": 1, "gravity": false, "remove-delay": 100, "can-target": "players, self", "critical": true, "fire": 0, "y-offset": 5, "knockback-strength": 30}
+prototype-blinkstep-blink {"spell-class": ".targeted.BlinkSpell", "modifiers": ["always cast prototype-blinkstep-potion", "always cast prototype-blinkstep-potion2"], "range": 100, "pass-through-ceiling": true, "str-cant-blink": ""}
+    caster:particles:witch n25 hs0.5 vs0.5 sp0.1 c d0 h0.5
+    caster:particles:witch n25 hs0.5 vs0.5 sp0.1 c d2 h0.5
+    caster:sound:lom:arcane.shock v0.1 p1.1 d0
+prototype-blinkstep-potion {"spell-class": ".targeted.PotionEffectSpell", "type": "slow", "duration": 5, "strength": 5, "can-target": "self", "ambient": false, "hidden": true}
+prototype-blinkstep-potion2 {"spell-class": ".targeted.PotionEffectSpell", "type": "blindness", "duration": 20, "strength": 0, "can-target": "self", "ambient": false, "hidden": true}
+age {"spell-class": ".targeted.AgeSpell", "age": -10, "set-maturity": true, "apply-age-lock": true}
+prototype-conjurepetals-multi {"spell-class": ".MultiSpell", "spells": ["prototype-conjurepetals-conjure", "DELAY 10", "prototype-conjurepetals-conjure", "DELAY 10", "prototype-conjurepetals-conjure", "DELAY 10", "prototype-conjurepetals-conjure", "DELAY 10", "prototype-conjurepetals-conjure"]}
+prototype-conjurepetals-conjure {"spell-class": ".instant.ConjureSpell", "power-affects-quantity": false, "power-affects-chance": true, "calculate-drops-individually": false, "auto-equip": false, "pickup-delay": 60, "items": ["item-firePetal 1 20%", "item-icePetal 1 20%", "item-earthPetal 1 20%", "item-arcanePetal 1 20%", "item-lightPetal 1 20%", "item-darkPetal 1 20%"], "add-to-inventory": false, "str-cast-self": ""}
+    caster:particles:totem_of_undying n25 hs0.5 vs0.5 sp0.1 c d0 h1.5
+    caster:soundpersonal:lom:cute.cast v0.3 p1.1 d0
+prototype-conjurebones-multi {"spell-class": ".MultiSpell", "spells": ["prototype-conjurebones-skeleton", "DELAY 20", "prototype-conjurebones-skeleton", "DELAY 20", "prototype-conjurebones-skeleton", "DELAY 20", "prototype-conjurebones-skeleton", "DELAY 20", "prototype-conjurebones-skeleton", "DELAY 40", "prototype-conjurebones-area", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure", "DELAY 2", "prototype-conjurebones-conjure"]}
+prototype-conjurebones-skeleton {"spell-class": ".targeted.SpawnEntitySpell", "modifiers": ["always addpower 1"], "helmet": "prototype-invisiblehelmet", "can-target": "zombie", "location": "random", "range": 3, "duration": 1000, "spell-interval": 7, "interval-spell": "prototype-conjurebones-multi2(mode=FULL)", "potion-effects": ["fire_resistance 5000 0 ambient hidden"], "entity": {"entity": "skeleton"}}
+    caster:soundpersonal:minecraft:entity.skeleton.ambient v0.5 p0.8 d0
+prototype-conjurebones-area {"spell-class": ".targeted.AreaEffectSpell", "target-modifiers": ["entitytype skeleton required"], "can-target": "nonplayers", "horizontal-radius": 25, "vertical-radius": 25, "point-blank": true, "fail-if-no-targets": false, "spells": ["prototype-conjurebones-pain(mode=FULL)"]}
+    caster:soundpersonal:lom:cute.cast v0.3 p1.1 d0
+prototype-conjurebones-pain {"spell-class": ".targeted.PainSpell", "damage": 9999}
+prototype-conjurebones-multi2 {"spell-class": ".TargetedMultiSpell", "spells": ["prototype-conjurebones-conjure"]}
+    caster:soundpersonal:lom:cute.cast v0.3 p1.1 d0
+prototype-conjurebones-conjure {"spell-class": ".instant.ConjureSpell", "power-affects-quantity": false, "power-affects-chance": true, "calculate-drops-individually": false, "auto-equip": false, "pickup-delay": 60, "items": ["item-bone 1"], "add-to-inventory": false, "str-cast-self": ""}
+    caster:particles:smoke n5 hs0.5 vs0.5 sp0 c d0 h1.5
+    caster:soundpersonal:minecraft:entity.skeleton.ambient v0.3 p0.8 d0
+prototype-effect-forceLay {"spell-class": ".ExternalCommandSpell", "str-on-cooldown": "", "execute-on-console-instead": true, "command-to-execute": ["sudo %a lay"]}
+prototype-effectSpell-splash {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.generic.splash v1 p1 d0
+    caster:particles:rain n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:rain n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:rain n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-selfDestruct {"spell-class": ".instant.DummySpell", "modifiers": ["always cast prototype-effect-forceLay(DELAY=5)"]}
+    caster:sound:minecraft:entity.generic.explode v0.2 p0.5 d0
+    caster:particles:entity_effect n5 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:entity_effect n5 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:entity_effect n5 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-angry {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.wolf.growl v1 p1 d0
+    caster:particles:angry_villager n15 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:angry_villager n25 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:angry_villager n35 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-bubblepop {"spell-class": ".instant.DummySpell", "modifiers": ["always cast aura-wet(mode=FULL)"]}
+    caster:sound:minecraft:entity.squid.squirt v1 p1 d0
+    caster:particles:bubble_pop n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:bubble_pop n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:bubble_pop n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-smokebomb {"spell-class": ".instant.DummySpell"}
+    caster:sound:lom:stealth v1 p1 d0
+    caster:particles:campfire_cosy_smoke n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:campfire_cosy_smoke n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:campfire_cosy_smoke n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-smokebomb-invisible {"spell-class": ".targeted.PotionEffectSpell", "targeted": true, "helper-spell": false, "type": "invisibility", "duration": 6000, "strength": 0, "can-target": "caster,players,self,nonplayers", "ambient": true, "hidden": true}
+    target:fontanimation:{"name": "lom:smokeorb", "start-frame": 0, "interval": 1, "duration": 51, "fade-out": 0}
+prototype-effectSpell-campfire_signal_smoke {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.furnace.fire_crackle v1 p1 d0
+    caster:particles:campfire_signal_smoke n5 hs0.0 vs0.2 sp0.0 c d0 h1
+    caster:particles:campfire_signal_smoke n15 hs0.0 vs1 sp0.0 c d3 h1.5
+    caster:particles:campfire_signal_smoke n100 hs0 vs10.0 sp0.0 c d6 h2
+prototype-effectSpell-cloud {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.witch.throw v1 p1 d0
+    caster:particles:cloud n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:cloud n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:cloud n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-composter {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.composter.empty v1 p1 d0
+    caster:particles:composter n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:composter n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:composter n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-crit {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.player.attack.strong v1 p1 d0
+    caster:particles:crit n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:crit n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:crit n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-current_down {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.boat.paddle_water v1 p1 d0
+    caster:particles:current_down n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:current_down n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:current_down n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-damage_indicator {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.player.hurt v1 p1 d0
+    caster:particles:damage_indicator n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:damage_indicator n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:damage_indicator n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dolphin {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.dolphin.play v1 p1 d0
+    caster:particles:dolphin n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dolphin n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dolphin n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dragon_breath {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.ender_dragon.growl v1 p1 d0
+    caster:particles:dragon_breath n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dragon_breath n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dragon_breath n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_dripstone_lava {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.lava.pop v1 p1 d0
+    caster:particles:dripping_dripstone_lava n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_dripstone_lava n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_dripstone_lava n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_dripstone_water {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.dripstone.drip_water v1 p1 d0
+    caster:particles:dripping_dripstone_water n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_dripstone_water n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_dripstone_water n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_honey {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.beehive.drip v1 p1 d0
+    caster:particles:dripping_honey n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_honey n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_honey n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_lava {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.lava.pop v1 p1 d0
+    caster:particles:dripping_lava n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_lava n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_lava n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_obsidian_tear {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.respawn_anchor.charge v1 p1 d0
+    caster:particles:dripping_obsidian_tear n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_obsidian_tear n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_obsidian_tear n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dripping_water {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.fish.swim v1 p1 d0
+    caster:particles:dripping_water n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dripping_water n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dripping_water n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dust {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.redstone_torch.burnout v1 p1 d0
+    caster:particles:dust n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dust n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dust n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-dust_color_transition {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.enchantment_table.use v1 p1 d0
+    caster:particles:dust_color_transition n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:dust_color_transition n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:dust_color_transition n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-effect {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.generic.drink v1 p1 d0
+    caster:particles:effect n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:effect n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:effect n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-elder_guardian {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.elder_guardian.curse v1 p1 d0
+    caster:particles:elder_guardian n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:elder_guardian n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:elder_guardian n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-electric_spark {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.amethyst_block.step v1 p1 d0
+    caster:particles:electric_spark n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:electric_spark n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:electric_spark n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-enchant {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.enchantment_table.use v1 p1 d0
+    caster:particles:enchant n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:enchant n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:enchant n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-enchanted_hit {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.player.attack.crit v1 p1 d0
+    caster:particles:enchanted_hit n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:enchanted_hit n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:enchanted_hit n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-end_rod {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.end_portal.spawn v1 p1 d0
+    caster:particles:end_rod n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:end_rod n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:end_rod n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-entity_effect {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:block.brewing_stand.brew v1 p1 d0
+    caster:particles:entity_effect n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:entity_effect n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:entity_effect n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-explosion {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.generic.explode v1 p1 d0
+    caster:particles:explosion n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:explosion n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:explosion n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-effectSpell-explosion_emitter {"spell-class": ".instant.DummySpell"}
+    caster:sound:minecraft:entity.generic.explode v1 p1 d0
+    caster:particles:explosion_emitter n100 hs0.2 vs0.2 sp0.1 c d0 h1
+    caster:particles:explosion_emitter n100 hs0.5 vs0.5 sp0.1 c d3 h1.5
+    caster:particles:explosion_emitter n100 hs1.0 vs1.0 sp0.1 c d6 h2
+prototype-bagofholding-dummy {"spell-class": ".instant.DummySpell", "modifiers": ["always cast prototype-bagofholding-enderchest(delay=65)"]}
+    caster:fontanimation:{"name": "lom:voidhole", "start-frame": 0, "interval": 1, "duration": 75, "fade-out": 0}
+    caster:soundpersonal:lom:enlarge v0.3 p0.1 d0
+prototype-bagofholding-enderchest {"spell-class": ".instant.EnderchestSpell"}
+prototype-entomb-webBallThrow {"spell-class": ".instant.ParticleProjectileSpell", "change-pitch": true, "controllable": false, "projectile-velocity": 20, "tick-interval": 1, "max-distance": 100, "special-effect-interval": 1, "stop-on-hit-entity": true, "stop-on-hit-ground": true, "relative-offset": "0,1,0", "spell-on-hit-entity": null}
+    special:particles:block_marker n1 hs0 vs0 spNone c d0 h0
+prototype-entomb-webbed {"spell-class": ".targeted.EntombSpell", "allow-breaking": true, "block-type": "cobweb", "duration": 200, "str-cast-target": ""}
+    caster:particles:witch n25 hs0.5 vs0.5 sp0.1 c d0 h0.5
+    caster:particles:witch n25 hs0.5 vs0.5 sp0.1 c d2 h0.5
+    caster:sound:lom:arcane.shock v0.1 p1.1 d0
+prototype-expPotions-sprinting {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-SprintingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Sprinting XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-building {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-BuildingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Building XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-digging {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-DiggingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Digging XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-drinking {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-DrinkingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Drinking XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-eating {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-EatingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Eating XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-fishing {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-FishingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Fishing XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-gathering {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-GatheringEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Gathering XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-jumping {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-JumpingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Jumping XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-mining {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-MiningEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Mining XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-sitting {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-SittingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Sitting XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-magicing {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-MagicingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Magicing XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-swimming {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-SwimmingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Swimming XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-trading {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-TradingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Trading XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-worshiping {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-WorshipingEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Worshiping XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-strength {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-StrengthEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Strength XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-dexterity {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-DexterityEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Dexterity XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-constitution {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-ConstitutionEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Constitution XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-wisdom {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-WisdomEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Wisdom XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-intelligence {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-IntelligenceEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Intelligence XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-empathy {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-EmpathyEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Empathy XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-expPotions-charisma {"spell-class": ".instant.DummySpell", "modifiers": ["always cast consumableBuff-CharismaEXP"]}
+    caster:effectlibentity:{"height-offset": 1, "effectlib": {"class": "Vortex", "iterations": 5, "type": "repeating", "particle": "witch", "particle_count": 1, "circles": 3, "helixes": 3, "speed": 0.5, "offset": "0,1,0", "radius": 1}}
+    caster:toast:{"frame": "TASK", "text": "&6+50% Charisma XP &7for 30 minutes", "icon": "jigsaw{CustomModelData:1087}"}
+prototype-flightpath-magicCloud {"spell-class": ".instant.FlightPathSpell", "x": 5011, "z": 5000, "cruising-altitude": 100, "speed": 1.0, "interval": 2}
+    special:particles:cloud n100 hs1.3 vs0.0 sp0 c d0 h0
+prototype-flightpath-courtSummons {"spell-class": ".instant.FlightPathSpell", "x": 4747, "z": 5454, "cruising-altitude": 100, "speed": 1.0, "interval": 2}
+    special:particles:enchant n100 hs0.5 vs0.0 sp0 c d0 h0
+prototype-forcepush-solarflare {"spell-class": ".instant.ForcepushSpell", "radius": 8, "pushback-force": 20, "additional-vertical-force": 5, "max-vertical-force": 5, "add-velocity-instead": true}
+    caster:particles:flash n1 hs0.0 vs0.0 sp0 c d0 h0
+    caster:particles:flash n1 hs0.0 vs0.0 sp0 c d3 h0
+    caster:particles:flash n1 hs0.0 vs0.0 sp0 c d6 h0
+    caster:particles:flash n1 hs0.0 vs0.0 sp0 c d9 h0
+    caster:particles:flash n1 hs0.0 vs0.0 sp0 c d12 h0
+prototype-bigleap-leap {"spell-class": ".instant.LeapSpell", "forward-velocity": 40, "upward-velocity": 10, "cancel-damage": true}
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d0 h0.5
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d3 h0.5
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d6 h0.5
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d9 h0.5
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d12 h0.5
+    caster:sound:lom:sfx.evade v1.0 p1.5 d0
+prototype-rocketjump-leap {"spell-class": ".instant.LeapSpell", "forward-velocity": 2, "upward-velocity": 100, "cancel-damage": true}
+    caster:particles:flame n50 hs0.1 vs0.1 sp0.1 c d0 h0.5
+    caster:sound:entity.firework_rocket.launch v1.0 p1.5 d0
+prototype-jumpback-leap {"spell-class": ".instant.LeapSpell", "forward-velocity": -25, "upward-velocity": 5, "cancel-damage": true}
+    caster:particles:sweep_attack n5 hs0.5 vs0.1 sp0.1 c d0 h0.5
+    caster:particles:sweep_attack n5 hs0.4 vs0.1 sp0.1 c d3 h0.5
+    caster:particles:sweep_attack n5 hs0.3 vs0.1 sp0.1 c d6 h0.5
+    caster:particles:sweep_attack n5 hs0.2 vs0.1 sp0.1 c d9 h0.5
+    caster:particles:sweep_attack n5 hs0.1 vs0.1 sp0.1 c d12 h0.5
+    caster:sound:lom:sfx.evade v1.0 p0.9 d0
+prototype-magnet-vacuumlootMulti {"spell-class": ".MultiSpell", "spells": ["autoloot", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet", "DELAY 3", "prototype-magnet-vacuumlootMagnet"]}
+prototype-magnet-vacuumlootMagnet {"spell-class": ".instant.MagnetSpell", "radius": 20, "velocity": 0.3, "teleport-items": false, "force-pickup": false, "remove-item-gravity": false}
+prototype-wall-dwarvenwall {"spell-class": ".TargetedMultiSpell", "spells": ["prototype-wall-dwarvenwallbuild1", "DELAY 20", "prototype-wall-dwarvenwallbuild2", "DELAY 20", "prototype-wall-dwarvenwallbuild3"]}
+prototype-wall-dwarvenwallbuild1 {"spell-class": ".instant.WallSpell", "distance": 3, "wall-width": 7, "wall-height": 3, "wall-types": ["stone_bricks"], "wall-duration": 18, "str-no-target": "", "y-offset": 1}
+prototype-wall-dwarvenwallbuild2 {"spell-class": ".instant.WallSpell", "distance": 3, "wall-width": 7, "wall-height": 3, "wall-types": ["stone_bricks"], "wall-duration": 18, "str-no-target": ""}
+prototype-wall-dwarvenwallbuild3 {"spell-class": ".instant.WallSpell", "distance": 3, "wall-width": 7, "wall-height": 3, "wall-types": ["stone_bricks"], "wall-duration": 100, "str-no-target": ""}
+prototype-passive {"spell-class": ".PassiveSpell", "triggers": ["rightclickitem item-prototypekitLook"], "spells": ["prototype-openSound"]}
+prototype-openSound {"spell-class": ".instant.DummySpell"}
+    caster:soundpersonal:lom:computer.ding v0.3 p1.0 d0
