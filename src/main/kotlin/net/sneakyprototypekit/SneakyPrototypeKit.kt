@@ -44,6 +44,7 @@ class SneakyPrototypeKit : JavaPlugin() {
         // Register listeners
         server.pluginManager.registerEvents(AbilityListener(), this)
         server.pluginManager.registerEvents(net.sneakyprototypekit.ability.actions.AbilityState, this)
+        server.pluginManager.registerEvents(net.sneakyprototypekit.ability.TestKit, this)
         server.pluginManager.registerEvents(TypeSelectionListener(), this)
         server.pluginManager.registerEvents(AbilitySelectionListener(), this)
         server.pluginManager.registerEvents(IconSelectionListener(), this)
