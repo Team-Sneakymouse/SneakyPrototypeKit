@@ -1,6 +1,8 @@
 package net.sneakyprototypekit.ability
 
 import net.sneakyprototypekit.SneakyPrototypeKit
+import net.sneakyprototypekit.ability.actions.ActionEngine
+import net.sneakyprototypekit.ability.actions.Node
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -65,7 +67,9 @@ object AbilityManager {
 
         // Get ability configuration
         val abilityConfig = plugin.config.getConfigurationSection("abilities.$ability") ?: return false
-        val command = abilityConfig.getString("command-console") ?: return false
+        val actions = Node.list(abilityConfig.getList("actions"))
+        val command = abilityConfig.getString("command-console")
+        if (actions.isEmpty() && command == null) return false
 
         // Check cooldown for items
         val playerCooldowns = getCooldowns(player)
@@ -120,9 +124,14 @@ object AbilityManager {
         // Set cooldown for this ability
         playerCooldowns[ability] = System.currentTimeMillis()
 
+        // Native actions (the ported MagicSpells prototype spells) win over the legacy console command.
+        if (actions.isNotEmpty()) {
+            ActionEngine.run(player, actions)
+            return true
+        }
+
         // Console dispatch: `command` must come from config only, never from player-typed text.
-        // Execute the command
-        val finalCommand = command.replace("[playerName]", player.name)
+        val finalCommand = command!!.replace("[playerName]", player.name)
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand)
         return true
     }
