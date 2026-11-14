@@ -3,6 +3,7 @@ package net.sneakyprototypekit.ability
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.ability.actions.ActionEngine
 import net.sneakyprototypekit.ability.actions.Node
+import net.sneakyprototypekit.integration.PrototypeMagicItems
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -53,9 +54,16 @@ object AbilityManager {
      * @return true if the ability was executed successfully
      */
     fun executeAbility(item: ItemStack, player: Player): Boolean {
+        val plugin = SneakyPrototypeKit.getInstance()
+        // Stamp pre-migration finalized items when used (patterns cover inventory joins; this covers edge cases).
+        if (!PrototypeMagicItems.isCreated(item) &&
+            item.itemMeta?.persistentDataContainer?.has(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) == true
+        ) {
+            PrototypeMagicItems.stampCreated(item)
+        }
+
         val meta = item.itemMeta ?: return false
         val container = meta.persistentDataContainer
-        val plugin = SneakyPrototypeKit.getInstance()
 
         // Get ability and type
         val type = container.get(plugin.ITEM_TYPE_KEY, PersistentDataType.STRING) ?: return false

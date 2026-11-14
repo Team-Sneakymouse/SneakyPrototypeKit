@@ -15,6 +15,7 @@ import org.bukkit.permissions.Permission
 import com.sneakydb.SneakyDBProvider
 import net.sneakyprototypekit.util.PrototypeKitLog
 import net.sneakyprototypekit.integration.Probe
+import net.sneakyprototypekit.integration.PrototypeMagicItems
 import net.sneakyprototypekit.util.MenuTiming
 
 class SneakyPrototypeKit : JavaPlugin() {
@@ -40,7 +41,7 @@ class SneakyPrototypeKit : JavaPlugin() {
         MenuTiming.probe = probe
         probe.hook()
         logger.info("SneakyPrototypeKit has been enabled!")
-        
+
         // Register listeners
         server.pluginManager.registerEvents(AbilityListener(), this)
         server.pluginManager.registerEvents(net.sneakyprototypekit.ability.actions.AbilityState, this)
@@ -63,9 +64,11 @@ class SneakyPrototypeKit : JavaPlugin() {
 
         // Load configuration
         saveDefaultConfig()
+        PrototypeMagicItems.register(this)
     }
 
     override fun onDisable() {
+        PrototypeMagicItems.clear(this)
         probe.unhook()
         MenuTiming.probe = null
         net.sneakyprototypekit.ability.actions.WorldActions.restoreAll()
@@ -81,6 +84,8 @@ class SneakyPrototypeKit : JavaPlugin() {
     val NAVIGATION_KEY = NamespacedKey(this, "navigation")
     val ICON_DATA_KEY = NamespacedKey(this, "icon_data")
     val PROTOTYPE_KIT_KEY = NamespacedKey(this, "prototype_kit")
+    /** Marker on finalized player-designed items (identity is the SneakyItems stamp). */
+    val CREATED_ITEM_KEY = NamespacedKey(this, "created_item")
     val NAME_KEY = NamespacedKey(this, "name")
     val LORE_KEY = NamespacedKey(this, "lore")
     val CREATOR_KEY = NamespacedKey(this, "creator")

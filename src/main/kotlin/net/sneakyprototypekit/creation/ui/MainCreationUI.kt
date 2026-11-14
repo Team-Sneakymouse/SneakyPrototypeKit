@@ -6,7 +6,6 @@ import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -31,11 +30,6 @@ object MainCreationUI {
     }
 
     private fun build(prototypeKit: ItemStack): Inventory {
-        // Remove MagicItem PDC
-        prototypeKit.apply { itemMeta = itemMeta?.also { meta ->
-            meta.persistentDataContainer.remove(NamespacedKey("magicspells", "magicitem"))
-        } }
-
         val inventory = Bukkit.createInventory(
             CustomInventoryHolder().apply { 
                 setData("prototype_kit", prototypeKit)
