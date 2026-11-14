@@ -1,6 +1,7 @@
 package net.sneakyprototypekit.commands
 
 import net.sneakyprototypekit.SneakyPrototypeKit
+import net.sneakyprototypekit.integration.PrototypeMagicItems
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.command.CommandSender
 
@@ -20,10 +21,10 @@ class CommandReload : CommandBase("prototypekitreload") {
         }
 
         val plugin = SneakyPrototypeKit.getInstance()
-        
-        // Reload the configuration
+
         plugin.reloadConfig()
-        
+        PrototypeMagicItems.register(plugin)
+
         sender.sendMessage(TextUtility.convertToComponent("&aConfiguration reloaded successfully!"))
         return true
     }

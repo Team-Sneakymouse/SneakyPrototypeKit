@@ -48,7 +48,7 @@ class CommandPrototypeKit : CommandBase("prototypekit") {
         }
 
         // Give the prototype kit (or the test wand)
-        val kit = if (test) TestKit.create() else PrototypeKit.createKit()
+        val kit = if (test) TestKit.create(player) else PrototypeKit.createKit(player)
         player.inventory.addItem(kit)
         
         // If run by another player/console, inform them
