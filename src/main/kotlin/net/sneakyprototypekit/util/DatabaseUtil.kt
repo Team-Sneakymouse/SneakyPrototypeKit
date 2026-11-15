@@ -10,7 +10,7 @@ data class PrototypeKitRecord(
     val creator: String,
     val name: String,
     val material: String,
-    val model_data: Int? = null,
+    val item_model: String? = null,
     val lore: String? = null
 )
 
@@ -35,7 +35,7 @@ object DatabaseUtil {
             creator = container.get(plugin.CREATOR_KEY, PersistentDataType.STRING) ?: "Unknown",
             name = container.get(plugin.NAME_KEY, PersistentDataType.STRING) ?: "Unnamed Item",
             material = item.type.name,
-            model_data = if (meta.hasCustomModelData()) meta.customModelData else null,
+            item_model = if (meta.hasItemModel()) meta.itemModel?.asString() else null,
             lore = container.get(plugin.LORE_KEY, PersistentDataType.STRING)
         )
         val result = plugin.itemLog.log(record)

@@ -1,6 +1,7 @@
 package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
+import net.sneakyprototypekit.util.ItemModels
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -33,7 +34,7 @@ class IconSelectionListener : Listener {
         val plugin = SneakyPrototypeKit.getInstance()
         
         // Ignore clicks on the GUI icon (jigsaw block)
-        if (clickedItem.type == Material.JIGSAW && meta.hasCustomModelData() && meta.customModelData == 3050) {
+        if (clickedItem.type == Material.JIGSAW && ItemModels.hasModel(clickedItem, ItemModels.GUI_ICON)) {
             return
         }
         
@@ -68,10 +69,9 @@ class IconSelectionListener : Listener {
             plugin.ICON_DATA_KEY,
             PersistentDataType.STRING
         )?.let { data ->
-            val (materialName, modelData) = data.split(",")
-            val material = Material.valueOf(materialName)
-            // Call the callback with the selected material and model data
-            holder.callback.invoke(material, modelData.toInt())
+            val icon = ItemModels.decode(data) ?: return
+            // Call the callback with the selected material and item model
+            holder.callback.invoke(icon)
             // Return to main menu after 1 tick
             Bukkit.getScheduler().runTaskLater(plugin, Runnable {
                 MainCreationUI.open(player, holder.prototypeKit)

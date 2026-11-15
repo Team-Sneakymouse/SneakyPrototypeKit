@@ -5,7 +5,7 @@ prefix-right-click: "&f\uE001 &7"  # Used for food and drinks
 ## Default prototype kit configuration
 prototype-kit:
     material: "rabbit_foot"
-    model-data: 129
+    item-model: "lom:tools/mlmprototyper"
     name: "&cPrototype Kit"
     lore:
         - "&7Value: &c2500 Dragon Coins"
@@ -21,7 +21,7 @@ abilities:
         name: "Splash Attack"
         description: "Splashes water all around you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         command-console: "cast forcecast [playerName] prototype-effectSpell-splash"
         actions:
           - type: burst
@@ -43,7 +43,7 @@ abilities:
         name: "Splash Attack"
         description: "Splashes water all around you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         command-console: "cast forcecast [playerName] prototype-effectSpell-splash"
         actions:
           - type: burst
@@ -65,7 +65,7 @@ abilities:
         name: "Self Destructs"
         description: "Self destructs and causes you to fall down"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1568
+        icon-item-model: "lom:icons/prototype_abilities/selfdestruct"
         command-console: "cast forcecast [playerName] prototype-effectSpell-selfDestruct"
         actions:
           - type: burst
@@ -92,7 +92,7 @@ abilities:
         name: "Jump Back"
         description: "Leap backwards at high speeds"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1562
+        icon-item-model: "lom:icons/prototype_abilities/jumpback"
         command-console: "cast forcecast [playerName] prototype-jumpback-leap"
         actions:
           - type: leap
@@ -120,7 +120,7 @@ abilities:
         name: "Jump Back"
         description: "Leap backwards at high speeds"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1562
+        icon-item-model: "lom:icons/prototype_abilities/jumpback"
         command-console: "cast forcecast [playerName] prototype-jumpback-leap"
         actions:
           - type: leap
@@ -149,7 +149,7 @@ abilities:
         name: "Rocket Jump"
         description: "Jump extremely high"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1567
+        icon-item-model: "lom:icons/prototype_abilities/rocketjump"
         command-console: "cast forcecast [playerName] prototype-rocketjump-leap"
         actions:
           - type: leap
@@ -174,7 +174,7 @@ abilities:
         name: "Rocket Jump"
         description: "Jump extremely high"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1567
+        icon-item-model: "lom:icons/prototype_abilities/rocketjump"
         command-console: "cast forcecast [playerName] prototype-rocketjump-leap"
         actions:
           - type: leap
@@ -200,7 +200,7 @@ abilities:
         name: "Big Leap"
         description: "Take a big leap forward"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1550
+        icon-item-model: "lom:icons/prototype_abilities/bigleap"
         command-console: "cast forcecast [playerName] prototype-bigleap-leap"
         actions:
           - type: leap
@@ -228,7 +228,7 @@ abilities:
         name: "Big Leap"
         description: "Take a big leap forward"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1550
+        icon-item-model: "lom:icons/prototype_abilities/bigleap"
         command-console: "cast forcecast [playerName] prototype-bigleap-leap"
         actions:
           - type: leap
@@ -258,7 +258,7 @@ abilities:
         name: "Blink Step"
         description: "Blinks you instantly to the space your looking"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1553 
+        icon-item-model: "lom:icons/prototype_abilities/blinkstep"
         command-console: "cast forcecast [playerName] prototype-blinkstep-blink"
         actions:
           - type: particles
@@ -301,7 +301,7 @@ abilities:
         name: "Blink Step"
         description: "Blinks you instantly to the space your looking"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1553 
+        icon-item-model: "lom:icons/prototype_abilities/blinkstep"
         command-console: "cast forcecast [playerName] prototype-blinkstep-blink"
         actions:
           - type: particles
@@ -345,7 +345,7 @@ abilities:
         name: "Devolution Spray"
         description: "Release a spray of magical dust that transforms monsters and animals back into babies"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1559 
+        icon-item-model: "lom:icons/prototype_abilities/devolutionspray"
         command-console: "cast forcecast [playerName] prototype-devolutionspray-multi"
         actions:
           - type: area
@@ -402,7 +402,7 @@ abilities:
         name: "Devolution Spray"
         description: "Release a spray of magical dust that transforms monsters and animals back into babies"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1559 
+        icon-item-model: "lom:icons/prototype_abilities/devolutionspray"
         command-console: "cast forcecast [playerName] prototype-devolutionspray-multi"
         actions:
           - type: area
@@ -461,7 +461,7 @@ abilities:
         name: "Bag of Holding"
         description: "Opens a portal to access your enderchest"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1549
+        icon-item-model: "lom:icons/prototype_abilities/bagofholding"
         command-console: "cast forcecast [playerName] prototype-bagofholding-dummy"
         actions:
           - type: title-animation
@@ -486,7 +486,7 @@ abilities:
         name: "Bag of Holding"
         description: "Opens a portal to access your enderchest"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1549
+        icon-item-model: "lom:icons/prototype_abilities/bagofholding"
         command-console: "cast forcecast [playerName] prototype-bagofholding-dummy"
         actions:
           - type: title-animation
@@ -512,7 +512,7 @@ abilities:
         name: "Conjure Petals"
         description: "Conjure random elemental petals"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1555
+        icon-item-model: "lom:icons/prototype_abilities/conjurepetals"
         command-console: "cast forcecast [playerName] prototype-conjurepetals-multi"
         actions:
           - type: conjure
@@ -545,7 +545,7 @@ abilities:
         name: "Conjure Petals"
         description: "Conjure random elemental petals"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1555
+        icon-item-model: "lom:icons/prototype_abilities/conjurepetals"
         command-console: "cast forcecast [playerName] prototype-conjurepetals-multi"
         actions:
           - type: conjure
@@ -578,7 +578,7 @@ abilities:
         name: "Conjure Bones"
         description: "Conjures forth skeletons to harvest their bones"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1554
+        icon-item-model: "lom:icons/prototype_abilities/conjurebones"
         command-console: "cast forcecast [playerName] prototype-conjurebones-multi"
         actions:
           - type: summon
@@ -630,7 +630,7 @@ abilities:
         name: "Conjure Bones"
         description: "Conjures forth skeletons to harvest their bones"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1554
+        icon-item-model: "lom:icons/prototype_abilities/conjurebones"
         command-console: "cast forcecast [playerName] prototype-conjurebones-multi"
         actions:
           - type: summon
@@ -683,7 +683,7 @@ abilities:
         name: "Magic Cloud"
         description: "Ride a magic cloud that takes you to the center of royal"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1564
+        icon-item-model: "lom:icons/prototype_abilities/magiccloud"
         command-console: "cast forcecast [playerName] prototype-flightpath-magicCloud"
         actions:
           - type: flight
@@ -708,7 +708,7 @@ abilities:
         name: "Magic Cloud"
         description: "Ride a magic cloud that takes you to the center of royal"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1564
+        icon-item-model: "lom:icons/prototype_abilities/magiccloud"
         command-console: "cast forcecast [playerName] prototype-flightpath-magicCloud"
         actions:
           - type: flight
@@ -733,7 +733,7 @@ abilities:
         name: "Court Summons"
         description: "A surprise court summons kidnaps you away to the Court House"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1556
+        icon-item-model: "lom:icons/prototype_abilities/courtsummons"
         command-console: "cast forcecast [playerName] prototype-flightpath-courtSummons"
         actions:
           - type: flight
@@ -759,7 +759,7 @@ abilities:
         name: "Solar Flare"
         description: "Knocks nearby Targets back in a blinding flash"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1571
+        icon-item-model: "lom:icons/prototype_abilities/solarflare"
         command-console: "cast forcecast [playerName] prototype-forcepush-solarflare"
         actions:
           - type: forcepush
@@ -784,7 +784,7 @@ abilities:
         name: "Vacuum Loot"
         description: "Sucks in all nearby items to you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1573
+        icon-item-model: "lom:icons/prototype_abilities/vacuumloot"
         command-console: "cast forcecast [playerName] prototype-magnet-vacuumlootMulti"
         actions:
           - type: magnet
@@ -801,7 +801,7 @@ abilities:
         name: "Vacuum Loot"
         description: "Sucks in all nearby items to you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1573
+        icon-item-model: "lom:icons/prototype_abilities/vacuumloot"
         command-console: "cast forcecast [playerName] prototype-magnet-vacuumlootMulti"
         actions:
           - type: magnet
@@ -819,7 +819,7 @@ abilities:
         name: "Fire Breath"
         description: "Breath fire that causes burning"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1551
+        icon-item-model: "lom:icons/prototype_abilities/firebreath"
         command-console: "cast forcecast [playerName] prototype-firebreath-beam"
         actions:
           - type: sound
@@ -880,7 +880,7 @@ abilities:
         name: "Ice Beam"
         description: "Release a beam of Ice that causes freezing"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1552
+        icon-item-model: "lom:icons/prototype_abilities/icebeam"
         command-console: "cast forcecast [playerName] prototype-icebeam-beam"
         actions:
           - type: sound
@@ -928,7 +928,7 @@ abilities:
         name: "Dark Bubbles"
         description: "Release Dark bubbles forward that cause blinding"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1557
+        icon-item-model: "lom:icons/prototype_abilities/darkbubbles"
         command-console: "cast forcecast [playerName] prototype-darkbubbles-beam"
         actions:
           - type: sound
@@ -984,7 +984,7 @@ abilities:
         name: "Dizzy Blast"
         description: "Shoot out a line of dizzy dust"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1560
+        icon-item-model: "lom:icons/prototype_abilities/dizzyblast"
         command-console: "cast forcecast [playerName] prototype-dizzyblast-beam"
         actions:
           - type: sound
@@ -1040,7 +1040,7 @@ abilities:
         name: "Proc Beam"
         description: "Shoot out a beam that makes others faster"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1566
+        icon-item-model: "lom:icons/prototype_abilities/procbeam"
         command-console: "cast forcecast [playerName] prototype-procbeam-beam"
         actions:
           - type: sound
@@ -1102,7 +1102,7 @@ abilities:
         name: "Sleepy Beam"
         description: "Release a wave of petals that puts others to sleep"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1570
+        icon-item-model: "lom:icons/prototype_abilities/sleepybeam"
         command-console: "cast forcecast [playerName] prototype-sleepybeam-beam"
         actions:
           - type: sound
@@ -1154,7 +1154,7 @@ abilities:
         name: "Bubble Beam"
         description: "Shoot out bubbles that knock others back"
         icon-material: "jigsaw"
-        icon-custom-model-data: 3
+        icon-item-model: "lom:icons/grayscale/agilecowpoke"
         command-console: "cast forcecast [playerName] prototype-bubblebeam-beam"
         actions:
           - type: sound
@@ -1227,7 +1227,7 @@ abilities:
         name: "Levitation Ray"
         description: "Release a ray of light that causes levitation"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1563
+        icon-item-model: "lom:icons/prototype_abilities/levitationray"
         command-console: "cast forcecast [playerName] prototype-levitation-beam"
         actions:
           - type: sound
@@ -1279,7 +1279,7 @@ abilities:
         name: "Heal Beam"
         description: "Release a wave of healing magic."
         icon-material: "jigsaw"
-        icon-custom-model-data: 1561
+        icon-item-model: "lom:icons/prototype_abilities/healbeam"
         command-console: "cast forcecast [playerName] prototype-healbeam-beam"
         actions:
           - type: sound
@@ -1327,7 +1327,7 @@ abilities:
         name: "Darkness Beam"
         description: "Shoot a beam of dark energy that causes wither"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1558
+        icon-item-model: "lom:icons/prototype_abilities/darknessbeam"
         command-console: "cast forcecast [playerName] prototype-darknessbeam-beam"
         actions:
           - type: sound
@@ -1377,7 +1377,7 @@ abilities:
         name: "Poison Breath"
         description: "Breath out a volley of spores that poisons"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1565
+        icon-item-model: "lom:icons/prototype_abilities/poisonbreath"
         command-console: "cast forcecast [playerName] prototype-poisonbreath-beam"
         actions:
           - type: sound
@@ -1427,7 +1427,7 @@ abilities:
         name: "Shielding Beam"
         description: "Shields players making them immune to damage"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1569
+        icon-item-model: "lom:icons/prototype_abilities/shieldingbeam"
         command-console: "cast forcecast [playerName] prototype-shieldingbeam-beam"
         actions:
           - type: sound
@@ -1491,7 +1491,7 @@ abilities:
         name: "Whip Pull"
         description: "Release a whip of ash that pulls others to you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1574
+        icon-item-model: "lom:icons/prototype_abilities/whippull"
         command-console: "cast forcecast [playerName] prototype-whippull-beam"
         actions:
           - type: sound
@@ -1548,7 +1548,7 @@ abilities:
         name: "Fire Breath"
         description: "Breath fire that causes burning"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1551
+        icon-item-model: "lom:icons/prototype_abilities/firebreath"
         command-console: "cast forcecast [playerName] prototype-firebreath-beam"
         actions:
           - type: sound
@@ -1609,7 +1609,7 @@ abilities:
         name: "Ice Beam"
         description: "Release a beam of Ice that causes freezing"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1552
+        icon-item-model: "lom:icons/prototype_abilities/icebeam"
         command-console: "cast forcecast [playerName] prototype-icebeam-beam"
         actions:
           - type: sound
@@ -1657,7 +1657,7 @@ abilities:
         name: "Dark Bubbles"
         description: "Release Dark bubbles forward that cause blinding"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1557
+        icon-item-model: "lom:icons/prototype_abilities/darkbubbles"
         command-console: "cast forcecast [playerName] prototype-darkbubbles-beam"
         actions:
           - type: sound
@@ -1713,7 +1713,7 @@ abilities:
         name: "Dizzy Blast"
         description: "Shoot out a line of dizzy dust"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1560
+        icon-item-model: "lom:icons/prototype_abilities/dizzyblast"
         command-console: "cast forcecast [playerName] prototype-dizzyblast-beam"
         actions:
           - type: sound
@@ -1769,7 +1769,7 @@ abilities:
         name: "Proc Beam"
         description: "Shoot out a beam that makes others faster"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1566
+        icon-item-model: "lom:icons/prototype_abilities/procbeam"
         command-console: "cast forcecast [playerName] prototype-procbeam-beam"
         actions:
           - type: sound
@@ -1831,7 +1831,7 @@ abilities:
         name: "Sleepy Beam"
         description: "Release a wave of petals that puts others to sleep"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1570
+        icon-item-model: "lom:icons/prototype_abilities/sleepybeam"
         command-console: "cast forcecast [playerName] prototype-sleepybeam-beam"
         actions:
           - type: sound
@@ -1883,7 +1883,7 @@ abilities:
         name: "Bubble Beam"
         description: "Shoot out bubbles that knock others back"
         icon-material: "jigsaw"
-        icon-custom-model-data: 3
+        icon-item-model: "lom:icons/grayscale/agilecowpoke"
         command-console: "cast forcecast [playerName] prototype-bubblebeam-beam"
         actions:
           - type: sound
@@ -1956,7 +1956,7 @@ abilities:
         name: "Levitation Ray"
         description: "Release a ray of light that causes levitation"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1563
+        icon-item-model: "lom:icons/prototype_abilities/levitationray"
         command-console: "cast forcecast [playerName] prototype-levitation-beam"
         actions:
           - type: sound
@@ -2008,7 +2008,7 @@ abilities:
         name: "Heal Beam"
         description: "Release a wave of healing magic."
         icon-material: "jigsaw"
-        icon-custom-model-data: 1561
+        icon-item-model: "lom:icons/prototype_abilities/healbeam"
         command-console: "cast forcecast [playerName] prototype-healbeam-beam"
         actions:
           - type: sound
@@ -2056,7 +2056,7 @@ abilities:
         name: "Darkness Beam"
         description: "Shoot a beam of dark energy that causes wither"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1558
+        icon-item-model: "lom:icons/prototype_abilities/darknessbeam"
         command-console: "cast forcecast [playerName] prototype-darknessbeam-beam"
         actions:
           - type: sound
@@ -2106,7 +2106,7 @@ abilities:
         name: "Poison Breath"
         description: "Breath out a volley of spores that poisons"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1565
+        icon-item-model: "lom:icons/prototype_abilities/poisonbreath"
         command-console: "cast forcecast [playerName] prototype-poisonbreath-beam"
         actions:
           - type: sound
@@ -2156,7 +2156,7 @@ abilities:
         name: "Shielding Beam"
         description: "Shields players making them immune to damage"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1569
+        icon-item-model: "lom:icons/prototype_abilities/shieldingbeam"
         command-console: "cast forcecast [playerName] prototype-shieldingbeam-beam"
         actions:
           - type: sound
@@ -2220,7 +2220,7 @@ abilities:
         name: "Whip Pull"
         description: "Release a whip of ash that pulls others to you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1574
+        icon-item-model: "lom:icons/prototype_abilities/whippull"
         command-console: "cast forcecast [playerName] prototype-whippull-beam"
         actions:
           - type: sound
@@ -2839,7 +2839,7 @@ abilities:
         name: "Charisma XP"
         description: "Gives you +50% Charisma XP for 30 minutes."
         icon-material: "jigsaw"
-        icon-custom-model-data: 1576
+        icon-item-model: "lom:icons/prototype_abilities/xpcharisma"
         command-console: "cast forcecast [playerName] prototype-expPotions-charisma"
         actions:
           - type: command
@@ -2869,7 +2869,7 @@ abilities:
         name: "Glow Beam"
         description: "Makes whoever you hit glow"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:light.buff
@@ -2924,7 +2924,7 @@ abilities:
         name: "Breath of Life"
         description: "Lets whoever you hit breathe underwater"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:ice.cast
@@ -2973,7 +2973,7 @@ abilities:
         name: "Psychic Control"
         description: "Holds whoever you hit in the air in front of you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:arcane.mindcontrol
@@ -3092,7 +3092,7 @@ abilities:
         name: "Heavy Well"
         description: "Weighs down whoever you hit"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:dark.whoosh
@@ -3144,7 +3144,7 @@ abilities:
         name: "Soul Siphon"
         description: "A soul orb you steer; it blinds what it touches"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:dark.vortext
@@ -3191,7 +3191,7 @@ abilities:
         name: "Thunder Ribbit"
         description: "Lightning jumps between targets and turns them into leaping frogs"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: chain
             range: 50
@@ -3247,7 +3247,7 @@ abilities:
         name: "Wind Dance"
         description: "Pulls a target to you while you dash back"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:air.hawkstrike
@@ -3311,7 +3311,7 @@ abilities:
         name: "Flechette Rain"
         description: "Rains arrows where you look"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: entity.arrow.shoot
@@ -3339,7 +3339,7 @@ abilities:
         name: "Web Ball"
         description: "Throws a web ball that traps what it hits"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: sound
             sound: lom:arcane.shock
@@ -3376,7 +3376,7 @@ abilities:
         name: "Dwarven Wall"
         description: "Raises a stone wall in front of you"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: wall
             distance: 3
@@ -3399,7 +3399,7 @@ abilities:
         name: "Smoke Bomb"
         description: "Vanish in a puff of smoke"
         icon-material: "jigsaw"
-        icon-custom-model-data: 1572
+        icon-item-model: "lom:icons/prototype_abilities/splash"
         actions:
           - type: burst
             particle: campfire_cosy_smoke

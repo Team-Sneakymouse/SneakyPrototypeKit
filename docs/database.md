@@ -16,8 +16,12 @@ insert contract before enabling the new plugin:
 - `id`: text primary key, exactly 15 lowercase ASCII letters/digits. New logs
   generate their own random IDs; existing IDs are imported by the external migration.
 - `type`, `ability`, `creator`, `name`, `material`, `lore`: text.
-- `model_data`: numeric (the original collection permits non-integers; Minecraft
-  only supplies integers for new logs). Missing model data is written as `0`.
+- `item_model`: text, NOT NULL with default `''`. The item-model id of the finalized item
+  (e.g. `lom:items/prototype-food/07_bread`); missing is written as `''`. **Added after the
+  item-model change** ([#7](https://github.com/Team-Sneakymouse/SneakyPrototypeKit/issues/7)).
+- `model_data`: numeric, **legacy**. The plugin no longer produces integer custom model data and
+  always writes `0`; the column stays for rows logged before the change (the original collection
+  permits non-integers). Do not drop it while the old rows are the only record of their icon.
 - Missing lore is written as `""`, matching PocketBase's optional-text default.
 - `created`, `updated`: `timestamptz` columns accepting PostgreSQL
   `CURRENT_TIMESTAMP`; both are explicitly set for each new log.
@@ -28,9 +32,32 @@ insert contract before enabling the new plugin:
 - Runtime role: schema `USAGE` and table `INSERT`; no schema ownership or DDL
   privileges are needed by this plugin.
 
+### Item-model migration (stored rows)
+
+Rows logged before the change hold `material` + integer `model_data` and an empty `item_model`.
+`tools/backfill_item_model_sql.py` prints the one-off, idempotent SQL (add the column, then fill
+`item_model` from the `(material, model_data)` pair via the same `legacy-item-models.json` table the plugin
+bundles; rows without a pack model keep `''`). Run it **before** deploying this version: an `INSERT` that
+names `item_model` fails (category `INSERT`, item delivery unaffected) until the column exists. Hand it to
+the migration owner; the plugin never runs DDL. Run it with **no arguments** so every carrier in the
+table is covered; restricting it to a few materials leaves rows of the other carriers unfilled:
+
+```
+python3 tools/backfill_item_model_sql.py | psql ...
+```
+
+The statement is a single transaction and only touches rows whose `item_model` is still `''`, so it is
+safe to re-run. **Re-run it after cutover and after any rollback:** until cutover, and again after a
+rollback, the old plugin keeps inserting rows with only `model_data` (its `INSERT` does not name
+`item_model`, so the column default `''` applies); those rows stay unfilled until the backfill runs again.
+Rows written by this version (`item_model` set, `model_data` `0`) are never modified.
+
+Regenerate `legacy-item-models.json` with `tools/generate_legacy_item_models.py` after the pack's mapping changes.
+
 The plugin does not query or update old rows. Migration SQL, data transfer, grants,
 cutover and rollback coordination belong in **migrateSQL**, not this codebase.
-No migration scripts or production database connections are provided here.
+Apart from the one-off item-model backfill generator above, no migration scripts or production
+database connections are provided here.
 
 ## Runtime semantics
 
@@ -57,7 +84,7 @@ Re-enable/restart after fixing SneakyDB initialization failure.
    its PostgreSQL connection. Keep SneakyPocketbase installed if other plugins use it.
 3. Install this plugin plus SneakyUtils and start Paper 26.2 / Java 25.
 4. Finalize an ITEM, FOOD and DRINK. Verify the item is delivered and one new row
-   exists for each, including ability, creator, material, name/lore, model data,
+   exists for each, including ability, creator, material, name/lore, `item_model` (`model_data` is `0`),
    a unique 15-character ID and timestamps. Test no model data, multiline/blank lore,
    Unicode and quotes without changing SQL structure.
 5. Test delayed readiness, denied INSERT access and a database outage in a dev

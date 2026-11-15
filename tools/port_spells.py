@@ -252,6 +252,9 @@ HAND = {
 }
 
 # Prototype spells no ability used yet: key -> (spell, name, description, icon model data, cooldown ms, charges)
+# jigsaw#1572 in the old pack (the integer icon these ports used before item models)
+NEW_ICON_MODEL = "lom:icons/prototype_abilities/splash"
+
 NEW = {
     "prototype-glowbeam-beam": ("Glow Beam", "Makes whoever you hit glow", 20000),
     "prototype-breathoflife-beam": ("Breath of Life", "Lets whoever you hit breathe underwater", 20000),
@@ -321,7 +324,7 @@ def main():
     for spell, (title, desc, cooldown) in NEW.items():
         key = spell if spell not in src else spell + "-native"
         extra += [f"    {key}:", f'        name: "{title}"', f'        description: "{desc}"', '        icon-material: "jigsaw"',
-                  "        icon-custom-model-data: 1572", block(port(spell), "        "), "        charges: 25", "        stack-size: 1",
+                  "        icon-item-model: \"%s\"" % NEW_ICON_MODEL, block(port(spell), "        "), "        charges: 25", "        stack-size: 1",
                   f"        cooldown: {cooldown}", '        allowed-types: ["ITEM"]', ""]
     out = re.sub(r"\n(## Available icons for items)", "\n".join(extra) + r"\n\n\1", out, count=1)
     Path(sys.argv[3]).write_text(out, encoding="utf-8")

@@ -55,7 +55,7 @@ abilities:
         name: "Healing Touch"
         description: "Heals the user"
         icon-material: "jigsaw"  # Material for the ability's UI icon
-        icon-custom-model-data: 1
+        icon-item-model: "lom:icons/grayscale/1111"  # item-model id (no integer custom model data)
         command-console: "effect give [playerName] instant_health 1 1"
         charges: 10  # How many uses per item
         stack-size: 5  # How many items can stack together
@@ -66,22 +66,27 @@ abilities:
 Define available icons for each item type:
 ```yaml
 item-icons:
-    diamond_sword:
-        - "1-5"  # Range of model data
-        - "7"    # Single model data value
+    echo_shard:                     # carrier material (kept: it matters for food and drink behaviour)
+        - "lom:items/prototype-items/cloak"
+        - "lom:tools/powerdrill"
 
 food-icons:
-    apple:
-        - "1-3"
-    golden_apple:
-        - "1"
+    potato:
+        - "lom:items/prototype-food/07_bread"
 
 drink-icons:
-    potion:
-        - "1-3"
-    honey_bottle:
-        - "1-2"
+    melon_slice:
+        - "lom:items/prototype-drinks/wine"
 ```
+
+The prototype kit looks like `prototype-kit.item-model`. Every look is an `item_model` id; the plugin sets no
+integer custom model data. The old integer keys (`icon-custom-model-data`, `model-data`, and `"1-5"` style icon
+entries) still load: they are translated through the bundled `legacy-item-models.json` (regenerate it with
+`tools/generate_legacy_item_models.py`), and integers the pack never had a model for are dropped.
+
+Kits and finalized items made before the change keep working. A half-built kit's stored icon
+(`MATERIAL,<integer>`) is converted to `MATERIAL,<item model>` the next time it is read, and old finalized
+copies are still recognised through SneakyItems legacy patterns built from the same table.
 
 ## Permissions
 

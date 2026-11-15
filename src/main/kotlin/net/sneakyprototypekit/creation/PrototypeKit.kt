@@ -4,6 +4,7 @@ import com.sneakyitems.api.SneakyItemsAPI
 import net.kyori.adventure.text.Component
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.integration.PrototypeMagicItems
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -41,7 +42,7 @@ object PrototypeKit {
         ).apply {
             itemMeta = itemMeta?.also { meta ->
                 meta.displayName(TextUtility.convertToComponent(config?.getString("name", "&ePrototype Kit")!!))
-                config?.getInt("model-data", -1)?.takeIf { it > 0 }?.let { meta.setCustomModelData(it) }
+                ItemModels.setModel(meta, ItemModels.kitModel(config, type))
                 val lore = config?.getStringList("lore")
                     ?.filterNot { it.contains("Shift + Right Click") }
                     ?.map { TextUtility.convertToComponent(it) }
@@ -92,11 +93,12 @@ object PrototypeKit {
             plugin.ICON_DATA_KEY,
             PersistentDataType.STRING,
         )
-        if (iconData != null) {
-            val (material, modelData) = iconData.split(",")
-            item.type = Material.valueOf(material)
-            itemMeta.setCustomModelData(modelData.toInt())
-            container.set(plugin.ICON_DATA_KEY, PersistentDataType.STRING, iconData)
+        // Kits stored before the item-model change hold `MATERIAL,<integer>`; decode migrates them to ids.
+        val icon = ItemModels.decode(iconData)
+        if (icon != null) {
+            item.type = icon.material
+            ItemModels.setModel(itemMeta, icon.model)
+            container.set(plugin.ICON_DATA_KEY, PersistentDataType.STRING, ItemModels.encode(icon))
         }
 
         val name = meta.persistentDataContainer.get(

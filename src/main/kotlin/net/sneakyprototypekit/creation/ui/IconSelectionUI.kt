@@ -2,6 +2,7 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
@@ -19,11 +20,11 @@ import org.bukkit.persistence.PersistentDataType
 class IconSelectionUI(
     val itemType: ItemType,
     val page: Int = 0,
-    val callback: ((Material, Int) -> Unit),
+    val callback: ((ItemModels.Icon) -> Unit),
     val prototypeKit: ItemStack
 ) : DisplayOnlyInventoryHolder {
     private val inventory: Inventory = Bukkit.createInventory(this, 54, TextUtility.convertToComponent("&6Select Icon"))
-    private val icons = mutableListOf<IconData>()
+    private val icons = mutableListOf<ItemModels.Icon>()
 
     init {
         loadIcons()
@@ -33,8 +34,8 @@ class IconSelectionUI(
     override fun getInventory(): Inventory = inventory
 
     /**
-     * Loads available icons from the plugin configuration.
-     * Supports both individual model data values and ranges.
+     * Loads available icons from the plugin configuration: item-model ids per carrier material
+     * (old integer entries and ranges still resolve through the legacy table).
      */
     private fun loadIcons() {
         val config = SneakyPrototypeKit.getInstance().config
@@ -44,28 +45,8 @@ class IconSelectionUI(
                 ItemType.DRINK -> "drink-icons"
                 else -> "item-icons"
             }
-        ) ?: return
-
-        for (materialKey in iconsSection.getKeys(false)) {
-            val material = Material.matchMaterial(materialKey) ?: continue
-            val modelDataList = iconsSection.getStringList(materialKey)
-
-            for (modelDataEntry in modelDataList) {
-                if (modelDataEntry.contains("-")) {
-                    // Handle range
-                    val parts = modelDataEntry.split("-")
-                    val start = parts[0].toIntOrNull() ?: continue
-                    val end = parts[1].toIntOrNull() ?: continue
-                    for (modelData in start..end) {
-                        icons.add(IconData(material, modelData))
-                    }
-                } else {
-                    // Handle single value
-                    val modelData = modelDataEntry.toIntOrNull() ?: continue
-                    icons.add(IconData(material, modelData))
-                }
-            }
-        }
+        )
+        icons += ItemModels.icons(iconsSection)
     }
 
     /**
@@ -95,12 +76,7 @@ class IconSelectionUI(
         }
 
         // GUI elements
-        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
-            itemMeta = itemMeta?.also { meta ->
-                meta.isHideTooltip = true
-                meta.setCustomModelData(3050)
-            }
-        })
+        inventory.setItem(0, ItemModels.guiItem(ItemModels.GUI_ICON))
     }
 
     private fun createNavigationButton(id: String, name: String): ItemStack {
@@ -116,14 +92,14 @@ class IconSelectionUI(
         }
     }
 
-    private fun createIconButton(icon: IconData): ItemStack {
+    private fun createIconButton(icon: ItemModels.Icon): ItemStack {
         return ItemStack(icon.material).apply {
             itemMeta = itemMeta?.also { meta ->
-                meta.setCustomModelData(icon.modelData)
+                ItemModels.setModel(meta, icon.model)
                 meta.persistentDataContainer.set(
                     SneakyPrototypeKit.getInstance().ICON_DATA_KEY,
                     PersistentDataType.STRING,
-                    "${icon.material.name},${icon.modelData}"
+                    ItemModels.encode(icon)
                 )
                 meta.isHideTooltip = true
             }
@@ -136,12 +112,10 @@ class IconSelectionUI(
             itemType: ItemType,
             page: Int = 0,
             prototypeKit: ItemStack,
-            callback: (Material, Int) -> Unit
+            callback: (ItemModels.Icon) -> Unit
         ): Unit = MenuTiming.timed("menu.icon-selection.open") {
             val ui = MenuTiming.timed("menu.icon-selection.build") { IconSelectionUI(itemType, page, callback, prototypeKit) }
             MenuTiming.timed("menu.icon-selection.open-inventory") { player.openInventory(ui.inventory) }
         }
     }
-
-    data class IconData(val material: Material, val modelData: Int)
 }

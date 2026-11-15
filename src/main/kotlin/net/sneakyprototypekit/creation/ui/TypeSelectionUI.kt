@@ -2,6 +2,7 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
@@ -46,12 +47,7 @@ object TypeSelectionUI {
         inventory.setItem(15, createTypeButton(Material.POTION, "Drink", ItemType.DRINK))
 
         // Add GUI elements
-        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
-            itemMeta = itemMeta?.also { meta ->
-                meta.isHideTooltip = true
-                meta.setCustomModelData(3048)
-            }
-        })
+        inventory.setItem(0, ItemModels.guiItem(ItemModels.GUI_TYPE))
         
         // Store prototype kit reference
         holder.setData("prototype_kit", prototypeKit)
