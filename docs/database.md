@@ -39,11 +39,18 @@ Rows logged before the change hold `material` + integer `model_data` and an empt
 `item_model` from the `(material, model_data)` pair via the same `legacy-item-models.json` table the plugin
 bundles; rows without a pack model keep `''`). Run it **before** deploying this version: an `INSERT` that
 names `item_model` fails (category `INSERT`, item delivery unaffected) until the column exists. Hand it to
-the migration owner; the plugin never runs DDL. Example for the current icon materials:
+the migration owner; the plugin never runs DDL. Run it with **no arguments** so every carrier in the
+table is covered; restricting it to a few materials leaves rows of the other carriers unfilled:
 
 ```
-python3 tools/backfill_item_model_sql.py echo_shard iron_pickaxe potato melon_slice | psql ...
+python3 tools/backfill_item_model_sql.py | psql ...
 ```
+
+The statement is a single transaction and only touches rows whose `item_model` is still `''`, so it is
+safe to re-run. **Re-run it after cutover and after any rollback:** until cutover, and again after a
+rollback, the old plugin keeps inserting rows with only `model_data` (its `INSERT` does not name
+`item_model`, so the column default `''` applies); those rows stay unfilled until the backfill runs again.
+Rows written by this version (`item_model` set, `model_data` `0`) are never modified.
 
 Regenerate `legacy-item-models.json` with `tools/generate_legacy_item_models.py` after the pack's mapping changes.
 
