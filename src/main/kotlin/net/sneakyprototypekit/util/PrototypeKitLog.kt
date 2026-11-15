@@ -37,7 +37,7 @@ class PrototypeKitLog(private val database: SneakyDBApi) : AutoCloseable {
                     database.execute(
                         INSERT,
                         listOf(newId(), record.type, record.ability, record.creator, record.name,
-                            record.material, record.model_data ?: 0, record.lore ?: "")
+                            record.material, 0, record.item_model ?: "", record.lore ?: "")
                     )
                 }
             }
@@ -74,8 +74,8 @@ class PrototypeKitLog(private val database: SneakyDBApi) : AutoCloseable {
         private const val ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789"
         private val INSERT = """
             INSERT INTO lom.lom2_prototype_kit_items
-                (id, type, ability, creator, name, material, model_data, lore, created, updated)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                (id, type, ability, creator, name, material, model_data, item_model, lore, created, updated)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         """.trimIndent()
 
         private fun newId(): String = buildString(15) {

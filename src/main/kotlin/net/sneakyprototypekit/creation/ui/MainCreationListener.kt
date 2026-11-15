@@ -3,6 +3,7 @@ package net.sneakyprototypekit.creation.ui
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
 import net.sneakyprototypekit.creation.PrototypeKit
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.DatabaseUtil
 import org.bukkit.Bukkit
@@ -220,12 +221,12 @@ class MainCreationListener : Listener {
                     if (typeStr != null) {
                         player.playSound(player.location, "lom:computer.ding", 999f, 1f)
                         val type = ItemType.valueOf(typeStr)
-                        IconSelectionUI.open(player, type, 0, prototypeKit) { material, modelData ->
+                        IconSelectionUI.open(player, type, 0, prototypeKit) { icon ->
                             val updatedMeta = prototypeKit.itemMeta ?: return@open
                             updatedMeta.persistentDataContainer.set(
                                 SneakyPrototypeKit.getInstance().ICON_DATA_KEY,
                                 PersistentDataType.STRING,
-                                "${material.name},${modelData}"
+                                ItemModels.encode(icon)
                             )
                             prototypeKit.itemMeta = updatedMeta
                             MainCreationUI.open(player, prototypeKit)

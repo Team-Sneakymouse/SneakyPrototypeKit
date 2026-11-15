@@ -2,6 +2,7 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
@@ -45,10 +46,10 @@ class AbilitySelectionUI(
             val description = ability.getString("description") ?: ""
             val charges = ability.getInt("charges", 1)
             val material = Material.valueOf((ability.getString("icon-material") ?: "BARRIER").uppercase())
-            val modelData = ability.getInt("icon-custom-model-data", -1)
+            val itemModel = ItemModels.abilityIcon(ability)
             val stackSize = ability.getInt("stack-size", 1)
             
-            abilities.add(AbilityData(abilityKey, name, description, charges, material, modelData, stackSize))
+            abilities.add(AbilityData(abilityKey, name, description, charges, material, itemModel, stackSize))
         }
     }
 
@@ -76,12 +77,7 @@ class AbilitySelectionUI(
         }
 
         // GUI elements
-        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
-            itemMeta = itemMeta?.also { meta ->
-                meta.isHideTooltip = true
-                meta.setCustomModelData(3049)
-            }
-        })
+        inventory.setItem(0, ItemModels.guiItem(ItemModels.GUI_ABILITY))
     }
 
     private fun createNavigationButton(id: String, name: String): ItemStack {
@@ -123,9 +119,7 @@ class AbilitySelectionUI(
                 
                 meta.lore(lore)
                 
-                if (ability.modelData > 0) {
-                    meta.setCustomModelData(ability.modelData)
-                }
+                ItemModels.setModel(meta, ability.itemModel)
 
                 meta.persistentDataContainer.set(
                     SneakyPrototypeKit.getInstance().LEFT_CLICK_ABILITY_KEY,
@@ -152,7 +146,7 @@ class AbilitySelectionUI(
         val description: String,
         val charges: Int,
         val material: Material,
-        val modelData: Int,
+        val itemModel: String?,
         val stackSize: Int
     )
 }

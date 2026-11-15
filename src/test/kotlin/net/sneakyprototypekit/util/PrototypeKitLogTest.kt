@@ -20,7 +20,7 @@ class PrototypeKitLogTest {
         }
     }
 
-    private val record = PrototypeKitRecord("ITEM", "heal", "Alex", "Kit's name", "STICK", 12, "line 1\nline 2")
+    private val record = PrototypeKitRecord("ITEM", "heal", "Alex", "Kit's name", "STICK", "lom:items/test_stick", "line 1\nline 2")
 
     @Test
     fun `waits for readiness then inserts exactly one schema-qualified parameterized log`() {
@@ -34,9 +34,9 @@ class PrototypeKitLogTest {
         val (sql, parameters) = database.writes.single()
         assertContains(sql, "INSERT INTO lom.lom2_prototype_kit_items")
         assertFalse(sql.contains(record.name))
-        assertEquals(listOf(record.type, record.ability, record.creator, record.name, record.material, 12, record.lore), parameters.drop(1))
+        assertEquals(listOf(record.type, record.ability, record.creator, record.name, record.material, 0, "lom:items/test_stick", record.lore), parameters.drop(1))
         assertTrue((parameters.first() as String).matches(Regex("[a-z0-9]{15}")))
-        assertEquals(8, sql.count { it == '?' })
+        assertEquals(9, sql.count { it == '?' })
         assertEquals(2, Regex("CURRENT_TIMESTAMP").findAll(sql).count())
     }
 
@@ -86,7 +86,7 @@ class PrototypeKitLogTest {
         val database = Database().apply { ready.complete(null) }
         val logger = PrototypeKitLog(database)
         listOf("ITEM", "FOOD", "DRINK").forEach { type ->
-            assertEquals(1, logger.log(record.copy(type = type, model_data = null, lore = null)).join())
+            assertEquals(1, logger.log(record.copy(type = type, item_model = null, lore = null)).join())
         }
         assertEquals(listOf("ITEM", "FOOD", "DRINK"), database.writes.map { it.second[1] })
         assertEquals(3, database.writes.map { it.second[0] }.toSet().size)
@@ -94,6 +94,7 @@ class PrototypeKitLogTest {
             assertTrue((parameters[0] as String).matches(Regex("[a-z0-9]{15}")))
             assertEquals(0, parameters[6])
             assertEquals("", parameters[7])
+            assertEquals("", parameters[8])
         }
     }
 

@@ -2,6 +2,7 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.ItemType
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -95,25 +96,20 @@ class TypeSelectionListener : Listener {
             }
         }
         
-        // Get first available icon for this type
-        val iconsSection = plugin.config.getConfigurationSection(when (type) {
+        // Default to the first available icon for this type
+        val firstIcon = ItemModels.icons(plugin.config.getConfigurationSection(when (type) {
             ItemType.FOOD -> "food-icons"
             ItemType.DRINK -> "drink-icons"
             else -> "item-icons"
-        }) ?: return
-        
-        val firstMaterial = iconsSection.getKeys(false).firstOrNull()?.let { Material.matchMaterial(it) } ?: Material.STONE
-        val modelData = iconsSection.getStringList(firstMaterial.name).firstOrNull()?.let { 
-            if (it.contains("-")) it.split("-")[0].toIntOrNull() else it.toIntOrNull()
-        } ?: 1
-        
+        })).firstOrNull() ?: return
+
         // Store icon data
         container.set(
             plugin.ICON_DATA_KEY,
             PersistentDataType.STRING,
-            "${firstMaterial.name},$modelData"
+            ItemModels.encode(firstIcon)
         )
-        
+
         prototypeKit.itemMeta = kitMeta
         
         // Return to main menu

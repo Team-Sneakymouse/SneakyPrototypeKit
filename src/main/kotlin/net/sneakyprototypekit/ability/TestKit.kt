@@ -7,6 +7,7 @@ import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.ability.actions.ActionEngine
 import net.sneakyprototypekit.ability.actions.Node
 import net.sneakyprototypekit.integration.PrototypeMagicItems
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -55,7 +56,7 @@ object TestKit : Listener {
         val name = section?.getString("name") ?: id
         item.editMeta { meta ->
             meta.persistentDataContainer.set(INDEX_KEY, PersistentDataType.INTEGER, index)
-            meta.setCustomModelData(section?.getInt("icon-custom-model-data")?.takeIf { it > 0 } ?: 129)
+            ItemModels.setModel(meta, ItemModels.abilityIcon(section) ?: ItemModels.KIT)
             meta.displayName(TextUtility.convertToComponent("&dTest Kit &7[${index + 1}/${list.size}] &f$name"))
             meta.lore(
                 listOf(

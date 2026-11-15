@@ -4,6 +4,7 @@ import com.sneakyitems.api.SneakyItemsAPI
 import com.sneakyitems.util.magicitems.MagicItemData.MagicItemAttribute
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.ability.TestKit
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -13,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType
  * SneakyItems registration for the prototype kit, test kit, and player-finalized items.
  *
  * Finalized items vary by material (icon config), and [MagicItemAttribute.TYPE] cannot be ignored, so each
- * icon material gets its own def (`item-prototypekit-created-<material>`). Name, lore, custom model data and
+ * icon material gets its own def (`item-prototypekit-created-<material>`). Name, lore, item model and
  * max stack stay per-copy via ignored-attributes; ability/creator PDC rides as extra keys.
  */
 object PrototypeMagicItems {
@@ -86,7 +87,7 @@ object PrototypeMagicItems {
     private fun registerTestKit(plugin: SneakyPrototypeKit): Boolean {
         val template = ItemStack(Material.RABBIT_FOOT).apply {
             editMeta {
-                it.setCustomModelData(129)
+                ItemModels.setModel(it, ItemModels.KIT)
                 it.displayName(TextUtility.convertToComponent("&dTest Kit"))
                 it.lore(listOf(TextUtility.convertToComponent("&7Ability selector")))
                 it.setMaxStackSize(1)
@@ -95,6 +96,8 @@ object PrototypeMagicItems {
         val magic = SneakyItemsAPI.registerFromStack(plugin, PDC_NAMESPACE, TEST_KIT, template) ?: return false
         magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.NAME)
         magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.LORE)
+        // The icon follows the selected ability; CUSTOM_MODEL_DATA stays ignored for pre-migration wands.
+        magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.ITEM_MODEL)
         magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.CUSTOM_MODEL_DATA)
         magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.MAX_STACK_SIZE)
         return true
@@ -102,24 +105,15 @@ object PrototypeMagicItems {
 
     private fun registerCreatedMaterials(plugin: SneakyPrototypeKit): Int {
         val materials = linkedSetOf<Material>()
-        val cmdByMaterial = linkedMapOf<Material, MutableSet<Int>>()
+        val modelsByMaterial = linkedMapOf<Material, MutableSet<String>>()
         for (sectionName in listOf("item-icons", "food-icons", "drink-icons")) {
-            val section = plugin.config.getConfigurationSection(sectionName) ?: continue
-            for (materialKey in section.getKeys(false)) {
-                val material = Material.matchMaterial(materialKey) ?: continue
-                materials += material
-                val cmds = cmdByMaterial.getOrPut(material) { linkedSetOf() }
-                for (entry in section.getStringList(materialKey)) {
-                    if (entry.contains("-")) {
-                        val parts = entry.split("-", limit = 2)
-                        val start = parts[0].toIntOrNull() ?: continue
-                        val end = parts[1].toIntOrNull() ?: continue
-                        for (cmd in start..end) cmds += cmd
-                    } else {
-                        entry.toIntOrNull()?.let { cmds += it }
-                    }
-                }
+            for (icon in ItemModels.icons(plugin.config.getConfigurationSection(sectionName))) {
+                materials += icon.material
+                modelsByMaterial.getOrPut(icon.material) { linkedSetOf() } += icon.model
             }
+            // Materials with an empty or unmapped list still get a def.
+            plugin.config.getConfigurationSection(sectionName)?.getKeys(false)
+                ?.mapNotNullTo(materials) { Material.matchMaterial(it) }
         }
         // Always have a fallback def so an unknown/legacy material can still be stamped by hand.
         materials += Material.STONE
@@ -137,20 +131,24 @@ object PrototypeMagicItems {
             val magic = SneakyItemsAPI.registerFromStack(plugin, PDC_NAMESPACE, name, template) ?: continue
             magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.NAME)
             magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.LORE)
+            // The icon is per copy. CUSTOM_MODEL_DATA stays ignored for pre-migration copies.
+            magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.ITEM_MODEL)
             magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.CUSTOM_MODEL_DATA)
             magic.magicItemData.ignoredAttributes.add(MagicItemAttribute.MAX_STACK_SIZE)
             count++
 
-            // Legacy: pre-migration copies are known by material + custom model data from the icon lists.
-            // Patterns require CMD so plain vanilla stacks of the same material are not stamped.
-            val cmds = cmdByMaterial[material].orEmpty()
-            for (cmd in cmds) {
-                val matKey = material.name.lowercase()
-                SneakyItemsAPI.registerLegacyPattern(
-                    plugin,
-                    name,
-                    """$matKey{"custom-model-data":$cmd}""",
-                )
+            // Legacy: copies finalized before the item-model change carry material + integer custom model data.
+            // Each configured icon contributes the integers that used to show it. Patterns require the integer,
+            // so plain vanilla stacks of the same material are not stamped.
+            val matKey = material.name.lowercase()
+            for (model in modelsByMaterial[material].orEmpty()) {
+                for (cmd in ItemModels.legacyInts(material, model)) {
+                    SneakyItemsAPI.registerLegacyPattern(
+                        plugin,
+                        name,
+                        """$matKey{"custom-model-data":$cmd}""",
+                    )
+                }
             }
         }
         return count
@@ -165,7 +163,7 @@ object PrototypeMagicItems {
                 meta.displayName(
                     TextUtility.convertToComponent(config?.getString("name", "&ePrototype Kit") ?: "&ePrototype Kit"),
                 )
-                config?.getInt("model-data", -1)?.takeIf { it > 0 }?.let { meta.setCustomModelData(it) }
+                ItemModels.setModel(meta, ItemModels.kitModel(config, material))
                 val lore = config?.getStringList("lore")
                     ?.filterNot { it.contains("Shift + Right Click") }
                     ?.map { TextUtility.convertToComponent(it) }

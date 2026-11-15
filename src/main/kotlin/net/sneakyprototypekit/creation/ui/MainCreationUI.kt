@@ -2,6 +2,7 @@ package net.sneakyprototypekit.creation.ui
 
 import net.sneakyprototypekit.SneakyPrototypeKit
 import net.sneakyprototypekit.creation.PrototypeKit
+import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import net.sneakyprototypekit.util.MenuTiming
 import org.bukkit.Bukkit
@@ -55,12 +56,7 @@ object MainCreationUI {
         inventory.setItem(15, createButton(Material.BOOK, "Lore", "Set the item's description", "lore"))
         
         // Add GUI elements
-        inventory.setItem(0, ItemStack(Material.JIGSAW).apply {
-            itemMeta = itemMeta?.also { meta ->
-                meta.isHideTooltip = true
-                meta.setCustomModelData(3047)
-            }
-        })
+        inventory.setItem(0, ItemModels.guiItem(ItemModels.GUI_MAIN))
 
         return inventory
     }
