@@ -17,6 +17,7 @@ import net.sneakyprototypekit.util.PrototypeKitLog
 import net.sneakyprototypekit.integration.Probe
 import net.sneakyprototypekit.integration.PrototypeMagicItems
 import net.sneakyprototypekit.util.MenuTiming
+import java.util.concurrent.CompletableFuture
 
 class SneakyPrototypeKit : JavaPlugin() {
     /** SneakyDiagnostics measurements (optional): menu build and openInventory timing, see the README. */
@@ -37,7 +38,21 @@ class SneakyPrototypeKit : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
-        itemLog = PrototypeKitLog(SneakyDBProvider.getApi())
+        val database = SneakyDBProvider.getApi()
+        val migrated = try {
+            database.migrate(IDENTIFIER, javaClass)
+        } catch (error: RuntimeException) {
+            CompletableFuture.failedFuture<Int>(error)
+        }
+        itemLog = PrototypeKitLog(database, migrated)
+        migrated.whenComplete { _, error ->
+            if (error != null) {
+                logger.severe(
+                    "SneakyDB migrations for SneakyPrototypeKit failed: ${error.message}. " +
+                        "Finalized-item logging stays unavailable until migrations succeed and the server restarts.",
+                )
+            }
+        }
         MenuTiming.probe = probe
         probe.hook()
         logger.info("SneakyPrototypeKit has been enabled!")

@@ -1,24 +1,24 @@
 # PostgreSQL item logging
 
 SneakyPrototypeKit writes **new finalized-item logs** through the public SneakyDB API.
-Database credentials, pooling and worker threads belong to SneakyDB. This plugin
-must not create/alter schemas or import historical PocketBase data.
+Database credentials, pooling and worker threads belong to SneakyDB.
 
-## External table contract (before deployment)
+This plugin **owns** table `lom.lom2_prototype_kit_items` via SneakyDB migrations
+(`db/migrations/V001__init.sql`, plugin id `sneakyprototypekit`). The operator must
+provision schema `lom` (`CREATE SCHEMA` / `GRANT USAGE`) before the first migration runs;
+scripts never create schemas. Historical PocketBase import and coordinated cutover remain
+operator-owned (see [migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL)); the
+plugin does not import old rows.
 
-The [migration ownership map](https://github.com/Team-Sneakymouse/migrateSQL/blob/1798ab37cdbff65db800a559c2cc6bf488dcfb89/pocketbase-collection-map.md)
-assigns `lom2_prototype_kit_items` to schema `lom`. The map is a proposal, **not
-executed PostgreSQL DDL**. The source [collection metadata](https://github.com/Team-Sneakymouse/pocketbase/blob/bf24b576cda83fb72b4db68c503e661d0fa452da/metadata/collections-20261025T095957Z.json)
-defines the following fields. Coordinate the externally managed table with this
-insert contract before enabling the new plugin:
+## Table contract
 
-- Target: `lom.lom2_prototype_kit_items` (schema-qualified; no search-path dependency).
-- `id`: text primary key, exactly 15 lowercase ASCII letters/digits. New logs
-  generate their own random IDs; existing IDs are imported by the external migration.
+Target: `lom.lom2_prototype_kit_items` (schema-qualified; no search-path dependency).
+
+- `id`: text primary key, exactly 15 lowercase ASCII letters/digits. New logs generate
+  their own random IDs; existing IDs are retained when historical data is imported.
 - `type`, `ability`, `creator`, `name`, `material`, `lore`: text.
 - `item_model`: text, NOT NULL with default `''`. The item-model id of the finalized item
-  (e.g. `lom:items/prototype-food/07_bread`); missing is written as `''`. **Added after the
-  item-model change** ([#7](https://github.com/Team-Sneakymouse/SneakyPrototypeKit/issues/7)).
+  (e.g. `lom:items/prototype-food/07_bread`); missing is written as `''`.
 - `model_data`: numeric, **legacy**. The plugin no longer produces integer custom model data and
   always writes `0`; the column stays for rows logged before the change (the original collection
   permits non-integers). Do not drop it while the old rows are the only record of their icon.
@@ -26,44 +26,32 @@ insert contract before enabling the new plugin:
 - `created`, `updated`: `timestamptz` columns accepting PostgreSQL
   `CURRENT_TIMESTAMP`; both are explicitly set for each new log.
 - No extra required columns without defaults; no dependence on database-generated
-  IDs or timestamp defaults. Preserve the metadata's optional/unbounded field semantics;
-  do not impose integer-only/positive-only model data, nonempty text or enum restrictions
-  on imported rows.
-- Runtime role: schema `USAGE` and table `INSERT`; no schema ownership or DDL
-  privileges are needed by this plugin.
+  IDs or timestamp defaults.
+- Runtime role: insert-only through SneakyDB; the plugin does not query or update old rows.
 
-### Item-model migration (stored rows)
+### Item-model backfill (existing rows only)
 
-Rows logged before the change hold `material` + integer `model_data` and an empty `item_model`.
-`tools/backfill_item_model_sql.py` prints the one-off, idempotent SQL (add the column, then fill
-`item_model` from the `(material, model_data)` pair via the same `legacy-item-models.json` table the plugin
-bundles; rows without a pack model keep `''`). Run it **before** deploying this version: an `INSERT` that
-names `item_model` fails (category `INSERT`, item delivery unaffected) until the column exists. Hand it to
-the migration owner; the plugin never runs DDL. Run it with **no arguments** so every carrier in the
-table is covered; restricting it to a few materials leaves rows of the other carriers unfilled:
+Rows logged before the `item_model` column existed hold `material` + integer `model_data` and an
+empty `item_model`. `tools/backfill_item_model_sql.py` prints the one-off, idempotent SQL to fill
+`item_model` from the `(material, model_data)` pair via the same `legacy-item-models.json` table the
+plugin bundles. Run it on databases that already had rows **before** V001 or before the column existed;
+fresh databases created by V001 do not need the `ALTER TABLE` line. Hand the output to the operator;
+the plugin never runs that DML at startup:
 
 ```
 python3 tools/backfill_item_model_sql.py | psql ...
 ```
 
-The statement is a single transaction and only touches rows whose `item_model` is still `''`, so it is
-safe to re-run. **Re-run it after cutover and after any rollback:** until cutover, and again after a
-rollback, the old plugin keeps inserting rows with only `model_data` (its `INSERT` does not name
-`item_model`, so the column default `''` applies); those rows stay unfilled until the backfill runs again.
-Rows written by this version (`item_model` set, `model_data` `0`) are never modified.
+The `UPDATE` is safe to re-run. Rows written by this version (`item_model` set, `model_data` `0`)
+are never modified.
 
 Regenerate `legacy-item-models.json` with `tools/generate_legacy_item_models.py` after the pack's mapping changes.
-
-The plugin does not query or update old rows. Migration SQL, data transfer, grants,
-cutover and rollback coordination belong in **migrateSQL**, not this codebase.
-Apart from the one-off item-model backfill generator above, no migration scripts or production
-database connections are provided here.
 
 ## Runtime semantics
 
 Logging is best-effort and independent of giving the player their finalized item.
 No network waits run on the Minecraft thread. A log waits asynchronously for
-SneakyDB readiness; at most 64 pending/in-flight logs are admitted. Cancelling a
+SneakyDB migrations and readiness; at most 64 pending/in-flight logs are admitted. Cancelling a
 caller's completion future does not cancel a log or free its capacity slot. A failed insert/readiness
 or queue rejection is reported to the server log without echoing SQL parameters,
 raw driver exceptions or credentials. Safe categories distinguish `CAPACITY`, `READINESS`,
@@ -78,9 +66,10 @@ Re-enable/restart after fixing SneakyDB initialization failure.
 
 ## Deployment verification (operator / in-game)
 
-1. Confirm the external migration created the exact target contract and grants;
-   independently verify historical record counts/content outside this plugin.
-2. Install SneakyDB `2026.10.26-fd4e29e90ad0` or a compatible newer API and configure
+1. Ensure schema `lom` exists and grants allow SneakyDB to apply migrations and insert.
+   On Live with a pre-existing table matching V001, record V001 as already applied before
+   the first migrat­ing jar starts (see [specs/sneakydb-migrations.md](specs/sneakydb-migrations.md)).
+2. Install SneakyDB `2026.11.17-452c61d0f480` or a compatible newer API and configure
    its PostgreSQL connection. Keep SneakyPocketbase installed if other plugins use it.
 3. Install this plugin plus SneakyUtils and start Paper 26.2 / Java 25.
 4. Finalize an ITEM, FOOD and DRINK. Verify the item is delivered and one new row
@@ -95,4 +84,4 @@ Re-enable/restart after fixing SneakyDB initialization failure.
 
 Automated API-boundary tests/builds are not live database or in-game verification.
 Reverting the code does not move newly written SQL logs back into PocketBase;
-coordinate rollback with the external migration owner.
+coordinate rollback with the operator.

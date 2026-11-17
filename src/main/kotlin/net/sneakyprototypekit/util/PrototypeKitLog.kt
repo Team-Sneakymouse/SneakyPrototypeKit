@@ -5,13 +5,16 @@ import java.security.SecureRandom
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionException
 
-/** Insert-only consumer; the schema and historical migration are managed externally. */
-class PrototypeKitLog(private val database: SneakyDBApi) : AutoCloseable {
+/** Insert-only consumer; table DDL is applied by SneakyDB from this plugin's `db/migrations`. */
+class PrototypeKitLog(
+    private val database: SneakyDBApi,
+    migrated: CompletableFuture<Int>,
+) : AutoCloseable {
     enum class FailureCategory { DISABLED, CAPACITY, READINESS, INSERT, ROW_COUNT }
 
     private class LogFailure(val category: FailureCategory) : IllegalStateException("Item log failure: $category")
 
-    private val ready = database.whenReady().copy()
+    private val ready = migrated.thenCompose { database.whenReady().copy() }
     private val lock = Any()
     private var stopped = false
     private val pending = HashSet<CompletableFuture<Int>>()

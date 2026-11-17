@@ -18,14 +18,42 @@ class PrototypeKitLogTest {
             writes.add(sql to parameters)
             return result
         }
+
+        override fun migrate(plugin: String, anchor: Class<*>) = CompletableFuture.completedFuture(1)
     }
+
+    private fun itemLogger(database: Database, migrated: CompletableFuture<Int> = CompletableFuture.completedFuture(1)) =
+        PrototypeKitLog(database, migrated)
 
     private val record = PrototypeKitRecord("ITEM", "heal", "Alex", "Kit's name", "STICK", "lom:items/test_stick", "line 1\nline 2")
 
     @Test
+    fun `waits for migrations and readiness before insert`() {
+        val database = Database()
+        val migrated = CompletableFuture<Int>()
+        val saved = itemLogger(database, migrated).log(record)
+        database.ready.complete(null)
+        assertTrue(database.writes.isEmpty(), "Readiness alone must not run SQL before migrations")
+        migrated.complete(1)
+        assertEquals(1, saved.join())
+        assertEquals(1, database.writes.size)
+    }
+
+    @Test
+    fun `migration failure rejects waiting logs without executing SQL`() {
+        val database = Database()
+        val migrated = CompletableFuture<Int>()
+        val saved = itemLogger(database, migrated).log(record)
+        migrated.completeExceptionally(IllegalStateException("checksum mismatch"))
+        assertTrue(saved.isCompletedExceptionally)
+        database.ready.complete(null)
+        assertTrue(database.writes.isEmpty())
+    }
+
+    @Test
     fun `waits for readiness then inserts exactly one schema-qualified parameterized log`() {
         val database = Database()
-        val logger = PrototypeKitLog(database)
+        val logger = itemLogger(database)
         val saved = logger.log(record)
         assertFalse(saved.isDone)
         assertTrue(database.writes.isEmpty())
@@ -43,7 +71,7 @@ class PrototypeKitLogTest {
     @Test
     fun `disable rejects waiting logs and fences later readiness`() {
         val database = Database()
-        val logger = PrototypeKitLog(database)
+        val logger = itemLogger(database)
         val saved = logger.log(record)
         logger.close()
         assertTrue(saved.isCompletedExceptionally)
@@ -56,7 +84,7 @@ class PrototypeKitLogTest {
     @Test
     fun `readiness failure rejects waiting logs without executing SQL`() {
         val database = Database()
-        val saved = PrototypeKitLog(database).log(record)
+        val saved = itemLogger(database).log(record)
         database.ready.completeExceptionally(IllegalStateException("initialization failed"))
         assertTrue(saved.isCompletedExceptionally)
         assertTrue(database.writes.isEmpty())
@@ -65,7 +93,7 @@ class PrototypeKitLogTest {
     @Test
     fun `asynchronous insert failure propagates without retry`() {
         val database = Database().apply { ready.complete(null); result = CompletableFuture() }
-        val saved = PrototypeKitLog(database).log(record)
+        val saved = itemLogger(database).log(record)
         assertFalse(saved.isDone)
         database.result.completeExceptionally(IllegalStateException("uncertain write"))
         assertTrue(saved.isCompletedExceptionally)
@@ -78,13 +106,13 @@ class PrototypeKitLogTest {
             ready.complete(null)
             submissionFailure = IllegalStateException("rejected")
         }
-        assertTrue(PrototypeKitLog(database).log(record).isCompletedExceptionally)
+        assertTrue(itemLogger(database).log(record).isCompletedExceptionally)
     }
 
     @Test
     fun `optional fields normalize like PocketBase and each log has a fresh compatible ID`() {
         val database = Database().apply { ready.complete(null) }
-        val logger = PrototypeKitLog(database)
+        val logger = itemLogger(database)
         listOf("ITEM", "FOOD", "DRINK").forEach { type ->
             assertEquals(1, logger.log(record.copy(type = type, item_model = null, lore = null)).join())
         }
@@ -101,7 +129,7 @@ class PrototypeKitLogTest {
     @Test
     fun `shutdown does not cancel or retry an already submitted database write`() {
         val database = Database().apply { ready.complete(null); result = CompletableFuture() }
-        val logger = PrototypeKitLog(database)
+        val logger = itemLogger(database)
         val saved = logger.log(record)
         logger.close()
         assertTrue(saved.isCompletedExceptionally)
@@ -114,10 +142,10 @@ class PrototypeKitLogTest {
     @Test
     fun `fresh enable does not revive a disabled logger`() {
         val database = Database()
-        val old = PrototypeKitLog(database)
+        val old = itemLogger(database)
         val stale = old.log(record)
         old.close()
-        val fresh = PrototypeKitLog(database)
+        val fresh = itemLogger(database)
         val current = fresh.log(record)
         database.ready.complete(null)
         assertTrue(stale.isCompletedExceptionally)
@@ -128,7 +156,7 @@ class PrototypeKitLogTest {
     @Test
     fun `pending and in-flight logs are bounded even if callers cancel their futures`() {
         val database = Database().apply { result = CompletableFuture() }
-        val logger = PrototypeKitLog(database)
+        val logger = itemLogger(database)
         val waiting = List(64) { logger.log(record) }
         waiting.forEach { it.cancel(false) }
         assertTrue(logger.log(record).isCompletedExceptionally, "Cancellation must not bypass the capacity bound")
@@ -147,14 +175,14 @@ class PrototypeKitLogTest {
             return PrototypeKitLog.failureCategory(failure).name
         }
         val pending = Database()
-        val waiting = PrototypeKitLog(pending)
+        val waiting = itemLogger(pending)
         val initial = waiting.log(record)
         pending.ready.completeExceptionally(IllegalStateException("password=secret"))
         assertEquals("READINESS", category(initial))
         waiting.close()
         assertEquals("DISABLED", category(waiting.log(record)))
 
-        val full = PrototypeKitLog(Database())
+        val full = itemLogger(Database())
         repeat(64) { full.log(record) }
         assertEquals("CAPACITY", category(full.log(record)))
         full.close()
@@ -163,16 +191,16 @@ class PrototypeKitLogTest {
             ready.complete(null)
             result = CompletableFuture.failedFuture(IllegalStateException("password=secret"))
         }
-        assertEquals("INSERT", category(PrototypeKitLog(rejected).log(record)))
+        assertEquals("INSERT", category(itemLogger(rejected).log(record)))
         rejected.result = CompletableFuture.completedFuture(0)
-        assertEquals("ROW_COUNT", category(PrototypeKitLog(rejected).log(record)))
+        assertEquals("ROW_COUNT", category(itemLogger(rejected).log(record)))
     }
 
     @Test
     fun `insert must confirm exactly one affected row`() {
         for (count in listOf(0, 2)) {
             val database = Database().apply { ready.complete(null); result = CompletableFuture.completedFuture(count) }
-            assertTrue(PrototypeKitLog(database).log(record).isCompletedExceptionally, "Affected rows: $count")
+            assertTrue(itemLogger(database).log(record).isCompletedExceptionally, "Affected rows: $count")
             assertEquals(1, database.writes.size)
         }
     }
