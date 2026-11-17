@@ -4,11 +4,12 @@ SneakyPrototypeKit writes **new finalized-item logs** through the public SneakyD
 Database credentials, pooling and worker threads belong to SneakyDB.
 
 This plugin **owns** table `lom.lom2_prototype_kit_items` via SneakyDB migrations
-(`db/migrations/V001__init.sql`, plugin id `sneakyprototypekit`). The operator must
-provision schema `lom` (`CREATE SCHEMA` / `GRANT USAGE`) before the first migration runs;
-scripts never create schemas. Historical PocketBase import and coordinated cutover remain
-operator-owned (see [migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL)); the
-plugin does not import old rows.
+(`V001__init.sql` = Live baseline, `V002__item_model.sql` adds `item_model`; plugin id
+`sneakyprototypekit`). The operator must provision schema `lom` (`CREATE SCHEMA` /
+`GRANT USAGE`) before the first migration runs; scripts never create schemas. Historical
+PocketBase import and coordinated cutover remain operator-owned (see
+[migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL)); the plugin does not import
+old rows.
 
 ## Table contract
 
@@ -19,9 +20,9 @@ Target: `lom.lom2_prototype_kit_items` (schema-qualified; no search-path depende
 - `type`, `ability`, `creator`, `name`, `material`, `lore`: text.
 - `item_model`: text, NOT NULL with default `''`. The item-model id of the finalized item
   (e.g. `lom:items/prototype-food/07_bread`); missing is written as `''`.
-- `model_data`: numeric, **legacy**. The plugin no longer produces integer custom model data and
-  always writes `0`; the column stays for rows logged before the change (the original collection
-  permits non-integers). Do not drop it while the old rows are the only record of their icon.
+- `model_data`: bigint on Live / V001, **legacy**. The plugin no longer produces integer custom
+  model data and always writes `0`; the column stays for rows logged before `item_model`. Do not
+  drop it while the old rows are the only record of their icon.
 - Missing lore is written as `""`, matching PocketBase's optional-text default.
 - `created`, `updated`: `timestamptz` columns accepting PostgreSQL
   `CURRENT_TIMESTAMP`; both are explicitly set for each new log.
