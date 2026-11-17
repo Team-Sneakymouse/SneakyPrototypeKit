@@ -37,8 +37,8 @@ val sneakyItemsVersion = "2026.11.14-ab23dacd2d06"
 dependencies {
     implementation(kotlin("stdlib"))
     compileOnly("io.papermc.paper:paper-api:26.2.build.121-stable")
-    compileOnly("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
-    testImplementation("io.github.team-sneakymouse:sneakydb-api:2026.10.26-fd4e29e90ad0")
+    compileOnly("io.github.team-sneakymouse:sneakydb-api:2026.11.17-452c61d0f480")
+    testImplementation("io.github.team-sneakymouse:sneakydb-api:2026.11.17-452c61d0f480")
     compileOnly("io.github.team-sneakymouse:sneakyutils:2026.11.09-aa63618e063b")
     compileOnly("io.github.team-sneakymouse:sneakyitems:$sneakyItemsVersion")
     // optional at runtime: SneakyDiagnostics measures the plugin when installed (integration/Probe.java); never bundled
@@ -47,12 +47,32 @@ dependencies {
     testImplementation("io.papermc.paper:paper-api:26.2.build.121-stable")
     testImplementation("io.github.team-sneakymouse:sneakyutils:2026.11.09-aa63618e063b")
     testImplementation("io.github.team-sneakymouse:sneakyitems:$sneakyItemsVersion")
+    testImplementation("org.postgresql:postgresql:42.7.7")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks {
     test {
-        useJUnitPlatform()
+        useJUnitPlatform {
+            excludeTags("postgres")
+        }
+    }
+
+    register<Test>("postgresTest") {
+        group = "verification"
+        description = "Run storage tests against PostgreSQL (SNEAKYPROTOTYPEKIT_TEST_PG_URL)."
+        testClassesDirs = sourceSets["test"].output.classesDirs
+        classpath = sourceSets["test"].runtimeClasspath
+        useJUnitPlatform {
+            includeTags("postgres")
+        }
+        doFirst {
+            if (System.getenv("SNEAKYPROTOTYPEKIT_TEST_PG_URL").isNullOrBlank()) {
+                throw GradleException(
+                    "postgresTest needs SNEAKYPROTOTYPEKIT_TEST_PG_URL (a throwaway database; tests drop lom.lom2_prototype_kit_items)",
+                )
+            }
+        }
     }
 
     processResources {

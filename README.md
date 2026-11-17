@@ -21,7 +21,7 @@ A Paper plugin that allows server administrators to create custom items and cons
 - **Required**:
   - Java 25
   - Paper 26.2
-  - SneakyDB `2026.10.26-fd4e29e90ad0` or compatible newer (for item logging)
+  - SneakyDB `2026.11.17-452c61d0f480` or compatible newer (for item logging and migrations)
   - SneakyUtils
 
 ## Usage
@@ -98,13 +98,13 @@ copies are still recognised through SneakyItems legacy patterns built from the s
 
 1. Install Java 25 on your server
 2. Install Paper 26.2
-3. Install and configure SneakyDB and install SneakyUtils; have the external migration owner provision `lom.lom2_prototype_kit_items` first (see [database contract and cutover checklist](docs/database.md))
+3. Install and configure SneakyDB and SneakyUtils; ensure schema `lom` exists (see [database contract](docs/database.md) and [migration spec](docs/specs/sneakydb-migrations.md))
 4. Place SneakyPrototypeKit.jar in your plugins folder
 5. Start the server
 6. Configure the plugin in `plugins/SneakyPrototypeKit/config.yml`
 
-The plugin does not create database schemas or migrate historical records. Legacy migration
-is managed externally in [migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL).
+The plugin applies its own table DDL through SneakyDB at startup; it does not import historical
+PocketBase rows ([migrateSQL](https://github.com/Team-Sneakymouse/migrateSQL) remains the operator path for that).
 Item creation remains available if best-effort database logging fails; failures are logged
 to the server console, with no automatic retries or PocketBase fallback.
 
@@ -126,6 +126,13 @@ To run a test server:
 
 ```bash
 ./gradlew runServer
+```
+
+Optional PostgreSQL migration test (throwaway database; creates schema `lom` and applies jar migrations):
+
+```bash
+export SNEAKYPROTOTYPEKIT_TEST_PG_URL='jdbc:postgresql://host:5432/db'
+./gradlew postgresTest
 ```
 
 ## License

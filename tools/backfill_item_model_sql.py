@@ -6,7 +6,7 @@ Usage: python3 tools/backfill_item_model_sql.py [carrier ...] > backfill.sql
 Run with no arguments: every carrier in src/main/resources/legacy-item-models.json is included. (Passing
 lowercase material names restricts the output to those carriers and leaves other rows unfilled; only for
 debugging.) The SQL is idempotent; re-run it after cutover/rollback. The plugin never runs this: schema
-changes and data transfer belong to the migration owner (see docs/database.md).
+V001 includes `item_model`; run this only to backfill rows that existed before that column was populated (see docs/database.md).
 """
 import json
 import sys
