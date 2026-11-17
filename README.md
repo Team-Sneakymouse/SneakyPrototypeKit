@@ -35,6 +35,10 @@ A Paper plugin that allows server administrators to create custom items and cons
    - Set name and lore
    - Get your custom item!
 
+`/sneakyprototypekit cast <player> <ability>` runs an ability's native `actions` as the player (no charges or
+cooldown; `command-console`-only abilities are refused). Java plugins can call
+`net.sneakyprototypekit.api.PrototypeAbilities.has(id)` / `cast(player, id)` (main thread) instead.
+
 Name and lore are edited in prefilled dialogs with Save and Cancel. Names allow 30 characters,
 and lore allows 100 total characters, including formatting codes and line breaks.
 Press Enter in the lore field to add a line break. Player lore preserves these breaks and blank
@@ -92,6 +96,7 @@ copies are still recognised through SneakyItems legacy patterns built from the s
 
 - `sneakyprototypekit.command.prototypekit` - Access to create items
 - `sneakyprototypekit.command.reload` - Access to reload the plugin configuration
+- `sneakyprototypekit.command.cast` - `/sneakyprototypekit cast` (default: op)
 - `sneakyprototypekit.admin` - Access to use color codes in names/lore
 
 ## Installation

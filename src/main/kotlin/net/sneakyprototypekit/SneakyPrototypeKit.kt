@@ -2,6 +2,7 @@ package net.sneakyprototypekit
 
 import net.sneakyprototypekit.commands.CommandPrototypeKit
 import net.sneakyprototypekit.commands.CommandReload
+import net.sneakyprototypekit.commands.CommandSneakyPrototypeKit
 import net.sneakyprototypekit.ability.AbilityListener
 import net.sneakyprototypekit.creation.ui.TypeSelectionListener
 import net.sneakyprototypekit.creation.ui.AbilitySelectionListener
@@ -12,6 +13,7 @@ import net.sneakyprototypekit.listeners.PrototypeKitListener
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.NamespacedKey
 import org.bukkit.permissions.Permission
+import org.bukkit.permissions.PermissionDefault
 import com.sneakydb.SneakyDBProvider
 import net.sneakyprototypekit.util.PrototypeKitLog
 import net.sneakyprototypekit.integration.Probe
@@ -71,11 +73,13 @@ class SneakyPrototypeKit : JavaPlugin() {
         // Register commands using Paper's command system
         server.commandMap.register(IDENTIFIER, CommandPrototypeKit())
         server.commandMap.register(IDENTIFIER, CommandReload())
+        server.commandMap.register(IDENTIFIER, CommandSneakyPrototypeKit())
 
         // Register permissions
         server.pluginManager.addPermission(Permission("$IDENTIFIER.*"))
         server.pluginManager.addPermission(Permission("$IDENTIFIER.admin"))
         server.pluginManager.addPermission(Permission("$IDENTIFIER.command.*"))
+        server.pluginManager.addPermission(Permission(CommandSneakyPrototypeKit.CAST_PERMISSION, PermissionDefault.OP))
 
         // Load configuration
         saveDefaultConfig()
