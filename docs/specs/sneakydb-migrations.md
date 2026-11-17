@@ -12,7 +12,12 @@ Adopt [team database migrations](https://github.com/Team-Sneakymouse/team-develo
 
 | Script | Purpose |
 |--------|---------|
-| `V001__init.sql` | Insert contract from [database.md](../database.md): `lom.lom2_prototype_kit_items` with `item_model` and legacy `model_data`. No `CREATE SCHEMA` (operator provisions schema `lom`). |
+| `V001__init.sql` | **Live baseline (2026-11-17):** `lom.lom2_prototype_kit_items` as on `team_sneakymouse` (`model_data bigint`, no `item_model`), Live indexes, `lom.touch_updated` trigger. |
+| `V002__item_model.sql` | Add `item_model text NOT NULL DEFAULT ''` for CraftEngine ids. |
+
+## Evidence (V001 vs Live)
+
+Compared on 2026-11-17 against Live (`team_sneakymouse`) with `pg_dump --schema-only`. Live had no `item_model` column and used `bigint` for `model_data`. The first merged V001 described the repository insert contract instead.
 
 ## Runtime
 
@@ -25,6 +30,7 @@ On enable, before the rest of startup logging, the plugin calls `SneakyDBProvide
 
 ## Operator adoption
 
-1. Ensure schema `lom` exists (`CREATE SCHEMA lom` / `GRANT USAGE`) before this plugin's first migration reaches an environment.
-2. If Live already has `lom.lom2_prototype_kit_items` matching V001, record `sneakyprototypekit:V001__init.sql` as applied in SneakyDB's migration table before the first jar that calls `migrate` starts there.
-3. Historical PocketBase import and one-off `item_model` backfill for rows logged before the column existed remain operator-owned; see [database.md](../database.md).
+1. Ensure schema `lom` exists before this plugin's first migration reaches an environment.
+2. **Live / Staging** (table matches V001): record `sneakyprototypekit` version `1` with a **null** checksum, then let `apply` fill it and run V002.
+3. **Dev** (wrong V001 checksum already recorded / `item_model` already added): reset the table to the Live baseline (or drop `item_model` and restore `model_data` to `bigint`), `DELETE FROM sneakydb.schema_migrations WHERE plugin = 'sneakyprototypekit'`, then record version `1` with null checksum. V002 then applies.
+4. Historical PocketBase import and optional `item_model` backfill for pre-column rows: see [database.md](../database.md).
