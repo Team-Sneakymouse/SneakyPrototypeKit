@@ -6,6 +6,7 @@ import net.sneakyprototypekit.ability.actions.Node
 import net.sneakyprototypekit.integration.PrototypeMagicItems
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Bukkit
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -43,6 +44,28 @@ object AbilityManager {
     fun isOnCooldown(player: Player, ability: String, cooldownMs: Long): Boolean {
         val lastUse = getCooldowns(player)[ability] ?: return false
         return System.currentTimeMillis() - lastUse < cooldownMs
+    }
+
+    /** Native `actions:` of `abilities.<ability>` in [config]; empty if unknown, a bad id, or console-command only. */
+    fun nativeActions(config: ConfigurationSection, ability: String): List<Node> {
+        if (ability.isBlank() || '.' in ability) return emptyList()
+        return Node.list(config.getList("abilities.$ability.actions"))
+    }
+
+    /** True if [ability] exists and has native actions (backs `PrototypeAbilities.has`). */
+    fun hasNativeActions(ability: String): Boolean =
+        nativeActions(SneakyPrototypeKit.getInstance().config, ability).isNotEmpty()
+
+    /**
+     * Runs [ability]'s native actions with [player] as caster, as the test kit does: no item, charges or cooldown,
+     * never `command-console`. Main thread only. False if the id is unknown or has no native actions.
+     */
+    fun castById(player: Player, ability: String): Boolean {
+        check(Bukkit.isPrimaryThread()) { "PrototypeAbilities.cast must run on the main thread" }
+        val actions = nativeActions(SneakyPrototypeKit.getInstance().config, ability)
+        if (actions.isEmpty()) return false
+        ActionEngine.run(player, actions)
+        return true
     }
 
     /**
