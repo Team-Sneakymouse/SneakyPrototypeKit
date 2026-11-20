@@ -27,7 +27,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
     exclusiveContent {
-        forRepository { maven("https://maven.sneakyrp.com/releases") }
+        forRepository { maven("https://maven.sneakyrp.com/sneakymouse") }
         filter { includeGroup("io.github.team-sneakymouse") }
     }
 }
@@ -174,7 +174,7 @@ publishing {
     repositories {
         maven {
             name = "sneakyrp"
-            url = uri("https://maven.sneakyrp.com/releases")
+            url = uri("https://maven.sneakyrp.com/sneakymouse")
             credentials(PasswordCredentials::class)
             authentication {
                 create<org.gradle.authentication.http.BasicAuthentication>("basic")
