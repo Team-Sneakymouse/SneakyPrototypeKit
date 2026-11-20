@@ -11,6 +11,10 @@ prototype-kit:
         - "&7Value: &c2500 Dragon Coins"
         - "&7Use this kit to create a custom item"
         - "&eL-Click: &7Begin crafting an item"
+    # Price for NPC shops (SneakyNPCs reads it from the item). Missing keys take these defaults; amount 0 drops the price.
+    value:
+        currency: "dragoncoins"
+        amount: 2500
 
 ## Available abilities that can be applied to items and food
 ## An ability runs either native `actions:` (preferred) or a legacy `command-console`

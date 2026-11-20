@@ -7,6 +7,7 @@ import net.sneakyprototypekit.ability.TestKit
 import net.sneakyprototypekit.util.ItemModels
 import net.sneakyprototypekit.util.TextUtility
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -170,7 +171,18 @@ object PrototypeMagicItems {
                     .orEmpty()
                 meta.lore(lore)
                 meta.setMaxStackSize(1)
+                // Price that NPC shops (SneakyNPCs) read from the registered def, in MagicSpells' stored-value keys.
+                val currency = config?.getString("value.currency")?.takeIf { it.isNotBlank() }
+                val amount = config?.getInt("value.amount") ?: 0
+                if (currency != null && amount > 0) {
+                    val pdc = meta.persistentDataContainer
+                    pdc.set(storeValueKey("currency"), PersistentDataType.STRING, currency)
+                    pdc.set(storeValueKey("amount"), PersistentDataType.STRING, amount.toString())
+                }
             }
         }
     }
+
+    private fun storeValueKey(field: String) =
+        NamespacedKey(PDC_NAMESPACE, "magicspellpermanentdata_store_value_$field")
 }

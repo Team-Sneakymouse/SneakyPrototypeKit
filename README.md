@@ -92,6 +92,10 @@ Kits and finalized items made before the change keep working. A half-built kit's
 (`MATERIAL,<integer>`) is converted to `MATERIAL,<item model>` the next time it is read, and old finalized
 copies are still recognised through SneakyItems legacy patterns built from the same table.
 
+`prototype-kit.value` (`currency`, `amount`; default 2500 `dragoncoins`) stamps the kit's SneakyItems def
+`item-prototypekit` with MagicSpells' stored-value keys (`magicspells:magicspellpermanentdata_store_value_*`),
+so SneakyNPCs shops can list it as `item: item-prototypekit`. Set `amount: 0` to leave the price off.
+
 ## Permissions
 
 - `sneakyprototypekit.command.prototypekit` - Access to create items
